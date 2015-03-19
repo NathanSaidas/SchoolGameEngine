@@ -84,6 +84,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\Common\BasicTypes.cpp" />
     <ClCompile Include="..\..\Common\Engine.cpp" />
+    <ClCompile Include="..\..\Common\Math\Vector2.cpp" />
     <ClCompile Include="..\..\Common\Memory\Allocator.cpp" />
     <ClCompile Include="..\..\Common\Memory\FrameAllocator.cpp" />
     <ClCompile Include="..\..\Common\Memory\MemoryHeader.cpp" />
@@ -104,6 +105,8 @@
     <ClInclude Include="..\..\Common\BasicTypes.h" />
     <ClInclude Include="..\..\Common\Engine.h" />
     <ClInclude Include="..\..\Common\Func.h" />
+    <ClInclude Include="..\..\Common\Math\Math.h" />
+    <ClInclude Include="..\..\Common\Math\Vector2.h" />
     <ClInclude Include="..\..\Common\Memory\AllocationInfo.h" />
     <ClInclude Include="..\..\Common\Memory\Allocator.h" />
     <ClInclude Include="..\..\Common\Memory\AllocatorType.h" />
@@ -144,6 +147,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\Common\Notes.txt" />
+    <Text Include="GLM_Notes.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

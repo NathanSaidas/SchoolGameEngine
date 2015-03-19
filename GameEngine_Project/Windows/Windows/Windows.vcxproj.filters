@@ -16,6 +16,9 @@
     <Filter Include="Core\Utilities">
       <UniqueIdentifier>{11964ee5-8ec5-44e2-8238-488470e0e515}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Math">
+      <UniqueIdentifier>{c58ca7a1-a24a-4ef9-ba7f-f24bf39828e8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -68,6 +71,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Common\SystemError.cpp">
       <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Math\Vector2.cpp">
+      <Filter>Core\Math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -191,9 +197,18 @@
     <ClInclude Include="..\..\Common\Type.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Common\Math\Math.h">
+      <Filter>Core\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Math\Vector2.h">
+      <Filter>Core\Math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\Common\Notes.txt">
+      <Filter>Core</Filter>
+    </Text>
+    <Text Include="GLM_Notes.txt">
       <Filter>Core</Filter>
     </Text>
   </ItemGroup>
