@@ -10,7 +10,6 @@ namespace Engine
     class Vector3;
     class Vector4;
     class Quaternion;
-    struct Frustum;
 
     class Matrix4x4 : public object, public glm::mat4x4
     {
@@ -27,7 +26,7 @@ namespace Engine
         static Matrix4x4 Translate(const Matrix4x4 & aMatrix, const Vector3 & aTranslation);
         static Matrix4x4 Rotate(const Matrix4x4 & aMatrix, const Float32 & aRotation, const Vector3 & aAxis);
         static Matrix4x4 Rotate(const Matrix4x4 & aMatrix, const Vector3 & aRotation);
-        static Matrix4x4 Ortho(const Frustum & aFrustum);
+        static Matrix4x4 Ortho(const Float32 & aLeft, const Float32 & aRight, const Float32 & aTop, const Float32 & aBottom, const Float32 & aFar, const Float32 & aNear);
         static Matrix4x4 Perspective(const Float32 & aFOV, const Float32 & aAspectRatio, const Float32 & aNear, const Float32 & aFar);
         static Matrix4x4 LookAt(const Vector3 & aCameraPosition, const Vector3 & aTargetPosition, const Vector3 & aUpDirection);
         static Matrix4x4 Identity();
@@ -48,7 +47,7 @@ namespace Engine
     };
 
     TYPE_DEFINE(Matrix4x4)
-    TYPE_DEFINE_PTR(Matrix4x4*, "Matrix2x2 Ptr")
+    TYPE_DEFINE_PTR(Matrix4x4*, "Matrix4x4 Ptr")
 }
 
 #endif

@@ -2,8 +2,10 @@
 #define GAME_ENGINE_UTILITIES_H
 
 #include "Debug.h"
+#include "Array.h"
 #include "IniFileStream.h"
 #include "IniVariables.h"
+
 
 namespace Engine
 {

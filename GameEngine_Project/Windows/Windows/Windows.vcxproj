@@ -54,7 +54,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_DEBUG_TRACE_OFF;_SHADER_DEBUG;WIN32;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_DEBUG_TRACE_OFF;_SHADER_DEBUG;GRAPHICS_OPEN_GL;WIN32;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>false</TreatWarningAsError>
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\Common\Libraries\glew-1.10.0\include;$(ProjectDir)..\..\Common\Libraries\GLFW_3.1.0\include;$(ProjectDir)..\..\Common\Libraries\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -84,6 +84,11 @@
   <ItemGroup>
     <ClCompile Include="..\..\Common\BasicTypes.cpp" />
     <ClCompile Include="..\..\Common\Engine.cpp" />
+    <ClCompile Include="..\..\Common\Graphics\Color.cpp" />
+    <ClCompile Include="..\..\Common\Graphics\Graphics.cpp" />
+    <ClCompile Include="..\..\Common\Graphics\Mesh.cpp" />
+    <ClCompile Include="..\..\Common\Graphics\PrimitiveShapeBuffer.cpp" />
+    <ClCompile Include="..\..\Common\Graphics\Shader.cpp" />
     <ClCompile Include="..\..\Common\Math\Matrix4x4.cpp" />
     <ClCompile Include="..\..\Common\Math\Quaternion.cpp" />
     <ClCompile Include="..\..\Common\Math\Vector2.cpp" />
@@ -109,7 +114,12 @@
     <ClInclude Include="..\..\Common\BasicTypes.h" />
     <ClInclude Include="..\..\Common\Engine.h" />
     <ClInclude Include="..\..\Common\Func.h" />
-    <ClInclude Include="..\..\Common\Math\Frustum.h" />
+    <ClInclude Include="..\..\Common\Graphics\Color.h" />
+    <ClInclude Include="..\..\Common\Graphics\GraphicEnums.h" />
+    <ClInclude Include="..\..\Common\Graphics\Graphics.h" />
+    <ClInclude Include="..\..\Common\Graphics\Mesh.h" />
+    <ClInclude Include="..\..\Common\Graphics\PrimitiveShapeBuffer.h" />
+    <ClInclude Include="..\..\Common\Graphics\Shader.h" />
     <ClInclude Include="..\..\Common\Math\Math.h" />
     <ClInclude Include="..\..\Common\Math\Matrix4x4.h" />
     <ClInclude Include="..\..\Common\Math\Quaternion.h" />
@@ -148,6 +158,7 @@
     <ClInclude Include="..\..\Common\SystemError.h" />
     <ClInclude Include="..\..\Common\Testing\MemoryTest.h" />
     <ClInclude Include="..\..\Common\Type.h" />
+    <ClInclude Include="..\..\Common\Utilities\Array.h" />
     <ClInclude Include="..\..\Common\Utilities\Debug.h" />
     <ClInclude Include="..\..\Common\Utilities\IniFileStream.h" />
     <ClInclude Include="..\..\Common\Utilities\IniSection.h" />

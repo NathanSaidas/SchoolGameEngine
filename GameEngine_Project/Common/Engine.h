@@ -13,6 +13,8 @@
 #include "Type.h"
 #include "Reflection\Reflection.h"
 #include "Memory\Memory.h"
+#include "Math\Math.h"
+#include "Graphics\Graphics.h"
 #include "Utilities\Utilities.h"
 
 namespace Engine

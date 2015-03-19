@@ -1,5 +1,4 @@
 #include "Matrix4x4.h"
-#include "Frustum.h"
 #include "Vector2.h"
 #include "Vector3.h"
 #include "Vector4.h"
@@ -57,9 +56,9 @@ namespace Engine
         
         return Matrix4x4(mat);
     }
-    Matrix4x4 Matrix4x4::Ortho(const Frustum & aFrustum)                                                                                
+    Matrix4x4 Matrix4x4::Ortho(const Float32 & aLeft, const Float32 & aRight, const Float32 & aTop, const Float32 & aBottom, const Float32 & aFar, const Float32 & aNear)
     {
-        return Matrix4x4(glm::ortho(aFrustum.left, aFrustum.right, aFrustum.bottom, aFrustum.top, aFrustum.near, aFrustum.far));
+        return Matrix4x4(glm::ortho(aLeft, aRight, aBottom, aTop, aNear, aFar));
     }
     Matrix4x4 Matrix4x4::Perspective(const Float32 & aFOV, const Float32 & aAspectRatio, const Float32 & aNear, const Float32 & aFar)   
     {

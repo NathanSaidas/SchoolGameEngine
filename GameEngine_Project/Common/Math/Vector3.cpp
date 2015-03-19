@@ -16,21 +16,29 @@ namespace Engine
     {
 
     }
-    Vector3::Vector3(Float32 x, Float32 y, Float32) : object(), glm::vec3(x, y, z)
+    Vector3::Vector3(Float32 x, Float32 y, Float32) : object(), glm::vec3()
     {
-
+        this->x = x;
+        this->y = y;
+        this->z = z;
     }
-    Vector3::Vector3(const Vector3 & aVec) : object(), glm::vec3(aVec.x, aVec.y, aVec.z)
+    Vector3::Vector3(const Vector3 & aVec) : object(), glm::vec3()
     {
-
+        x = aVec.x;
+        y = aVec.y;
+        z = aVec.z;
     }
-    Vector3::Vector3(const glm::vec3 & aVec) : object(), glm::vec3(aVec)
+    Vector3::Vector3(const glm::vec3 & aVec) : object(), glm::vec3()
     {
-
+        x = aVec.x;
+        y = aVec.y;
+        z = aVec.z;
     }
-    Vector3::Vector3(const Vector4 & aVec) : object(), glm::vec3(aVec.x,aVec.y,aVec.z)
+    Vector3::Vector3(const Vector4 & aVec) : object(), glm::vec3()
     {
-
+        x = aVec.x;
+        y = aVec.y;
+        z = aVec.z;
     }
     Vector3::~Vector3()
     {

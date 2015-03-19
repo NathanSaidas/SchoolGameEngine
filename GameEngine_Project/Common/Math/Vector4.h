@@ -36,6 +36,21 @@ namespace Engine
         Vector4 Normalized() const;
         void Normalize();
 
+        inline void Set(Float32 x, Float32 y, Float32 z, Float32 w)
+        {
+            this->x = x;
+            this->y = y;
+            this->z = z;
+            this->w = w;
+        }
+        inline void Set(const Vector4 & aVector)
+        {
+            x = aVector.x;
+            y = aVector.y;
+            z = aVector.z;
+            w = aVector.w;
+        }
+
         //Converts the data into raw 8 bit format. (12 bytes)
         glm::vec4 Raw() const;
 

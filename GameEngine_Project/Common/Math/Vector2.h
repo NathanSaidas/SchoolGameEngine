@@ -36,6 +36,17 @@ namespace Engine
         Vector2 Normalized() const;
 		void Normalize();
 
+        inline void Set(Float32 x, Float32 y)
+        {
+            this->x = x;
+            this->y = y;
+        }
+        inline void Set(const Vector2 & aVector)
+        {
+            x = aVector.x;
+            y = aVector.y;
+        }
+
 		//Converts the data into raw 16 bit format. (8 bytes)
 		glm::vec2 Raw() const;
 	private:

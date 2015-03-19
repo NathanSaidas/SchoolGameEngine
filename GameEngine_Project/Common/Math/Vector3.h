@@ -40,6 +40,19 @@ namespace Engine
         Vector3 Normalized() const;
         void Normalize();
 
+        inline void Set(Float32 x, Float32 y, Float32 z)
+        {
+            this->x = x;
+            this->y = y;
+            this->z = z;
+        }
+        inline void Set(const Vector3 & aVector)
+        {
+            x = aVector.x;
+            y = aVector.y;
+            z = aVector.z;
+        }
+
         //Converts the data into raw 8 bit format. (12 bytes)
         glm::vec3 Raw() const;
 

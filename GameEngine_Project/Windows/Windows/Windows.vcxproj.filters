@@ -19,6 +19,9 @@
     <Filter Include="Core\Math">
       <UniqueIdentifier>{c58ca7a1-a24a-4ef9-ba7f-f24bf39828e8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Graphics">
+      <UniqueIdentifier>{0e334012-d5b3-4f6a-b76b-c49efff94b97}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -86,6 +89,21 @@
     </ClCompile>
     <ClCompile Include="..\..\Common\Math\Quaternion.cpp">
       <Filter>Core\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Graphics\Color.cpp">
+      <Filter>Core\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Graphics\Graphics.cpp">
+      <Filter>Core\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Graphics\PrimitiveShapeBuffer.cpp">
+      <Filter>Core\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Graphics\Mesh.cpp">
+      <Filter>Core\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Graphics\Shader.cpp">
+      <Filter>Core\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -224,11 +242,29 @@
     <ClInclude Include="..\..\Common\Math\Matrix4x4.h">
       <Filter>Core\Math</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Common\Math\Frustum.h">
-      <Filter>Core\Math</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Common\Math\Quaternion.h">
       <Filter>Core\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Graphics\Graphics.h">
+      <Filter>Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Graphics\Color.h">
+      <Filter>Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Graphics\PrimitiveShapeBuffer.h">
+      <Filter>Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Graphics\Mesh.h">
+      <Filter>Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Utilities\Array.h">
+      <Filter>Core\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Graphics\Shader.h">
+      <Filter>Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Graphics\GraphicEnums.h">
+      <Filter>Core\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
