@@ -1,0 +1,61 @@
+Project Setup:
+
+Post Build Event Command: 
+Desc: This will copy the dll files from the libraries bin to the target directory
+Command: xcopy /y /d "$(SolutionDir)..\Libraries\bin\*.dll"  "$(TargetDir)"
+
+Linker -> Input -> Additional Dependancies
+Desc: Includes every .lib file from the libs folder.
+Dependency: $(ProjectDir)..\..\Libraries\libs\*.lib
+
+LANG -> General -> Additional Includes
+Desc: Adds the includes directory to the available includes for "<>" access.
+Include: $(ProjectDir)..\..\Libraries\includes
+
+
+Rendering Engine (OpenGL):
+
+Dependencies:
+• OpenGL
+• GLEW
+• GLFW
+• GLM (Custom Math Library To Wrap Functionality Possibly)
+
+Basic Functions
+• Render 2D Geometry utilizing vert/fragment shaders
+• Render 3D Geometry utilizing vert/fragment shaders
+• Render Texture to 2D Geometry
+• Render Texture to 3D Geometry
+• Import Texture (.png)
+• Import Model (.obj)
+
+Basic 2D Geometry
+• Point (Position)
+• Line (Position A, Position B)
+• Circle (Position (x,y), Radius, Rotation, Scale)
+• Square/Rectangle (Position (x,y), Size(width/height), Rotation, Scale)
+• Triangles (Position (x,y), Rotation, Scale)
+
+Basic 3D Geometry
+• Plane (Position (x,y,z), Width, Height, Rotation, Scale)
+• Cube (Position (x,y,z), Width, Height, Length, Rotation, Scale)
+• Sphere (Position (x,y,z) Radius, Rotation, Scale)
+
+Drawing Primitives
+• Points				GL_POINTS
+• Lines					GL_LINES
+• Line Strips			GL_LINE_STRIP
+• Line Loops			GL_LINE_LOOP
+• Triangles				GL_TRIANGLES
+• Triangle Strips		GL_TRIANGLE_STRIP
+• Triangle Fans			GL_TRIANGLE_FAN
+
+Basic Drawing Commands
+• DrawArrays		glDrawArrays(mode, first, count); https://www.opengl.org/sdk/docs/man/html/glDrawArrays.xhtml 
+• DrawElements		glDrawElements(mode, count, type, indicies); https://www.opengl.org/sdk/docs/man/html/glDrawElements.xhtml
+
+
+Utilize glPolygonMode ( 
+GL_FRONT_AND_BACK/ GL_FRONT / GL_BACK {default = GL_FRONT_AND_BACK} , 
+GL_POINT/GL_LINE/GL_FILL {default = GL_FILL}
+);
