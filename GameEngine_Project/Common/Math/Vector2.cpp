@@ -8,7 +8,7 @@
 
 namespace Engine
 {
-	CLASS_CPP(Vector2, object);
+	CLASS_CPP(Vector2, object)
 	Vector2::Vector2() : object(), glm::vec2()
 	{
 		
@@ -38,8 +38,8 @@ namespace Engine
 	}
 	Vector2 Vector2::ClampMagnitude(const Vector2 & aVector, float aMaxLength)
 	{
-		//TODO: Implment this to clamp the magnitude.
-		return aVector;
+        float magnitude = glm::clamp(aVector.GetMagnitude(), -aMaxLength, aMaxLength);
+        return aVector.Normalized() * magnitude;
 	}
 	float Vector2::Distance(const Vector2 & aFrom, const Vector2 & aTo)
 	{
@@ -67,6 +67,11 @@ namespace Engine
 		return Vector2(glm::faceforward(aNormal.Raw(), aIncident.Raw(), aNormalRef.Raw()));
 	}
 
+    Vector2 Vector2::Rotate(const Vector2 & aVec, const float & aAngle)
+    {
+        return Vector2(glm::rotate(aVec.Raw(), aAngle));
+    }
+
 	void Vector2::Scale(const Vector2 & aScale)
 	{
 		x = aScale.x * x;
@@ -77,15 +82,15 @@ namespace Engine
 		x = aX * x;
 		y = aY * y;
 	}
-	float Vector2::GetMagnitude()
+	float Vector2::GetMagnitude() const
 	{
 		return glm::sqrt(x * x + y * y);
 	}
-	float Vector2::GetSqrMagnitude()
+	float Vector2::GetSqrMagnitude() const
 	{
 		return x * x + y * y;
 	}
-	Vector2 Vector2::Normalized()
+	Vector2 Vector2::Normalized() const
 	{
 		glm::vec2 vec(x, y);
 		return Vector2(glm::normalize(vec));
