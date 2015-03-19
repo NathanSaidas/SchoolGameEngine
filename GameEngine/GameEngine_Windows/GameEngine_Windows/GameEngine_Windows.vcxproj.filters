@@ -1,0 +1,193 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Engine\Testing">
+      <UniqueIdentifier>{ead83190-ee56-4d27-a26d-953fa6070fc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Memory">
+      <UniqueIdentifier>{4bd07e45-622a-4346-9089-069a787e0f8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Reflection">
+      <UniqueIdentifier>{4c0a5d0b-dde0-43e3-b033-c0b9b5d50824}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Utilities">
+      <UniqueIdentifier>{810f3d7d-1560-400e-8525-32a6fac8ea6f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Memory\Allocator.cpp">
+      <Filter>Engine\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Memory\FrameAllocator.cpp">
+      <Filter>Engine\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Memory\MemoryManager.cpp">
+      <Filter>Engine\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Memory\PoolAllocator.cpp">
+      <Filter>Engine\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Memory\StackAllocator.cpp">
+      <Filter>Engine\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Reflection\MetaObjectLinker.cpp">
+      <Filter>Engine\Reflection</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Reflection\Runtime.cpp">
+      <Filter>Engine\Reflection</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\SystemError.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Engine.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Memory\MemoryHeader.cpp">
+      <Filter>Engine\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Testing\MemoryTest.cpp">
+      <Filter>Engine\Testing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\BasicTypes.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Utilities\IniSection.cpp">
+      <Filter>Engine\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Utilities\IniFileStream.cpp">
+      <Filter>Engine\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Utilities\Utilities.cpp">
+      <Filter>Engine\Utilities</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Common\Memory\AllocationInfo.h">
+      <Filter>Engine\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Memory\Allocator.h">
+      <Filter>Engine\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Memory\AllocatorType.h">
+      <Filter>Engine\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Memory\FrameAllocator.h">
+      <Filter>Engine\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Memory\Memory.h">
+      <Filter>Engine\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Memory\MemoryConfig.h">
+      <Filter>Engine\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Memory\MemoryFlags.h">
+      <Filter>Engine\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Memory\MemoryHeader.h">
+      <Filter>Engine\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Memory\MemoryInfo.h">
+      <Filter>Engine\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Memory\MemoryManager.h">
+      <Filter>Engine\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Memory\MemoryUtils.h">
+      <Filter>Engine\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Memory\PoolAllocator.h">
+      <Filter>Engine\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Memory\StackAllocator.h">
+      <Filter>Engine\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Reflection\Attribute.h">
+      <Filter>Engine\Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Reflection\AttributeBinder.h">
+      <Filter>Engine\Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Reflection\BoolAttribute.h">
+      <Filter>Engine\Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Reflection\ClassMember.h">
+      <Filter>Engine\Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Reflection\FloatAttribute.h">
+      <Filter>Engine\Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Reflection\FunctionAttribute.h">
+      <Filter>Engine\Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Reflection\IntAttribute.h">
+      <Filter>Engine\Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Reflection\MetaObject.h">
+      <Filter>Engine\Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Reflection\MetaObjectLinker.h">
+      <Filter>Engine\Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Reflection\MethodInfo.h">
+      <Filter>Engine\Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Reflection\Reflection.h">
+      <Filter>Engine\Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Reflection\Runtime.h">
+      <Filter>Engine\Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Reflection\StringAttribute.h">
+      <Filter>Engine\Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Reflection\TypeTrait.h">
+      <Filter>Engine\Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\BasicTypes.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Func.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Method.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\SystemAssert.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\SystemError.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Type.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Utilities\Debug.h">
+      <Filter>Engine\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Utilities\Utilities.h">
+      <Filter>Engine\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Engine.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Testing\MemoryTest.h">
+      <Filter>Engine\Testing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Utilities\IniFileStream.h">
+      <Filter>Engine\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Utilities\IniVariables.h">
+      <Filter>Engine\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Utilities\IniSection.h">
+      <Filter>Engine\Utilities</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
