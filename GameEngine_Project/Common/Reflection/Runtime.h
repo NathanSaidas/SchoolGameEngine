@@ -30,11 +30,13 @@ namespace Engine
             }
             static bool IsBaseOf(Type & aDerived, Type & aBaseClass);
             static bool IsBadType(Type & aType);
+            static bool IsCompiling();
         private:
             static Runtime * s_Instance;
             Runtime();
             ~Runtime();
 
+            bool m_IsCompiling;
             bool m_IsCompiled;
             std::map<std::string, Type> m_CompiledTypes;
 

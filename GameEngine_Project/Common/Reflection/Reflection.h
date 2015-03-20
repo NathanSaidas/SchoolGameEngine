@@ -99,6 +99,9 @@ namespace Engine
 #define CLASS_ATTRIBUTE_INTERFACE_HEADER(TYPE,INTERFACE) static const Engine::Reflection::MetaObject<TYPE> ATTRIBUTE_ ## TYPE ## _ ## INTERFACE;
 #define CLASS_ATTRIBUTE_INTERFACE_CPP(TYPE,INTERFACE) const Engine::Reflection::MetaObject<TYPE> TYPE:: ## ATTRIBUTE_ ## TYPE ## _ ## INTERFACE = Engine::Reflection::MetaObject<TYPE>::DefineClassInterface(#TYPE,#INTERFACE);
 
+#define CLASS_PROPERTY_HEADER(TYPE,PROP_NAME) static const Engine::Reflection::MetaObject<TYPE> ATTRIBUTE_ ## TYPE ## _ ## PROP_NAME;
+#define CLASS_PROPERTY_CPP(TYPE,PROP_NAME,PROP_VALUE) const Engine::Reflection::MetaObject<TYPE> TYPE:: ## ATTRIBUTE_ ## TYPE ## _ ## PROP_NAME = Engine::Reflection::MetaObject<TYPE>::DefineProperty(#TYPE, #PROP_NAME, #PROP_VALUE);
+
         ///Define Primitive Types to allow for limited reflection info.
 
 		TYPE_DEFINE(char)

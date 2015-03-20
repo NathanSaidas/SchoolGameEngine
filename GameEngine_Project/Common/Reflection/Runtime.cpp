@@ -4,9 +4,11 @@
 
 namespace Engine
 {
+    bool Type::s_IsCompiling = false;
 
     namespace Reflection
     {
+        
         Runtime * Runtime::s_Instance = nullptr;
         Runtime::Runtime()
         {
@@ -50,7 +52,8 @@ namespace Engine
             {
                 return;
             }
-
+            s_Instance->m_IsCompiling = true;
+            Type::s_IsCompiling = true;
 
             std::vector<char *> & types = MetaObjectLinker::GetTypes();
             IntAttribMap & intAttributes = MetaObjectLinker::GetIntAttributes();
@@ -117,6 +120,7 @@ namespace Engine
                     type.m_Members.push_back((*it).second);
                 }
 
+                printf("Compiled Type: %s\n", type.GetName().c_str());
                 s_Instance->m_CompiledTypes.insert(std::pair<std::string, Type>(type.GetName(), type));
             }
 
@@ -134,6 +138,8 @@ namespace Engine
             }
 
             s_Instance->m_IsCompiled = true;
+            s_Instance->m_IsCompiling = false;
+            Type::s_IsCompiling = false;
         }
         Type Runtime::TypeOf(const std::string & aName)
         {
@@ -167,7 +173,10 @@ namespace Engine
         {
             return aType.GetName() == "";
         }
-
+        bool Runtime::IsCompiling()
+        {
+            return s_Instance->m_IsCompiling;
+        }
         void Runtime::BindIntegerAttributes(IntAttribute & aAttribute, Type & aType)
         {
             if (aAttribute.Is(MetaObjectLinker::ATTRIBUTE_TYPE_ALIGNMENT))

@@ -129,6 +129,13 @@ namespace Engine
                 return GetInstance();
             }
 
+            static MetaObject DefineProperty(const char * aClassName, const char * aPropertyName, const char * aPropertyValue)
+            {
+                StringAttribMap & stringAttributes = MetaObjectLinker::GetStringAttributes();
+                stringAttributes.insert(StringAttribPair(const_cast<char*>(aClassName), StringAttribute(aClassName, aPropertyName, aPropertyValue)));
+                return GetInstance();
+            }
+
         private:
             static void * CreateObject(void * aMemoryAddress)
             {

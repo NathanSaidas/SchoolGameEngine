@@ -84,6 +84,13 @@
   <ItemGroup>
     <ClCompile Include="..\..\Common\BasicTypes.cpp" />
     <ClCompile Include="..\..\Common\Engine.cpp" />
+    <ClCompile Include="..\..\Common\Examples\Component.cpp" />
+    <ClCompile Include="..\..\Common\Examples\GameObject.cpp" />
+    <ClCompile Include="..\..\Common\Examples\ISerializeable.cpp" />
+    <ClCompile Include="..\..\Common\Examples\Line.cpp" />
+    <ClCompile Include="..\..\Common\Examples\Shape.cpp" />
+    <ClCompile Include="..\..\Common\Examples\SmartComponent.cpp" />
+    <ClCompile Include="..\..\Common\Examples\Triangle.cpp" />
     <ClCompile Include="..\..\Common\Graphics\Color.cpp" />
     <ClCompile Include="..\..\Common\Graphics\Graphics.cpp" />
     <ClCompile Include="..\..\Common\Graphics\Mesh.cpp" />
@@ -113,6 +120,15 @@
   <ItemGroup>
     <ClInclude Include="..\..\Common\BasicTypes.h" />
     <ClInclude Include="..\..\Common\Engine.h" />
+    <ClInclude Include="..\..\Common\Examples\Component.h" />
+    <ClInclude Include="..\..\Common\Examples\Examples.h" />
+    <ClInclude Include="..\..\Common\Examples\GameObject.h" />
+    <ClInclude Include="..\..\Common\Examples\Property.h" />
+    <ClInclude Include="..\..\Common\Examples\ISerializeable.h" />
+    <ClInclude Include="..\..\Common\Examples\Line.h" />
+    <ClInclude Include="..\..\Common\Examples\Shape.h" />
+    <ClInclude Include="..\..\Common\Examples\SmartComponent.h" />
+    <ClInclude Include="..\..\Common\Examples\Triangle.h" />
     <ClInclude Include="..\..\Common\Func.h" />
     <ClInclude Include="..\..\Common\Graphics\Color.h" />
     <ClInclude Include="..\..\Common\Graphics\GraphicEnums.h" />

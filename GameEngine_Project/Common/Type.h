@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 #include "Func.h"
+#include "../Examples/Property.h"
 
 
 namespace Engine
@@ -18,6 +19,8 @@ namespace Engine
         class Runtime;
         class ClassMember;
     }
+
+
 
     class Type
     {
@@ -89,7 +92,31 @@ namespace Engine
         {
             return m_TypeID == aType.m_TypeID;
         }
+        
+        Property GetProperty(const std::string & aPropertyName)
+        {
+            for (std::vector<Property>::iterator it = m_Properties.begin(); it != m_Properties.end(); it++)
+            {
+                if ((*it).GetName() == aPropertyName)
+                {
+                    return *it;
+                }
+            }
+            return Property("", "");
+        }
 
+        std::vector<Property> GetProperties()
+        {
+            return m_Properties;
+        }
+
+        void InsertProperty(Property aProperty)
+        {
+            if (s_IsCompiling)
+            {
+                m_Properties.push_back(aProperty);
+            }
+        }
 
 
     private:
@@ -103,14 +130,17 @@ namespace Engine
         bool m_IsAbstract;
         std::vector<std::string> m_Interfaces;
         std::vector<Reflection::ClassMember*> m_Members;
+        std::vector<Property> m_Properties;
         Func<void*, void*> m_Constructor;
         Func<void*, void*> m_Destructor;
 
+        static bool s_IsCompiling;
 
         friend Engine::Reflection::Runtime;
+        //friend class PropertyBinder;
     };
 
-
+    
 }
 
 #endif
