@@ -4,6 +4,7 @@
 #pragma region CHANGE LOG
 /// -- March	1	2015 - Nathan Hanlan - Improved the complexity of the memory manger and refactored the class to provide clearer function names.
 /// -- March	1	2015 - Nathan Hanlan - Added additional comments.
+/// -- March   21   2015 - Nathan Hanlan - Added additional TYPE macros to alloc/dealloc types. (These will call destructors and constructors)
 #pragma endregion
 
 #pragma region TODO
@@ -32,55 +33,92 @@
 
 #ifdef CONFIG_MEMORY_DEBUG
 #ifndef MEM_ALLOC
-#define MEM_ALLOC(SIZE,ALIGNMENT,ALLOCATOR_TYPE) MemoryManager::GetInstance()->Allocate(SIZE,ALIGNMENT,ALLOCATOR_TYPE,__FILE__,__LINE__)
+#define MEM_ALLOC(SIZE,ALIGNMENT,ALLOCATOR_TYPE) Memory::MemoryManager::GetInstance()->Allocate(SIZE,ALIGNMENT,ALLOCATOR_TYPE,__FILE__,__LINE__)
 #endif
 
 #ifndef MEM_POOL_ALLOC
-#define MEM_POOL_ALLOC(SIZE,ALIGNMENT) MemoryManager::GetInstance()->Allocate(SIZE,ALIGNMENT,AllocatorType::Pool,__FILE__,__LINE__)
+#define MEM_POOL_ALLOC(SIZE,ALIGNMENT) Memory::MemoryManager::GetInstance()->Allocate(SIZE,ALIGNMENT,Memory::AllocatorType::Pool,__FILE__,__LINE__)
 #endif
 
 #ifndef MEM_STACK_ALLOC
-#define MEM_STACK_ALLOC(SIZE,ALIGNMENT) MemoryManager::GetInstance()->Allocate(SIZE,ALIGNMENT,AllocatorType::Stack,__FILE__,__LINE__)
+#define MEM_STACK_ALLOC(SIZE,ALIGNMENT) Memory::MemoryManager::GetInstance()->Allocate(SIZE,ALIGNMENT,Memory::AllocatorType::Stack,__FILE__,__LINE__)
 #endif
 
 #ifndef MEM_FRAME_ALLOC
-#define MEM_FRAME_ALLOC(SIZE,ALIGNMENT) MemoryManager::GetInstance()->Allocate(SIZE,ALIGNMENT,AllocatorType::Frame,__FILE__,__LINE__)
+#define MEM_FRAME_ALLOC(SIZE,ALIGNMENT) Memory::MemoryManager::GetInstance()->Allocate(SIZE,ALIGNMENT,Memory::AllocatorType::Frame,__FILE__,__LINE__)
 #endif
 
 #else
 #ifndef MEM_ALLOC
-#define MEM_ALLOC(SIZE,ALIGNMENT,ALLOCATOR_TYPE) MemoryManager::GetInstance()->Allocate(SIZE,ALIGNMENT,ALLOCATOR_TYPE)
+#define MEM_ALLOC(SIZE,ALIGNMENT,ALLOCATOR_TYPE) Memory::MemoryManager::GetInstance()->Allocate(SIZE,ALIGNMENT,ALLOCATOR_TYPE)
 #endif
 
 #ifndef MEM_POOL_ALLOC
-#define MEM_POOL_ALLOC(SIZE,ALIGNMENT) MemoryManager::GetInstance()->Allocate(SIZE,ALIGNMENT,AllocatorType::Pool)
+#define MEM_POOL_ALLOC(SIZE,ALIGNMENT) Memory::MemoryManager::GetInstance()->Allocate(SIZE,ALIGNMENT,Memory::AllocatorType::Pool)
 #endif
 
 #ifndef MEM_STACK_ALLOC
-#define MEM_STACK_ALLOC(SIZE,ALIGNMENT) MemoryManager::GetInstance()->Allocate(SIZE,ALIGNMENT,AllocatorType::Stack)
+#define MEM_STACK_ALLOC(SIZE,ALIGNMENT) Memory::MemoryManager::GetInstance()->Allocate(SIZE,ALIGNMENT,Memory::AllocatorType::Stack)
 #endif
 
 #ifndef MEM_FRAME_ALLOC
-#define MEM_FRAME_ALLOC(SIZE,ALIGNMENT) MemoryManager::GetInstance()->Allocate(SIZE,ALIGNMENT,AllocatorType::Frame)
+#define MEM_FRAME_ALLOC(SIZE,ALIGNMENT) Memory::MemoryManager::GetInstance()->Allocate(SIZE,ALIGNMENT,Memory::AllocatorType::Frame)
 #endif
 
+#endif
+
+#ifndef MEM_ALLOC_T
+#define MEM_ALLOC_T(TYPE,ALLOCATOR_TYPE) new (MEM_ALLOC(sizeof(TYPE),__alignof(TYPE),ALLOCATOR_TYPE))T()
+#endif
+
+#ifndef MEM_POOL_ALLOC_T
+#define MEM_POOL_ALLOC_T(TYPE) new (MEM_POOL_ALLOC(sizeof(TYPE), __alignof(TYPE)))TYPE()
+#endif
+
+#ifndef MEM_STACK_ALLOC_T
+#define MEM_STACK_ALLOC_T(TYPE) new (MEM_STACK_ALLOC(sizeof(TYPE),__alignof(TYPE)))TYPE()
+#endif
+
+#ifndef MEM_FRAME_ALLOC_T
+#define MEM_FRAME_ALLOC_T(TYPE) new (MEM_FRAME_ALLOC(sizeof(TYPE),__alignof(TYPE)))TYPE()
 #endif
 
 #ifndef MEM_DEALLOC
-#define MEM_DEALLOC(ADDRESS,ALLOCATOR_TYPE,SIZE) MemoryManager::GetInstance()->Deallocate(ADDRESS,ALLOCATOR_TYPE,SIZE);
+#define MEM_DEALLOC(ADDRESS,ALLOCATOR_TYPE,SIZE) Memory::MemoryManager::GetInstance()->Deallocate(ADDRESS,ALLOCATOR_TYPE,SIZE)
 #endif
 
 #ifndef MEM_POOL_DEALLOC
-#define MEM_POOL_DEALLOC(ADDRESS,SIZE) MemoryManager::GetInstance()->Deallocate(ADDRESS,AllocatorType::Pool,SIZE);
+#define MEM_POOL_DEALLOC(ADDRESS,SIZE) Memory::MemoryManager::GetInstance()->Deallocate(ADDRESS,Memory::AllocatorType::Pool,SIZE)
 #endif
 
 #ifndef MEM_STACK_DEALLOC
-#define MEM_STACK_DEALLOC(ADDRESS) MemoryManager::GetInstance()->Deallocate(ADDRESS,AllocatorType::Stack);
+#define MEM_STACK_DEALLOC(ADDRESS) Memory::MemoryManager::GetInstance()->Deallocate(ADDRESS,Memory::AllocatorType::Stack)
 #endif
 
 #ifndef MEM_FRAME_DEALLOC
-#define MEM_FRAME_DEALLOC(ADDRESS) MemoryManager::GetInstance()->Deallocate(ADDRESS,AllocatorType::Frame);
+#define MEM_FRAME_DEALLOC(ADDRESS) Memory::MemoryManager::GetInstance()->Deallocate(ADDRESS,Memory::AllocatorType::Frame)
+
+
+#ifndef MEM_DEALLOC_T
+#define MEM_DEALLOC_T(ADDRESS,TYPE, ALLOCATOR_TYPE) ADDRESS->~TYPE(); ADDRESS = (TYPE*)MEM_DEALLOC(ADDRESS,ALLOCATOR_TYPE,sizeof(TYPE))
 #endif
+
+#ifndef MEM_POOL_DEALLOC_T
+#define MEM_POOL_DEALLOC_T(ADDRESS,TYPE) ADDRESS->~TYPE(); ADDRESS = (TYPE*)MEM_POOL_DEALLOC(ADDRESS,sizeof(TYPE))
+#endif
+
+#ifndef MEM_STACK_DEALLOC_T
+#define MEM_STACK_DEALLOC_T(ADDRESS,TYPE) ADDRESS->~TYPE(); ADDRESS = (TYPE*)MEM_STACK_DEALLOC(ADDRESS)
+#endif
+
+#ifndef MEM_FRAME_DEALLOC_T
+#define MEM_FRAME_DEALLOC_T(ADDRESS,TYPE) ADDRESS->~TYPE(); ADDRESS = (TYPE*)MEM_FRAME_DEALLOC(ADDRESS)
+#endif
+
+
+#endif
+
+
 
 namespace Engine
 {    

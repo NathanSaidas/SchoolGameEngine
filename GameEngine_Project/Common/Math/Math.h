@@ -14,7 +14,19 @@
 #include "Matrix4x4.h"
 #include "Quaternion.h"
 
+namespace Math
+{
+	inline int __fastcall Clamp(int value, int min, int max)
+	{
+		return value > max ? max : (value < min ? min : value);
+	}
 
+	inline float __fastcall Clamp(float value, float min, float max)
+	{
+		return value > max ? max : (value < min ? min : value);
+	}
+
+}
 
 
 

@@ -25,6 +25,9 @@
     <Filter Include="Core\Examples">
       <UniqueIdentifier>{e3400e6d-bc02-49c8-80e9-d2c18f40d2ac}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Windows">
+      <UniqueIdentifier>{186b3a12-163a-44b3-95ba-fe1aad3b4fb2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -128,6 +131,12 @@
     </ClCompile>
     <ClCompile Include="..\..\Common\Examples\Triangle.cpp">
       <Filter>Core\Examples</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Windows\Window.cpp">
+      <Filter>Core\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Windows\Application.cpp">
+      <Filter>Core\Windows</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -316,6 +325,15 @@
     </ClInclude>
     <ClInclude Include="..\..\Common\Examples\Property.h">
       <Filter>Core\Examples</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Windows\Window.h">
+      <Filter>Core\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Windows\Application.h">
+      <Filter>Core\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Windows\OpenGLProfile.h">
+      <Filter>Core\Windows</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
