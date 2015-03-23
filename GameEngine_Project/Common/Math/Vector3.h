@@ -80,6 +80,15 @@ namespace Engine
         {
             return Vector3(0.0, 0.0f, -1.0f);
         }
+		inline static Vector3 Zero()
+		{
+			return Vector3(0.0f, 0.0f, 0.0f);
+		}
+		inline static Vector3 One()
+		{
+			return Vector3(1.0f, 1.0f, 1.0f);
+		}
+
     private:
 
     };

@@ -6,9 +6,6 @@
 
 namespace Engine
 {
-	
-
-
 	class OpenGLWindow : public Object
 	{
 		CLASS_HEADER(OpenGLWindow)
@@ -51,7 +48,7 @@ namespace Engine
 		UInt8 GetMajorVersion();
 		UInt8 GetMinorVersion();
 
-		bool CreateWindow();
+		bool Create();
 		void DestroyWindow();
 
 		bool IsCreated();
@@ -61,6 +58,7 @@ namespace Engine
 		void MakeCurrentContext();
 		
 		void * GetHandle();
+		
 	private:
 
 		bool m_IsFullscreen;

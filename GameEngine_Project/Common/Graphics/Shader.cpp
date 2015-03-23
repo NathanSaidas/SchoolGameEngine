@@ -110,7 +110,7 @@ namespace Engine
                 }
                 else
                 {
-                    shaderSource.append(line);
+                    shaderSource.append(line).append("\n");
                 }
             }
         }
@@ -143,8 +143,13 @@ namespace Engine
         {
             ReleaseProgram();
         }
+		else
+		{
+			m_ShaderHandleLoaded = true;
+		}
         //Else Successful Shader Compile
 
+		
 
 
         

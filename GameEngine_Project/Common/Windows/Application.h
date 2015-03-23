@@ -1,17 +1,22 @@
 #ifndef GAME_ENGINE_APPLICATION_H
 #define GAME_ENGINE_APPLICATION_H
 
+#include <vector>
 #include <GL\glew.h>
 #include <GLFW\glfw3.h>
 #include "../BasicTypes.h"
 #include "OpenGLProfile.h"
-#include <vector>
+#include "Window.h"
+#include "Time.h"
+
+
 
 
 
 namespace Engine
 {
 	class OpenGLWindow;
+	class Scene;
 
 	struct ApplicationInfo
 	{
@@ -35,6 +40,8 @@ namespace Engine
 		static bool IsRunning();
 		static void CancelQuit();
 		static void Quit();
+
+		static Scene * GetCurrentScene();
 
 		void RegisterWindow(OpenGLWindow * aWindow);
 		void UnregisterWindow(OpenGLWindow * aWindow);
@@ -73,9 +80,12 @@ namespace Engine
 
 		//-- General
 		bool m_IsRunning;
+		Scene * m_CurrentScene;
 
 		//--Internal Functions
+		void Start();
 		void Update();
+		void CleanUp();
 		
 
 	};

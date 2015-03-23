@@ -16,6 +16,9 @@
 #include "Math\Math.h"
 #include "Graphics\Graphics.h"
 #include "Utilities\Utilities.h"
+#include "Windows\Application.h"
+#include "EntityComponent\EntityComponent.h"
+#include "Input\Input.h"
 
 namespace Engine
 {

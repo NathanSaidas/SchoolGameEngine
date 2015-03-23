@@ -66,7 +66,13 @@ namespace Engine
     }
     Matrix4x4 Matrix4x4::LookAt(const Vector3 & aCameraPosition, const Vector3 & aTargetPosition, const Vector3 & aUpDirection)         
     {
-        return Matrix4x4(glm::lookAt(aCameraPosition, aTargetPosition, aUpDirection));
+		glm::mat4 mat = glm::lookAt(aCameraPosition, aTargetPosition, aUpDirection);
+		Matrix4x4 result = mat;
+
+		float * values = &(result.Raw())[0][0];
+		float * Values = &mat[0][0];
+
+		return result;
     }
     Matrix4x4 Matrix4x4::Identity()
     {
@@ -89,11 +95,11 @@ namespace Engine
     }
     void Matrix4x4::Scale(const Vector3 & aScale)                                
     {
-        *this = Matrix4x4(glm::scale(Raw(),aScale));
+        *this = Matrix4x4(glm::scale(Raw(),aScale.Raw()));
     }
     void Matrix4x4::Translate(const Vector3 & aTranslation)                      
     {
-        *this = Matrix4x4(glm::translate(Raw(),aTranslation));
+        *this = Matrix4x4(glm::translate(Raw(),aTranslation.Raw()));
     }
     void Matrix4x4::Rotate(const Float32 & aRotation,const Float32 & aAngle, const Vector3 & aAxis)     
     {
@@ -120,9 +126,9 @@ namespace Engine
         return Quaternion(glm::quat_cast(Raw()));
     }
 
-    glm::mat4x4 Matrix4x4::Raw() const
+    glm::mat4 Matrix4x4::Raw() const
     {
-        glm::mat4x4 mat;
+        glm::mat4 mat;
         mat[0] = (*this)[0];
         mat[1] = (*this)[1];
         mat[2] = (*this)[2];

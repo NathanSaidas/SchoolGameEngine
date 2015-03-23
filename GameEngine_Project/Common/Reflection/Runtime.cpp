@@ -169,7 +169,7 @@ namespace Engine
 
             return false;
         }
-        bool Runtime::IsBadType(Type & aType)
+        bool Runtime::IsBadType(const Type & aType)
         {
             return aType.GetName() == "";
         }

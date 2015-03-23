@@ -29,7 +29,7 @@ namespace Engine
                 return TypeOf(TypeTrait<T>::Name());
             }
             static bool IsBaseOf(Type & aDerived, Type & aBaseClass);
-            static bool IsBadType(Type & aType);
+            static bool IsBadType(const Type & aType);
             static bool IsCompiling();
         private:
             static Runtime * s_Instance;

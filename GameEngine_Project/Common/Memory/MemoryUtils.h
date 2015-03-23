@@ -6,6 +6,9 @@
 #pragma endregion
 
 #include <new>
+#include "AllocatorType.h"
+#include "MemoryFlags.h"
+#include "MemoryHeader.h"
 
 namespace Engine
 {
@@ -450,7 +453,35 @@ namespace Engine
 
 			}
 
+			inline static AllocatorType GetAllocatorType(void * aAddress)
+			{
+				MemoryHeader * header = (MemoryHeader*)SubtractPtr(aAddress, sizeof(MemoryHeader));
+				UInt8 flags;
+				UInt8 id;
+				UInt16 size;
+			
+				header->Read(flags, id, size);
+			
+				if ((flags & MemoryFlags::POOL) == MemoryFlags::POOL)
+				{
+					return AllocatorType::Pool;
+				}
+				else if ((flags & MemoryFlags::STACK) == MemoryFlags::STACK)
+				{
+					return AllocatorType::Stack;
+				}
+				else if ((flags & MemoryFlags::FRAME) == MemoryFlags::FRAME)
+				{
+					return AllocatorType::Frame;
+				}
+			
+				return AllocatorType::Pool;
+			}
+
         };
+
+
+		
     }
 			
 }

@@ -16,7 +16,7 @@ namespace Engine
     {
 
     }
-    Vector3::Vector3(Float32 x, Float32 y, Float32) : object(), glm::vec3()
+    Vector3::Vector3(Float32 x, Float32 y, Float32 z) : object(), glm::vec3()
     {
         this->x = x;
         this->y = y;

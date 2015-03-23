@@ -31,7 +31,7 @@ namespace Engine
             }
         }
 
-        UInt32 GetCount()
+        UInt32 GetCount() const
         {
             return m_Count;
         }
@@ -69,7 +69,7 @@ namespace Engine
             m_Count = 0;
         }
 
-        TYPE & operator[](const UInt32 aIndex)
+        TYPE & operator[](const UInt32 aIndex) const
         {
             return m_Elements[aIndex];
         }

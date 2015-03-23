@@ -11,7 +11,7 @@ namespace Engine
     class Vector4;
     class Quaternion;
 
-    class Matrix4x4 : public object, public glm::mat4x4
+    class Matrix4x4 : public object, public glm::mat4
     {
         CLASS_HEADER(Matrix4x4)
     public:
@@ -41,7 +41,7 @@ namespace Engine
         Quaternion GetRotation() const;
 
 
-        glm::mat4x4 Raw() const;
+        glm::mat4 Raw() const;
         
 
     };

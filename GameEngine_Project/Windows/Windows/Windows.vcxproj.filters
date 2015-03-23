@@ -28,6 +28,12 @@
     <Filter Include="Core\Windows">
       <UniqueIdentifier>{186b3a12-163a-44b3-95ba-fe1aad3b4fb2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\EntityComponent">
+      <UniqueIdentifier>{50b702ac-1c23-49ab-b95b-047e06d3d17d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Input">
+      <UniqueIdentifier>{ba47bea2-057b-4ece-8257-df4ea7dcefd0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -111,12 +117,6 @@
     <ClCompile Include="..\..\Common\Graphics\Shader.cpp">
       <Filter>Core\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Common\Examples\Component.cpp">
-      <Filter>Core\Examples</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Common\Examples\GameObject.cpp">
-      <Filter>Core\Examples</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Common\Examples\ISerializeable.cpp">
       <Filter>Core\Examples</Filter>
     </ClCompile>
@@ -124,9 +124,6 @@
       <Filter>Core\Examples</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Common\Examples\Shape.cpp">
-      <Filter>Core\Examples</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Common\Examples\SmartComponent.cpp">
       <Filter>Core\Examples</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Common\Examples\Triangle.cpp">
@@ -137,6 +134,45 @@
     </ClCompile>
     <ClCompile Include="..\..\Common\Windows\Application.cpp">
       <Filter>Core\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\EntityComponent\GameObject.cpp">
+      <Filter>Core\EntityComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\EntityComponent\Component.cpp">
+      <Filter>Core\EntityComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\EntityComponent\Scene.cpp">
+      <Filter>Core\EntityComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\EntityComponent\TestComponent.cpp">
+      <Filter>Core\EntityComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Windows\Time.cpp">
+      <Filter>Core\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Graphics\Geometry.cpp">
+      <Filter>Core\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Graphics\RenderTexture.cpp">
+      <Filter>Core\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Graphics\DrawCall.cpp">
+      <Filter>Core\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Input\Key.cpp">
+      <Filter>Core\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Input\InputAxis.cpp">
+      <Filter>Core\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Input\Input.cpp">
+      <Filter>Core\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Graphics\Texture.cpp">
+      <Filter>Core\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Graphics\Material.cpp">
+      <Filter>Core\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -299,12 +335,6 @@
     <ClInclude Include="..\..\Common\Graphics\GraphicEnums.h">
       <Filter>Core\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Common\Examples\Component.h">
-      <Filter>Core\Examples</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Common\Examples\GameObject.h">
-      <Filter>Core\Examples</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Common\Examples\ISerializeable.h">
       <Filter>Core\Examples</Filter>
     </ClInclude>
@@ -312,9 +342,6 @@
       <Filter>Core\Examples</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Common\Examples\Shape.h">
-      <Filter>Core\Examples</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Common\Examples\SmartComponent.h">
       <Filter>Core\Examples</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Common\Examples\Triangle.h">
@@ -334,6 +361,51 @@
     </ClInclude>
     <ClInclude Include="..\..\Common\Windows\OpenGLProfile.h">
       <Filter>Core\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\EntityComponent\GameObject.h">
+      <Filter>Core\EntityComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\EntityComponent\Component.h">
+      <Filter>Core\EntityComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\EntityComponent\Scene.h">
+      <Filter>Core\EntityComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\EntityComponent\EntityComponent.h">
+      <Filter>Core\EntityComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\EntityComponent\TestComponent.h">
+      <Filter>Core\EntityComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Windows\Time.h">
+      <Filter>Core\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Graphics\Geometry.h">
+      <Filter>Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Graphics\RenderTexture.h">
+      <Filter>Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Graphics\DrawCall.h">
+      <Filter>Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Input\KeyDef.h">
+      <Filter>Core\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Input\Key.h">
+      <Filter>Core\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Input\InputAxis.h">
+      <Filter>Core\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Input\Input.h">
+      <Filter>Core\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Graphics\Texture.h">
+      <Filter>Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Graphics\Material.h">
+      <Filter>Core\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

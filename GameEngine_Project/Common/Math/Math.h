@@ -7,6 +7,7 @@
 //TODO: Implement a serailization system to serialize the types
 //TODO: Implmenet ToString method to return a formatted string of the proper data types.
 
+#define GLM_FORCE_RADIANS
 
 #include "Vector2.h"
 #include "Vector3.h"
@@ -14,19 +15,34 @@
 #include "Matrix4x4.h"
 #include "Quaternion.h"
 
-namespace Math
+namespace Engine
 {
-	inline int __fastcall Clamp(int value, int min, int max)
+	namespace Math
 	{
-		return value > max ? max : (value < min ? min : value);
-	}
+		inline int __fastcall Clamp(int value, int min, int max)
+		{
+			return value > max ? max : (value < min ? min : value);
+		}
 
-	inline float __fastcall Clamp(float value, float min, float max)
-	{
-		return value > max ? max : (value < min ? min : value);
-	}
+		inline float __fastcall Clamp(float value, float min, float max)
+		{
+			return value > max ? max : (value < min ? min : value);
+		}
 
+		inline float __fastcall Abs(float value)
+		{
+			return value < 0.0f ? -value : value;
+		}
+
+		inline Vector2 __fastcall Abs(Vector2 value)
+		{
+			return Vector2(Abs(value.x), Abs(value.y));
+		}
+
+	}
 }
+
+
 
 
 

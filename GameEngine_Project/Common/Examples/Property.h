@@ -14,14 +14,18 @@ namespace Engine
             m_Name = aName;
             m_Value = aValue;
         }
-        inline std::string GetName()
+        inline std::string GetName() const
         {
             return m_Name;
         }
-        inline std::string GetValue()
+        inline std::string GetValue() const
         {
             return m_Value;
         }
+		inline bool IsValid() const
+		{
+			return m_Name != "" && m_Value != "";
+		}
 
     private:
 

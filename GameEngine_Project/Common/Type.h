@@ -39,63 +39,63 @@ namespace Engine
             m_Destructor = nullptr;
         }
 
-        inline std::string GetName()
+        inline std::string GetName() const
         {
             return m_Name;
         }
-        inline std::string GetBaseClass()
+        inline std::string GetBaseClass() const
         {
             return m_BaseClass;
         }
-        inline int GetSize()
+        inline int GetSize() const
         {
             return m_Size;
         }
-        inline int GetAlignment()
+        inline int GetAlignment() const
         {
             return m_Alignment;
         }
-        inline int GetTypeID()
+        inline int GetTypeID() const
         {
             return m_TypeID;
         }
-        inline bool IsClass()
+        inline bool IsClass() const
         {
             return m_IsClass;
         }
-        inline bool IsInterface()
+        inline bool IsInterface() const
         {
             return m_IsInterface;
         }
-        inline bool IsAbstract()
+        inline bool IsAbstract() const
         {
             return m_IsAbstract;
         }
-        std::vector<std::string> GetInterfaces()
+        std::vector<std::string> GetInterfaces() const
         {
             return m_Interfaces;
         }
-        std::vector<Reflection::ClassMember*> GetMembers()
+        std::vector<Reflection::ClassMember*> GetMembers() const
         {
             return m_Members;
         }
-        Func<void*, void*> GetConstructor()
+        Func<void*, void*> GetConstructor() const
         {
             return m_Constructor;
         }
-        Func<void*, void*> GetDestructor()
+        Func<void*, void*> GetDestructor() const
         {
             return m_Destructor;
         }
 
-        bool operator== (Type & aType)
+        bool operator== (Type & aType) const
         {
             return m_TypeID == aType.m_TypeID;
         }
         
-        Property GetProperty(const std::string & aPropertyName)
+        Property GetProperty(const std::string & aPropertyName) const
         {
-            for (std::vector<Property>::iterator it = m_Properties.begin(); it != m_Properties.end(); it++)
+            for (std::vector<Property>::const_iterator it = m_Properties.begin(); it != m_Properties.end(); it++)
             {
                 if ((*it).GetName() == aPropertyName)
                 {
@@ -105,7 +105,7 @@ namespace Engine
             return Property("", "");
         }
 
-        std::vector<Property> GetProperties()
+        std::vector<Property> GetProperties() const
         {
             return m_Properties;
         }

@@ -30,6 +30,7 @@ namespace Engine
         bool Release(bool aReleaseCPU = false);
 
         // -- Setters for Vertex Attributes
+		// These will create a copy of the array
         void SetPositions(Array<Vector3> & aPositions);
         void SetNormals(Array<Vector3> & aNormals);
         void SetTexCoords(Array<Vector2> & aTexCoords);
@@ -37,6 +38,7 @@ namespace Engine
         void SetIndices(Array<UInt16> & aIndicies);
         
         // -- Getters for Vertex Attributes
+		// These return a reference to the array
         Array<Vector3> GetPositions();
         Array<Vector3> GetNormals();
         Array<Vector2> GetTexCoords();

@@ -9,12 +9,18 @@
 #include "Mesh.h"
 #include "PrimitiveShapeBuffer.h"
 #include "Shader.h"
+#include "Geometry.h"
+#include "DrawCall.h"
+#include "RenderTexture.h"
+#include "Texture.h"
+#include "Material.h"
 
 
 
 
 namespace Engine
 {
+	
 
     ///This is the manager of graphics operations.
     class Graphics : public object
@@ -30,6 +36,8 @@ namespace Engine
 
         // -- An example of a draw function for a primitive
         static void DrawPrimitive(const PrimitiveShape & aShape, const Vector3 & aPosition, const Quaternion & aRotation, const Vector3 & aScale);
+		static void DrawMesh(const DrawCall & aDrawCall);
+		static void DrawMesh(const Matrix4x4 & aModel, const Matrix4x4 & aView, const Matrix4x4 & aProjection, Mesh * aMesh, Material * aMaterial);
 
         // -- Wrapper around OpenGL glUseShader
         static void UseShader(GLuint & aProgramID);
@@ -52,11 +60,14 @@ namespace Engine
         // -- Retrieves the current buffer bound.
         static GLuint GetCurrentBoundBuffer();
 
-
+		static void Clear();
+		static void SetBackgroundColor(const Color & aColor);
 
         // -- Uploads a mesh to OpenGL, use Mesh.Upload instead.
         static bool LoadMesh(Mesh * aMesh, GLuint & aVBO, GLuint & aIBO);
 
+		static void Render();
+		static bool CheckForGLErrors(const char* file = __FILE__, int line = __LINE__);
     private:
         // -- Instance of the Graphics singleton
         static Graphics * s_Instance;
@@ -94,7 +105,16 @@ namespace Engine
         
         void DrawPolygon(const PrimitiveMode & aMode, Float32 * aVertices, SInt32 aVertexSize, SInt32 aVertexCount, Float32 * aColors, SInt32 aColorSize);
 
+		// -- Draw Call Stuffs
+		Mesh * m_FrameBufferMesh;
+		Vector3 m_DirectionalPosition;
+		Vector3 m_DirectionalLookAt;
 
+		Shader * m_DefaultShader;
+		Shader * m_ShadowMapShader;
+		Shader * m_DepthShader;
+		RenderTexture * m_ShadowMapTexture;
+		std::vector<DrawCall> m_DrawCalls;
 
     };
 }

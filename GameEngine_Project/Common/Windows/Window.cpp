@@ -185,7 +185,11 @@ namespace Engine
 	}
 		
 
-	bool OpenGLWindow::CreateWindow()
+	/// <summary>
+	/// Creates the window.
+	/// </summary>
+	/// <returns></returns>
+	bool OpenGLWindow::Create()
 	{
 		//Reset to defaults;
 		glfwDefaultWindowHints();

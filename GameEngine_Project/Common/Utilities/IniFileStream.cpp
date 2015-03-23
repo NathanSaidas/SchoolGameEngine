@@ -49,6 +49,10 @@ namespace Engine
                 BindSection(sectionName);
                 continue;
             }
+			else if (line[0] == '#')
+			{
+				continue;
+			}
 			//Variable Defined
             else
             {

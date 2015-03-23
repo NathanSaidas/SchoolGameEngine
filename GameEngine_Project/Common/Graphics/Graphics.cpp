@@ -1,6 +1,9 @@
 #include "Graphics.h"
 #include <new>
-#include "../Memory/Memory.h"
+#include "../Engine.h"
+
+#include <glm\glm.hpp>
+#include <glm\gtc\matrix_transform.hpp>
 
 using namespace Engine::Memory;
 
@@ -23,11 +26,38 @@ namespace Engine
     Graphics::Graphics()
     {
         InitializePrimitiveBuffers();
+		m_ShadowMapTexture = MEM_POOL_ALLOC_T(RenderTexture);
+		m_DefaultShader = MEM_POOL_ALLOC_T(Shader);
+		m_ShadowMapShader = MEM_POOL_ALLOC_T(Shader);
+		m_DepthShader = MEM_POOL_ALLOC_T(Shader);
+		m_FrameBufferMesh = Geometry::CreatePlane(0.5f, 0.5f, Color::White(), AllocatorType::Pool);
+
+		m_DefaultShader->Load("CustomTest.glsl");
+		m_ShadowMapShader->Load("ShadowMap.glsl");
+		m_DepthShader->Load("DepthShader.glsl");
+		m_ShadowMapTexture->Create(1024, 1024);
+
+		glDepthMask(GL_TRUE);
+		glDepthFunc(GL_LEQUAL);
+		glEnable(GL_DEPTH_TEST);
+
+
+
     }
 
     Graphics::~Graphics()
     {
-        ReleasePrimitiveBuffers();
+        
+		m_DefaultShader->Release();
+		m_ShadowMapShader->Release();
+		m_ShadowMapTexture->Release();
+		m_DepthShader->Release();
+		MEM_POOL_DEALLOC_T(m_DefaultShader, Shader);
+		MEM_POOL_DEALLOC_T(m_ShadowMapShader, Shader);
+		MEM_POOL_DEALLOC_T(m_DepthShader, Shader);
+		MEM_POOL_DEALLOC_T(m_ShadowMapTexture, RenderTexture);
+		MEM_POOL_DEALLOC_T(m_FrameBufferMesh, Mesh);
+		ReleasePrimitiveBuffers();
     }
 
     Graphics * Graphics::GetInstance()
@@ -129,6 +159,7 @@ namespace Engine
         GLint u_ObjectSpace = shader.GetUniformLocation("u_ObjectSpace");
         GLint u_Time = shader.GetUniformLocation("u_Time");
         GLint u_DeltaTime = shader.GetUniformLocation("u_DeltaTime");
+		GLint u_DirectionalLight = shader.GetUniformLocation("u_DirectionalLight");
 
 
         //Bind Textures
@@ -187,9 +218,10 @@ namespace Engine
             glUniform1f(u_DeltaTime, deltaTime);
         }
 
+		//glLineWidth(2.0f);
         //Make Draw Call
-        glDrawElements((GLenum)PrimitiveMode::Points, aIndiciesCount, GL_UNSIGNED_SHORT, 0);
-
+        //glDrawElements((GLenum)PrimitiveMode::Triangles, aIndiciesCount, GL_UNSIGNED_SHORT, 0);
+		glDrawElements((GLenum)PrimitiveMode::Lines, aIndiciesCount, GL_UNSIGNED_SHORT, 0);
 
         //Unbind Color Attributes
         if (a_Color != -1)
@@ -227,6 +259,195 @@ namespace Engine
         
 
     }
+	void Graphics::DrawPrimitive(const PrimitiveShape & aShape, const Vector3 & aPosition, const Quaternion & aRotation, const Vector3 & aScale)
+	{
+
+	}
+	void Graphics::DrawMesh(const DrawCall & aDrawCall)
+	{
+		if (s_Instance != nullptr)
+		{
+			s_Instance->m_DrawCalls.push_back(aDrawCall);
+		}
+	}
+
+	void Graphics::DrawMesh(const Matrix4x4 & aModel, const Matrix4x4 & aView, const Matrix4x4 & aProjection, Mesh * aMesh, Material * aMaterial)
+	{
+		if (aMaterial == nullptr || 
+			aMesh == nullptr ||
+			aMaterial->GetShader() == nullptr)
+		{
+			return;
+		}
+
+		Float32 deltaTime = Time::GetDeltaTime();
+		Float32 time = Time::GetTime();
+
+		Matrix4x4 view = aView;
+		Matrix4x4 mvp = aProjection * view * aModel;
+		Matrix4x4 objectSpace = aModel * view;
+
+		RenderTexture * shadowMap = s_Instance->m_ShadowMapTexture;
+		Shader * shader = aMaterial->GetShader();
+		Texture * texture = aMaterial->GetTexture();
+
+		if (texture == nullptr)
+		{
+			shader = s_Instance->m_DepthShader;
+		}
+
+		if (!shader->UseShader())
+		{
+			DEBUG_LOG("Failed to bind shader %s. Shader was not initialized.", shader->GetName());
+			return;
+		}
+
+		BindBuffer(BufferTarget::Array, aMesh->GetVBO());
+		BindBuffer(BufferTarget::ElementArray, aMesh->GetIBO());
+
+		GLint a_Position = shader->GetAttributeLocation("a_Position");
+		GLint a_TextureCoordinate = shader->GetAttributeLocation("a_TexCoords");
+		GLint a_Normal = shader->GetAttributeLocation("a_Normal");
+		GLint a_Color = shader->GetAttributeLocation("a_Color");
+
+		GLint u_MVP = shader->GetUniformLocation("u_MVP");
+		GLint u_Model = shader->GetUniformLocation("u_Model");
+		GLint u_ObjectSpace = shader->GetUniformLocation("u_ObjectSpace");
+		GLint u_Time = shader->GetUniformLocation("u_Time");
+		GLint u_DeltaTime = shader->GetUniformLocation("u_DeltaTime");
+
+		//Shadow Map & Default Shader
+		GLint u_Texture = shader->GetUniformLocation("u_Texture");
+
+		//Default Shader
+		GLint u_ShadowMap = shader->GetUniformLocation("u_ShadowMap");
+		GLint u_DirectionalLight = shader->GetUniformLocation("u_DirectionalLight");
+
+
+
+		//Bind Position Attributes
+		if (a_Position != -1)
+		{
+			glVertexAttribPointer(a_Position, 3, GL_FLOAT, GL_FALSE, sizeof(VertexAttribute), (void*)offsetof(VertexAttribute, position));
+			glEnableVertexAttribArray(a_Position);
+		}
+		//Bind Texture Coordinate Attributes
+		if (a_TextureCoordinate != -1)
+		{
+			glVertexAttribPointer(a_TextureCoordinate, 2, GL_FLOAT, GL_FALSE, sizeof(VertexAttribute), (void*)offsetof(VertexAttribute, texCoord));
+			glEnableVertexAttribArray(a_TextureCoordinate);
+		}
+		//Bind Normal Attributes
+		if (a_Normal != -1)
+		{
+			glVertexAttribPointer(a_Normal, 3, GL_FLOAT, GL_FALSE, sizeof(VertexAttribute), (void*)offsetof(VertexAttribute, normal));
+			glEnableVertexAttribArray(a_Normal);
+		}
+		//Bind Color Attributes
+		if (a_Color != -1)
+		{
+			glVertexAttribPointer(a_Color, 4, GL_FLOAT, GL_FALSE, sizeof(VertexAttribute), (void*)offsetof(VertexAttribute, color));
+			glEnableVertexAttribArray(a_Color);
+		}
+
+		//Bind MVP Matrix Uniform
+		if (u_MVP != -1)
+		{
+			glUniformMatrix4fv(u_MVP, 1, GL_FALSE, &mvp[0][0]);
+		}
+		//Bind Model Matrix Uniform
+		if (u_Model != -1)
+		{
+			glUniformMatrix4fv(u_Model, 1, GL_FALSE, (GLfloat*)&aModel.Raw()[0][0]);
+		}
+		//Bind Object_Space Matrix Uniform
+		if (u_ObjectSpace != -1)
+		{
+			glUniformMatrix4fv(u_ObjectSpace, 1, GL_FALSE, (GLfloat*)&objectSpace.Raw()[0][0]);
+		}
+		//Bind Time Uniform
+		if (u_Time != -1)
+		{
+			glUniform1f(u_Time, time);
+		}
+		//Bind Delta Time Uniform
+		if (u_DeltaTime != -1)
+		{
+			glUniform1f(u_DeltaTime, deltaTime);
+		}
+		if (u_Texture != -1)
+		{
+			if (texture == nullptr)
+			{
+				 
+				 glActiveTexture(GL_TEXTURE0);
+				 glBindTexture(GL_TEXTURE_2D, s_Instance->m_ShadowMapTexture->GetDepthHandle());
+				 glUniform1i(u_Texture, 0);
+			}
+			else
+			{
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, texture->GetHandle());
+				glUniform1i(u_Texture, 0);
+			}
+			
+		}
+
+		if (u_DirectionalLight != -1)
+		{
+			Matrix4x4 dirLightView = view; 
+			Matrix4x4 dirLightMVP = aProjection * dirLightView * aModel;
+			glUniformMatrix4fv(u_DirectionalLight, 1, GL_FALSE, &dirLightMVP[0][0]);
+		}
+
+		if (u_ShadowMap != -1)
+		{
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, shadowMap->GetDepthHandle());
+			glUniform1i(u_ShadowMap, 1);
+		}
+
+
+		//Make Draw Call
+		glDrawElements((GLenum)PrimitiveMode::Triangles, aMesh->GetIndexCount(), GL_UNSIGNED_SHORT, 0);
+		//Unbind Color Attributes
+		if (a_Color != -1)
+		{
+			glDisableVertexAttribArray(a_Color);
+		}
+		//Unbind Normal Attributes
+		if (a_Normal != -1)
+		{
+			glDisableVertexAttribArray(a_Normal);
+		}
+		//Unbind Texture Attributes
+		if (a_TextureCoordinate != -1)
+		{
+			glDisableVertexAttribArray(a_TextureCoordinate);
+		}
+		//Unbind Position Attributes
+		if (a_Position != -1)
+		{
+			glDisableVertexAttribArray(a_Position);
+		}
+
+		if (u_Texture != -1)
+		{
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, 0);
+		}
+
+		if (u_ShadowMap != -1)
+		{
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, 0);
+		}
+
+		BindBuffer(BufferTarget::Array, 0);
+		BindBuffer(BufferTarget::ElementArray, 0);
+		glUseProgram(0);
+
+	}
     void Graphics::UseShader(GLuint & aProgramID)
     {
         glUseProgram(aProgramID);
@@ -258,21 +479,32 @@ namespace Engine
 
     bool Graphics::CompileShader(GLuint & aHandle, const ShaderType & aShaderType, const std::string & aSource)
     {
+		std::string shaderTypename;
         switch (aShaderType)
         {
         case ShaderType::Vertex:
+			shaderTypename = "Vertex";
+			break;
         case ShaderType::Fragment:
+			shaderTypename = "Fragment";
+			break;
         case ShaderType::Geometry:
-            break;
+			shaderTypename = "Geometry";
+			break;
         default:
             DEBUG_LOG("Unsupported shader type %u", (unsigned int)aShaderType);
             return false;
         }
 
+
         aHandle = glCreateShader((GLenum)aShaderType);
-        char ** src = (char **)aSource.c_str();
-        glShaderSource(aHandle, 1, const_cast<const char**>(src), 0);
+        char * src = (char *)aSource.c_str();
+        glShaderSource(aHandle, 1, (const char **)&src, NULL);
         glCompileShader(aHandle);
+
+		
+
+		//DEBUG_LOG("Attempting to compile shader %s.\nSource:\n%s", shaderTypename.c_str(), aSource.c_str());
 
         int status = 0;
         glGetShaderiv(aHandle, GL_COMPILE_STATUS, &status);
@@ -331,6 +563,26 @@ namespace Engine
     {
         return GetInstance()->m_CurrentBoundBuffer;
     }
+	void Graphics::Clear()
+	{
+		
+		Color color;
+		if (s_Instance != nullptr)
+		{
+			color = s_Instance->m_BackgroundColor;
+		}
+		glClearColor(color.r, color.g, color.b, color.a);
+		glClearDepth(1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	}
+	void Graphics::SetBackgroundColor(const Color & aColor)
+	{
+		if (s_Instance != nullptr)
+		{
+			s_Instance->m_BackgroundColor = aColor;
+		}
+	}
 
     bool Graphics::LoadMesh(Mesh * aMesh, GLuint & aVBO, GLuint & aIBO)
     {
@@ -401,4 +653,107 @@ namespace Engine
 
         return true;
     }
+
+	void Graphics::Render()
+	{
+		OpenGLWindow * currentWindow = Application::GetInstance()->GetCurrentWindow();
+		RenderTexture * shadowMap = s_Instance->m_ShadowMapTexture;
+
+		glBindFramebuffer(GL_FRAMEBUFFER, shadowMap->GetFBOHandle());
+		glViewport(0, 0, shadowMap->GetWidth(), shadowMap->GetHeight());
+
+		Clear();
+		
+		Material material;
+		material.SetShader(s_Instance->m_ShadowMapShader);
+
+
+		//Specify the ViewPort
+		for (std::vector<DrawCall>::iterator it = s_Instance->m_DrawCalls.begin(); it != s_Instance->m_DrawCalls.end(); it++)
+		{
+			DrawCall call = *it;
+			material.SetTexture(call.material->GetTexture());
+			DrawMesh(call.model, call.view, call.projection, call.mesh, &material);
+		}
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+
+		material.SetShader(s_Instance->m_DefaultShader);
+		glViewport(0, 0, currentWindow->GetWidth(), currentWindow->GetHeight());
+
+		for (std::vector<DrawCall>::iterator it = s_Instance->m_DrawCalls.begin(); it != s_Instance->m_DrawCalls.end(); it++)
+		{
+			DrawCall call = *it;
+			material.SetTexture(call.material->GetTexture());
+			DrawMesh(call.model, call.view, call.projection, call.mesh, &material);
+		}
+
+		
+		s_Instance->m_DrawCalls.clear();
+
+		Matrix4x4 model;
+		model.SetIdentity();
+		model.Scale(Vector3(0.5f,0.65f, 1.0f));
+		model.Rotate(Vector3(90.0f, 0.0f, 0.0f));
+
+		model[3][0] = -0.75f;
+		model[3][1] = 0.75f;
+		model[3][2] = 0.0;
+
+		
+		
+		Matrix4x4 identity;
+		identity.SetIdentity();
+
+		material.SetTexture(nullptr);
+
+
+		DrawMesh(model, identity, identity, s_Instance->m_FrameBufferMesh, &material);
+		CheckForGLErrors(__FILE__, __LINE__);
+
+	}
+
+	bool Graphics::CheckForGLErrors(const char* file, int line)
+	{
+		GLenum errorID = GL_NO_ERROR;
+		char* errorStr;
+		int errorCount = 0;
+
+		while ((errorID = glGetError()) != GL_NO_ERROR)
+		{
+			errorCount++;
+
+			switch (errorID)
+			{
+			case GL_INVALID_ENUM:
+				errorStr = "GL_INVALID_ENUM";
+				break;
+
+			case GL_INVALID_VALUE:
+				errorStr = "GL_INVALID_VALUE";
+				break;
+
+			case GL_INVALID_OPERATION:
+				errorStr = "GL_INVALID_OPERATION";
+				break;
+
+			case GL_INVALID_FRAMEBUFFER_OPERATION:
+				errorStr = "GL_INVALID_FRAMEBUFFER_OPERATION";
+				break;
+
+			case GL_OUT_OF_MEMORY:
+				errorStr = "GL_OUT_OF_MEMORY";
+				break;
+
+			default:
+				errorStr = "Unknown GL message type.";
+				break;
+			}
+
+			DEBUG_LOG("GLError -> %d - %s - %d - %s(%d)\n", errorID, errorStr, errorCount, file, line);
+		}
+
+		return(errorCount > 0 ? true : false);
+	}
 }

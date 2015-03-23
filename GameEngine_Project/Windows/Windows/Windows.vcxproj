@@ -84,18 +84,27 @@
   <ItemGroup>
     <ClCompile Include="..\..\Common\BasicTypes.cpp" />
     <ClCompile Include="..\..\Common\Engine.cpp" />
-    <ClCompile Include="..\..\Common\Examples\Component.cpp" />
-    <ClCompile Include="..\..\Common\Examples\GameObject.cpp" />
+    <ClCompile Include="..\..\Common\EntityComponent\Component.cpp" />
+    <ClCompile Include="..\..\Common\EntityComponent\GameObject.cpp" />
+    <ClCompile Include="..\..\Common\EntityComponent\Scene.cpp" />
+    <ClCompile Include="..\..\Common\EntityComponent\TestComponent.cpp" />
     <ClCompile Include="..\..\Common\Examples\ISerializeable.cpp" />
     <ClCompile Include="..\..\Common\Examples\Line.cpp" />
     <ClCompile Include="..\..\Common\Examples\Shape.cpp" />
-    <ClCompile Include="..\..\Common\Examples\SmartComponent.cpp" />
     <ClCompile Include="..\..\Common\Examples\Triangle.cpp" />
     <ClCompile Include="..\..\Common\Graphics\Color.cpp" />
+    <ClCompile Include="..\..\Common\Graphics\DrawCall.cpp" />
+    <ClCompile Include="..\..\Common\Graphics\Geometry.cpp" />
     <ClCompile Include="..\..\Common\Graphics\Graphics.cpp" />
+    <ClCompile Include="..\..\Common\Graphics\Material.cpp" />
     <ClCompile Include="..\..\Common\Graphics\Mesh.cpp" />
     <ClCompile Include="..\..\Common\Graphics\PrimitiveShapeBuffer.cpp" />
+    <ClCompile Include="..\..\Common\Graphics\RenderTexture.cpp" />
     <ClCompile Include="..\..\Common\Graphics\Shader.cpp" />
+    <ClCompile Include="..\..\Common\Graphics\Texture.cpp" />
+    <ClCompile Include="..\..\Common\Input\Input.cpp" />
+    <ClCompile Include="..\..\Common\Input\InputAxis.cpp" />
+    <ClCompile Include="..\..\Common\Input\Key.cpp" />
     <ClCompile Include="..\..\Common\Math\Matrix4x4.cpp" />
     <ClCompile Include="..\..\Common\Math\Quaternion.cpp" />
     <ClCompile Include="..\..\Common\Math\Vector2.cpp" />
@@ -116,28 +125,40 @@
     <ClCompile Include="..\..\Common\Utilities\IniVariables.cpp" />
     <ClCompile Include="..\..\Common\Utilities\Utilities.cpp" />
     <ClCompile Include="..\..\Common\Windows\Application.cpp" />
+    <ClCompile Include="..\..\Common\Windows\Time.cpp" />
     <ClCompile Include="..\..\Common\Windows\Window.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Common\BasicTypes.h" />
     <ClInclude Include="..\..\Common\Engine.h" />
-    <ClInclude Include="..\..\Common\Examples\Component.h" />
+    <ClInclude Include="..\..\Common\EntityComponent\Component.h" />
+    <ClInclude Include="..\..\Common\EntityComponent\EntityComponent.h" />
+    <ClInclude Include="..\..\Common\EntityComponent\GameObject.h" />
+    <ClInclude Include="..\..\Common\EntityComponent\Scene.h" />
+    <ClInclude Include="..\..\Common\EntityComponent\TestComponent.h" />
     <ClInclude Include="..\..\Common\Examples\Examples.h" />
-    <ClInclude Include="..\..\Common\Examples\GameObject.h" />
     <ClInclude Include="..\..\Common\Examples\Property.h" />
     <ClInclude Include="..\..\Common\Examples\ISerializeable.h" />
     <ClInclude Include="..\..\Common\Examples\Line.h" />
     <ClInclude Include="..\..\Common\Examples\Shape.h" />
-    <ClInclude Include="..\..\Common\Examples\SmartComponent.h" />
     <ClInclude Include="..\..\Common\Examples\Triangle.h" />
     <ClInclude Include="..\..\Common\Func.h" />
     <ClInclude Include="..\..\Common\Graphics\Color.h" />
+    <ClInclude Include="..\..\Common\Graphics\DrawCall.h" />
+    <ClInclude Include="..\..\Common\Graphics\Geometry.h" />
     <ClInclude Include="..\..\Common\Graphics\GraphicEnums.h" />
     <ClInclude Include="..\..\Common\Graphics\Graphics.h" />
+    <ClInclude Include="..\..\Common\Graphics\Material.h" />
     <ClInclude Include="..\..\Common\Graphics\Mesh.h" />
     <ClInclude Include="..\..\Common\Graphics\PrimitiveShapeBuffer.h" />
+    <ClInclude Include="..\..\Common\Graphics\RenderTexture.h" />
     <ClInclude Include="..\..\Common\Graphics\Shader.h" />
+    <ClInclude Include="..\..\Common\Graphics\Texture.h" />
+    <ClInclude Include="..\..\Common\Input\Input.h" />
+    <ClInclude Include="..\..\Common\Input\InputAxis.h" />
+    <ClInclude Include="..\..\Common\Input\Key.h" />
+    <ClInclude Include="..\..\Common\Input\KeyDef.h" />
     <ClInclude Include="..\..\Common\Math\Math.h" />
     <ClInclude Include="..\..\Common\Math\Matrix4x4.h" />
     <ClInclude Include="..\..\Common\Math\Quaternion.h" />
@@ -184,6 +205,7 @@
     <ClInclude Include="..\..\Common\Utilities\Utilities.h" />
     <ClInclude Include="..\..\Common\Windows\Application.h" />
     <ClInclude Include="..\..\Common\Windows\OpenGLProfile.h" />
+    <ClInclude Include="..\..\Common\Windows\Time.h" />
     <ClInclude Include="..\..\Common\Windows\Window.h" />
   </ItemGroup>
   <ItemGroup>

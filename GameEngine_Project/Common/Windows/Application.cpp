@@ -1,10 +1,8 @@
 #include "Application.h"
 #include <new>
-#include "../Memory/Memory.h"
-#include "../Reflection/Reflection.h"
+#include "../Engine.h"
 
-#include "Window.h"
-#include "../Utilities/Utilities.h"
+#include "../EntityComponent/TestComponent.h"
 
 namespace Engine
 {
@@ -41,6 +39,7 @@ namespace Engine
 	{
 		Memory::MemoryManager::Initialize();
 		Reflection::Runtime::Compile(nullptr);
+		
 
 		//Setup Defaults
 		ApplicationInfo info;
@@ -99,27 +98,32 @@ namespace Engine
 			Memory::MemoryManager::Terminate();
 			return;
 		}
+		Graphics::Initialize();
+		Input::Initialize();
 
 		Application * application = GetInstance();
 		application->m_IsRunning = true;
+
+		application->Start();
 
 		while (IsRunning())
 		{
 			application->Update();
 		}
 
+		application->CleanUp();
+
+		Input::Terminate();
+		Graphics::Terminate();
 		Terminate();
 		Reflection::Runtime::Terminate();
 		Memory::MemoryManager::Terminate();
+		system("pause");
 	}
 	bool Application::InitializeOpenGL(const ApplicationInfo & aInfo)
 	{
 		
-
-		if (!glewInit())
-		{
-			return false;
-		}
+		
 
 		if (!glfwInit())
 		{
@@ -140,7 +144,7 @@ namespace Engine
 		window->SetVersion(aInfo.majorVersion, aInfo.minorVersion);
 		window->SetProfile(aInfo.profile);
 		window->SetFullscreen(aInfo.fullscreen);
-		if (!window->CreateWindow())
+		if (!window->Create())
 		{
 			delete window;
 			delete s_Instance;
@@ -148,6 +152,12 @@ namespace Engine
 			return false;
 		}
 		window->MakeCurrentContext();
+
+		glewExperimental = GL_TRUE;
+		if (glewInit() != GLEW_OK)
+		{
+			return false;
+		}
 
 		const GLubyte * renderer = glGetString(GL_RENDERER);
 		const GLubyte * version = glGetString(GL_VERSION);
@@ -182,7 +192,14 @@ namespace Engine
 			//TODO: Invoke OnQuit
 		}
 	}
-
+	Scene * Application::GetCurrentScene()
+	{
+		if (s_Instance != nullptr)
+		{
+			return s_Instance->m_CurrentScene;
+		}
+		return nullptr;
+	}
 	void Application::RegisterWindow(OpenGLWindow * aWindow)
 	{
 		if (aWindow != nullptr && !Utilities::Exists<OpenGLWindow*>(m_Windows,aWindow))
@@ -268,19 +285,19 @@ namespace Engine
 	}
 	void Application::OnMouseButtonEvent(GLFWwindow * aWindow, int aButton, int aAction, int aMods)
 	{
-
+		Input::Instance()->ProcessMouseEvent(aButton, aAction, aMods);
 	}
 	void Application::OnMouseMoveEvent(GLFWwindow * aWindow, double aXPosition, double aYPosition)
 	{
-
+		Input::Instance()->ProcessMouseMove(aXPosition, aYPosition);
 	}
 	void Application::OnScrollEvent(GLFWwindow * aWindow, double aXOffset, double aYOffset)
 	{
-
+		Input::Instance()->ProcessMouseScroll(aXOffset, aYOffset);
 	}
 	void Application::OnKeyEvent(GLFWwindow * aWindow, int aKey, int aScanCode, int aAction, int aMods)
 	{
-
+		Input::Instance()->ProcessKeyEvent(aKey, aAction, aMods);
 	}
 	void Application::OnDropFileEvent(GLFWwindow * aWindow, int aCount, const char ** aFilePaths)
 	{
@@ -313,16 +330,51 @@ namespace Engine
 
 	}
 
+	void Application::Start()
+	{
+		//TODO: Write code to create gameobjects / scenes..
+		m_CurrentScene = MEM_POOL_ALLOC_T(Scene);
+
+		GameObject * gameObject = MEM_POOL_ALLOC_T(GameObject);
+		gameObject->AddComponent("TestComponent");
+	}
+
 	void Application::Update()
 	{
+		Float32 lastTime = Time::s_Time;
+		Float32 currentTime = glfwGetTime();
+
+		Float32 deltaTime = currentTime - lastTime;
+		Time::s_DeltaTime = deltaTime;
+		Time::s_Time = currentTime;
+
+		
+		Graphics::Clear();
+
 		if (m_CurrentContext == nullptr)
 		{
-			m_CurrentContext = m_DefaultWindow;
+			m_DefaultWindow->MakeCurrentContext();
 		}
+
+		m_CurrentScene->Update();
+		m_CurrentScene->PreRender(); //Gather Geometry
+		Graphics::Render();
+		m_CurrentScene->Render(); //Render Shadow Map Pass, Render Scene  => Give Final FBO for post processing
+		m_CurrentScene->PostRender();
 
 
 		m_CurrentContext->SwapBuffers();
-		glfwPollEvents();
+		Input::Instance()->Update();
+
+
+
+		Memory::MemoryManager::GetInstance()->ResetFrame();
+	}
+
+	void Application::CleanUp()
+	{
+		//TODO: Cleanup the scenes.
+		MEM_POOL_DEALLOC_T(m_CurrentScene, Scene);
 	}
 
 }
