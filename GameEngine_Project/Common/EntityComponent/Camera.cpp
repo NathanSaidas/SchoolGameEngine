@@ -50,12 +50,13 @@ namespace Engine
 		}
 	}
 
+    
+
 	Matrix4x4 Camera::GetViewMatrix()
 	{
-		Quaternion rotation = Quaternion::Euler(GetGameObject()->GetRotation());
-		Vector3 lookPosition = GetGameObject()->GetPosition() + (rotation * Vector3::Forward());
-		DEBUG_LOG("Look Rotation: %s", lookPosition.ToString().c_str());
-		return Matrix4x4::LookAt(GetGameObject()->GetPosition(),lookPosition, Vector3::Up());
+		Quaternion rotation = GetGameObject()->GetRotation();
+        Vector3 lookDirection = rotation * Vector3::Forward();
+		return Matrix4x4::LookAt(GetGameObject()->GetPosition(),lookDirection);
 	}
 
 	Matrix4x4 Camera::GetProjectionMatrix()

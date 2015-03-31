@@ -17,10 +17,10 @@ namespace Engine
 		m_IsActive = true;
 		m_Parent = nullptr;
 		m_Position = Vector3::Zero();
-		m_Rotation = Vector3::Zero();
+        m_Rotation = Quaternion::Identity();
 		m_Scale = Vector3::One();
 		m_LocalPosition = Vector3::Zero();
-		m_LocalRotation = Vector3::Zero();
+        m_LocalRotation = Quaternion::Identity();
 
 		Scene * scene = Application::GetCurrentScene();
 		if (scene != nullptr)
@@ -40,10 +40,10 @@ namespace Engine
 		m_IsActive = true;
 		m_Parent = nullptr;
 		m_Position = Vector3::Zero();
-		m_Rotation = Vector3::Zero();
+        m_Rotation = Quaternion::Identity();
 		m_Scale = Vector3::One();
 		m_LocalPosition = Vector3::Zero();
-		m_LocalRotation = Vector3::Zero();
+        m_LocalRotation = Quaternion::Identity();
 
 		Scene * scene = Application::GetCurrentScene();
 		if (scene != nullptr)
@@ -259,11 +259,11 @@ namespace Engine
 		m_Position = aPosition;
 	}
 
-	Vector3 GameObject::GetRotation()
+    Quaternion GameObject::GetRotation()
 	{
 		return m_Rotation;
 	}
-	void GameObject::SetRotation(Vector3 aRotation)
+    void GameObject::SetRotation(Quaternion aRotation)
 	{
 		m_Rotation = aRotation;
 	}
@@ -287,11 +287,11 @@ namespace Engine
 		m_LocalPosition = aLocalPosition;
 	}
 
-	Vector3 GameObject::GetLocalRotation()
+    Quaternion GameObject::GetLocalRotation()
 	{
 		return m_LocalRotation;
 	}
-	void GameObject::SetLocalRotation(Vector3 aLocalRotation)
+    void GameObject::SetLocalRotation(Quaternion aLocalRotation)
 	{
 		m_LocalRotation = aLocalRotation;
 	}
@@ -310,17 +310,15 @@ namespace Engine
 		}
 		return matrix;
 	}
-
 	void GameObject::LookAt(Vector3 aPosition)
 	{
-		Vector3 direction = aPosition - GetPosition();
-		direction.Normalize();
-
-		DEBUG_LOG("Direction: %s", direction.ToString().c_str());
-
-		m_Rotation = Quaternion::LookRotation(direction).GetEulerAngles();
-
-		DEBUG_LOG("Euler Rotation: %s", m_Rotation.ToString().c_str());
+        Vector3 direction = aPosition - GetPosition();
+        Matrix4x4 mat = Matrix4x4::LookAt(GetPosition(), direction.Normalized());
+        Quaternion inverse = Quaternion::Inverse(mat.GetRotation());
+        m_Rotation.w = inverse.y;
+        m_Rotation.x = inverse.z;
+        m_Rotation.y = -inverse.w;
+        m_Rotation.z = -inverse.x;
 	}
 
 	

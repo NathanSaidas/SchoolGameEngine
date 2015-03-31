@@ -64,16 +64,57 @@ namespace Engine
     {
         return Matrix4x4(glm::perspective(aFOV, aAspectRatio, aNear, aFar));
     }
-    Matrix4x4 Matrix4x4::LookAt(const Vector3 & aCameraPosition, const Vector3 & aTargetPosition, const Vector3 & aUpDirection)         
+    Matrix4x4 Matrix4x4::LookAt(const Vector3 & aCameraPosition, const Vector3 & aDirection, const Vector3 & aUpDirection)
     {
-		glm::mat4 mat = glm::lookAt(aCameraPosition, aTargetPosition, aUpDirection);
-		Matrix4x4 result = mat;
+		//glm::mat4 mat = glm::lookAt(aCameraPosition, aTargetPosition, aUpDirection);
+		//Matrix4x4 result = mat;
 
-		float * values = &(result.Raw())[0][0];
-		float * Values = &mat[0][0];
+
+        Vector3 f = aDirection.Normalized();
+        Vector3 s = Vector3::Cross(f, aUpDirection).Normalized();
+        Vector3 u = Vector3::Cross(s, f);
+
+        Matrix4x4 result = Matrix4x4::Identity();
+        result[0][0] = s.x;
+        result[1][0] = s.y;
+        result[2][0] = s.z;
+        result[0][1] = u.x;
+        result[1][1] = u.y;
+        result[2][1] = u.z;
+        result[0][2] = -f.x;
+        result[1][2] = -f.y;
+        result[2][2] = -f.z;
+        result[3][0] = -Vector3::Dot(s, aCameraPosition);
+        result[3][1] = -Vector3::Dot(u, aCameraPosition);
+        result[3][2] = Vector3::Dot(f, aCameraPosition);
+        return result;
 
 		return result;
     }
+
+    Matrix4x4 Matrix4x4::LookAt(const Vector3 & aCameraPosition, const Vector3 & aDirection)
+    {
+        Vector3 f = aDirection.Normalized();
+        Vector3 s = Vector3::Cross(f, Vector3::Up()).Normalized();
+        Vector3 u = Vector3::Cross(s, f);
+
+        Matrix4x4 result = Matrix4x4::Identity();
+        result[0][0] = s.x;
+        result[1][0] = s.y;
+        result[2][0] = s.z;
+        result[0][1] = u.x;
+        result[1][1] = u.y;
+        result[2][1] = u.z;
+        result[0][2] = -f.x;
+        result[1][2] = -f.y;
+        result[2][2] = -f.z;
+        result[3][0] = -Vector3::Dot(s, aCameraPosition);
+        result[3][1] = -Vector3::Dot(u, aCameraPosition);
+        result[3][2] = Vector3::Dot(f, aCameraPosition);
+        return result;
+    }
+
+
     Matrix4x4 Matrix4x4::Identity()
     {
         Matrix4x4 mat;
@@ -93,6 +134,15 @@ namespace Engine
 		mat.Translate(aPosition);
 		return mat;
 	}
+
+    Matrix4x4 Matrix4x4::TRS(const Vector3 & aPosition, const Quaternion & aRotation, const Vector3 & aScale)
+    {
+        Matrix4x4 mat = Matrix4x4::Identity();
+        mat.Scale(aScale);
+        mat *= aRotation.GetRotationMatrix();
+        mat.Translate(aPosition);
+        return mat;
+    }
 
     void Matrix4x4::Transpose()                                                  
     {

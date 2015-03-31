@@ -128,27 +128,7 @@ namespace Engine
 		Float32 deltaTime = Time::GetDeltaTime();
 		Float32 time = Time::GetTime();
 
-		Matrix4x4 model = Matrix4x4::Identity();
-		//model.Scale(Vector3::One());
-		//model.Rotate(Vector3(time,0.0f,0.0f));
-		//model.Translate(Vector3::Zero());
-
-		Matrix4x4 view = Matrix4x4::LookAt(Vector3(4.0f, 3.0f, -3.0f), Vector3(0.0f, 0.0f, 0.0f), Vector3::Up());
-		Matrix4x4 projection = Matrix4x4::Perspective(45.0, 4.0f/3.0f, 0.1f, 100.0f);
-
-		//view = Quaternion::Euler(Vector3(30.96376, 306.8699, 0.0f)).GetRotationMatrix();
-
-		Quaternion rotation = Quaternion::Euler(Vector3(30.96376f, 306.8699f, 0.0f)); //Quaternion(0.8619729, 0.2387527, -0.4309864, 0.1193763);
-		Vector3 eulerAngles = rotation.GetEulerAngles();
-		Matrix4x4 rotMat = Matrix4x4::Identity();
-		rotMat.Translate(Vector3(4.0f, 3.0f, -3.0f));
-		rotMat *= rotation.GetRotationMatrix();
-			
-			
-		
-		
-
-		Matrix4x4 mvp =  aProjection * view * aModel;//aProjection * aView * aModel;
+		Matrix4x4 mvp =  aProjection * aView * aModel;
 
 		
 
@@ -162,7 +142,7 @@ namespace Engine
 
 
 		//Check for pre-existing errors
-		CheckForGLErrors(__FILE__, __LINE__);
+		//CheckForGLErrors(__FILE__, __LINE__);
 
 		if (!aMesh->IsUploaded() || !shader->UseShader())
 		{

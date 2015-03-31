@@ -230,7 +230,7 @@ namespace Engine
 			{
 				glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 			}
-
+        
 			//Set the profile
 			if (m_Profile == OpenGLProfile::ForwardCompatibility || m_Profile == OpenGLProfile::Compatibility)
 			{

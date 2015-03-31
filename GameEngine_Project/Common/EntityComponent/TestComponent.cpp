@@ -43,7 +43,7 @@ namespace Engine
 		DEBUG_LOG("Initialized %s", GetType().GetName().c_str());
 		Input * input = Input::Instance();
 		input->CreateAxis("Vertical", AxisCode::W, AxisCode::S);
-		input->CreateAxis("Horizontal", AxisCode::D, AxisCode::A);
+		input->CreateAxis("Horizontal", AxisCode::A, AxisCode::D);
 
 	}
 	void TestComponent::OnLateInitialize()
@@ -70,7 +70,7 @@ namespace Engine
 		{
 			m_Camera->SetFieldOfView(45.0f);
 			GameObject * gameObject = m_Camera->GetGameObject();
-			gameObject->SetPosition(Vector3(4.0f, 3.0f, -3.0f));
+			gameObject->SetPosition(Vector3(0.0f, 3.0f, -3.0f));
 			gameObject->LookAt(Vector3::Zero());
 
 
@@ -90,9 +90,6 @@ namespace Engine
 			fileStream.AddVector4("Projection[1]", Vector4(projection[1]));
 			fileStream.AddVector4("Projection[2]", Vector4(projection[2]));
 			fileStream.AddVector4("Projection[3]", Vector4(projection[3]));
-
-			
-
 		}
 
 		if (m_Renderer != nullptr)

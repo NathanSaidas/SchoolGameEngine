@@ -85,6 +85,11 @@ namespace Engine
         return glm::slerp(aFrom.Raw(), aTo.Raw(), aTime);
     }
 
+    Quaternion Quaternion::Identity()
+    {
+        return Quaternion(1.0f, 0.0f, 0.0f, 0.0f);
+    }
+
     Quaternion Quaternion::RotationBetween(Vector3 aStart, Vector3 aEnd)
     {
         glm::vec3 start = glm::normalize(aStart.Raw());
@@ -123,7 +128,7 @@ namespace Engine
 
     glm::quat Quaternion::Raw() const
     {
-        return glm::quat(x, y, z, w);
+        return glm::quat(w, x, y, z);
     }
 }
 

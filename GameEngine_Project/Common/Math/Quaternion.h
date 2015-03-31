@@ -26,6 +26,7 @@ namespace Engine
         static Quaternion LookRotation(const Vector3 & aLookDirection);
         static Quaternion LookRotation(const Vector3 & aLookDirection, const Vector3 & aDesiredUp);
         static Quaternion Slerp(const Quaternion & aFrom, const Quaternion & aTo, const Float32 & aTime);
+        static Quaternion Identity();
 
         static Quaternion RotationBetween(Vector3 aStart, Vector3 aEnd);
         

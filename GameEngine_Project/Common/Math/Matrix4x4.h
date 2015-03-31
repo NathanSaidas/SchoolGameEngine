@@ -28,9 +28,11 @@ namespace Engine
         static Matrix4x4 Rotate(const Matrix4x4 & aMatrix, const Vector3 & aRotation);
         static Matrix4x4 Ortho(const Float32 & aLeft, const Float32 & aRight, const Float32 & aTop, const Float32 & aBottom, const Float32 & aFar, const Float32 & aNear);
         static Matrix4x4 Perspective(const Float32 & aFOV, const Float32 & aAspectRatio, const Float32 & aNear, const Float32 & aFar);
-        static Matrix4x4 LookAt(const Vector3 & aCameraPosition, const Vector3 & aTargetPosition, const Vector3 & aUpDirection);
+        static Matrix4x4 LookAt(const Vector3 & aCameraPosition, const Vector3 & aDirection, const Vector3 & aUpDirection);
+        static Matrix4x4 LookAt(const Vector3 & aCameraPosition, const Vector3 & aDirection);
         static Matrix4x4 Identity();
 		static Matrix4x4 TRS(const Vector3 & aPosition, const Vector3 & aRotation, const Vector3 & aScale);
+        static Matrix4x4 TRS(const Vector3 & aPosition, const Quaternion & aRotation, const Vector3 & aScale);
         
         void Transpose();
         void Inverse();

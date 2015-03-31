@@ -67,8 +67,8 @@ namespace Engine
 		Vector3 GetPosition();
 		void SetPosition(Vector3 aPosition);
 
-		Vector3 GetRotation();
-		void SetRotation(Vector3 aRotation);
+		Quaternion GetRotation();
+        void SetRotation(Quaternion aRotation);
 
 		Vector3 GetScale();
 		void SetScale(Vector3 aScale);
@@ -76,8 +76,8 @@ namespace Engine
 		Vector3 GetLocalPosition();
 		void SetLocalPosition(Vector3 aLocalPosition);
 
-		Vector3 GetLocalRotation();
-		void SetLocalRotation(Vector3 aLocalRotation);
+        Quaternion GetLocalRotation();
+        void SetLocalRotation(Quaternion aLocalRotation);
 
 		Matrix4x4 GetLocalToWorldMatrix();
 
@@ -168,10 +168,10 @@ namespace Engine
 
 		//Transform Components
 		Vector3 m_Position;
-		Vector3 m_Rotation;
+        Quaternion m_Rotation;
 		Vector3 m_Scale;
 		Vector3 m_LocalPosition;
-		Vector3 m_LocalRotation;
+        Quaternion m_LocalRotation;
 
 	};
 
