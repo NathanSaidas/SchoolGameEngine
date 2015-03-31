@@ -2,6 +2,8 @@
 #define GAME_ENGINE_UTILITIES_H
 
 #include <vector>
+
+#include "StringExtensions.h"
 #include "Debug.h"
 #include "Array.h"
 #include "IniFileStream.h"
@@ -10,7 +12,7 @@
 
 namespace Engine
 {
-    void GetWords(std::string aString, std::vector<std::string> & aWords);
+    
 
 	namespace Utilities
 	{
@@ -40,6 +42,8 @@ namespace Engine
 			}
 			return false;
 		}
+
+		
 	}
 }
 

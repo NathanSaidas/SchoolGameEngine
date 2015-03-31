@@ -89,12 +89,12 @@ namespace Engine
 			return Vector3(1.0f, 1.0f, 1.0f);
 		}
 
+		std::string ToString();
     private:
 
     };
 
     TYPE_DEFINE(Vector3)
-    TYPE_DEFINE_PTR(Vector3*, "Vector3 Ptr")
 }
 
 #endif

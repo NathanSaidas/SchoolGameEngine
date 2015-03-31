@@ -40,6 +40,9 @@ namespace Engine
         static const char * OUT_OF_STACK_MEMORY;
         static const char * OUT_OF_POOL_MEMORY;
 
+		///Pointers
+		static const char * BAD_POINTER_COPY;
+
     };
 
 }

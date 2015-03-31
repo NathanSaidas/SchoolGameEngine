@@ -8,6 +8,9 @@
 namespace Engine
 {
 	class GameObject;
+	class Application;
+	class OpenGLWindow;
+	class Graphics;
 
 	class Scene : public Object
 	{
@@ -17,14 +20,14 @@ namespace Engine
 		~Scene();
 
 
-		void Update();
-		void FixedUpdate();
-		void PreRender();
-		void Render();
-		void PostRender();
+		
 
 		void Register(GameObject * aGameObject);
 		void Unregister(GameObject * aGameObject);
+
+
+		
+
 
 
 	private:
@@ -32,10 +35,26 @@ namespace Engine
 
 		std::vector<GameObject*> m_InitializationQueue;
 		std::vector<GameObject*> m_LateInitializationQueue;
+
+
+		void Update();
+		void FixedUpdate();
+		void PreRender();
+		void Render();
+		void PostRender();
+
+		void OnWindowFocus(OpenGLWindow * aWindow);
+		void OnWindowUnfocus(OpenGLWindow * aWindow);
+		void OnWindowClose(OpenGLWindow * aWindow);
+		void OnWindowChangeSize(OpenGLWindow * aWindow, int aWidth, int aHeight);
+
+		friend Application;
+		friend GameObject;
+		friend Graphics;
+
 	};
 
 	TYPE_DEFINE(Scene)
-	TYPE_DEFINE_PTR(Scene*, "Scene Ptr")
 }
 
 #endif

@@ -6,18 +6,18 @@
 #include "Mesh.h"
 #include "Shader.h"
 #include "Material.h"
+#include "../Memory/Memory.h"
 
 namespace Engine
 {
 	struct DrawCall
 	{
-		Matrix4x4 model;
-		Matrix4x4 projection;
-		Matrix4x4 view;
-		Mesh * mesh;
-		Material * material;
+		DrawCall(Matrix4x4 aModel, Pointer<Mesh> aMesh, Pointer<Material> aMaterial);
 
-		static DrawCall Create(Matrix4x4 aModel, Vector3 aCameraPosition, Vector3 aCameraTarget, Matrix4x4 aProjection, Mesh * aMesh, Material * aShader);
+
+		Matrix4x4 model;
+		Pointer<Mesh> mesh;
+		Pointer<Material> material;
 	};
 }
 

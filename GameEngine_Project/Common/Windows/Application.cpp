@@ -158,12 +158,15 @@ namespace Engine
 		{
 			return false;
 		}
+		
 
 		const GLubyte * renderer = glGetString(GL_RENDERER);
 		const GLubyte * version = glGetString(GL_VERSION);
 		DEBUG_LOG("Renderer: %s\nVersion: %s", renderer, version);
 
 		s_Instance->m_DefaultWindow = window;
+
+		Graphics::CheckForGLErrors(__FILE__, __LINE__);
 
 		return true;
 	}
@@ -227,6 +230,7 @@ namespace Engine
 			DEBUG_LOG("Window was null or has already been registered");
 		}
 	}
+	
 	void Application::UnregisterWindow(OpenGLWindow * aWindow)
 	{
 		if (aWindow != nullptr)
@@ -248,34 +252,43 @@ namespace Engine
 
 	OpenGLWindow * Application::GetWindow(const std::string & aName)
 	{
-		for (std::vector<OpenGLWindow*>::iterator it = m_Windows.begin(); it != m_Windows.end(); it++)
+		if (s_Instance != nullptr)
 		{
-			if ((*it)->GetName() == aName)
+			for (std::vector<OpenGLWindow*>::iterator it = s_Instance->m_Windows.begin(); it != s_Instance->m_Windows.end(); it++)
 			{
-				return *it;
+				if ((*it)->GetName() == aName)
+				{
+					return *it;
+				}
 			}
 		}
+
+		
 		return nullptr;
 	}
 
 	OpenGLWindow * Application::GetWindow(void * aHandle)
 	{
-		for (std::vector<OpenGLWindow*>::iterator it = m_Windows.begin(); it != m_Windows.end(); it++)
+		if (s_Instance != nullptr)
 		{
-			if ((*it)->GetHandle() == aHandle)
+			for (std::vector<OpenGLWindow*>::iterator it = s_Instance->m_Windows.begin(); it != s_Instance->m_Windows.end(); it++)
 			{
-				return *it;
+				if ((*it)->GetHandle() == aHandle)
+				{
+					return *it;
+				}
 			}
 		}
+		
 		return nullptr;
 	}
 	OpenGLWindow * Application::GetDefaultWindow()
 	{
-		return m_DefaultWindow;
+		return s_Instance != nullptr ? s_Instance->m_DefaultWindow : nullptr;
 	}
 	OpenGLWindow * Application::GetCurrentWindow()
 	{
-		return m_CurrentContext;
+		return s_Instance != nullptr ? s_Instance->m_CurrentContext : nullptr;
 	}
 
 
@@ -289,11 +302,11 @@ namespace Engine
 	}
 	void Application::OnMouseMoveEvent(GLFWwindow * aWindow, double aXPosition, double aYPosition)
 	{
-		Input::Instance()->ProcessMouseMove(aXPosition, aYPosition);
+		Input::Instance()->ProcessMouseMove((Float32)aXPosition, (Float32)aYPosition);
 	}
 	void Application::OnScrollEvent(GLFWwindow * aWindow, double aXOffset, double aYOffset)
 	{
-		Input::Instance()->ProcessMouseScroll(aXOffset, aYOffset);
+		Input::Instance()->ProcessMouseScroll((Float32)aXOffset, (Float32)aYOffset);
 	}
 	void Application::OnKeyEvent(GLFWwindow * aWindow, int aKey, int aScanCode, int aAction, int aMods)
 	{
@@ -305,38 +318,83 @@ namespace Engine
 	}
 	void Application::OnWindowFocus(GLFWwindow * aWindow, int aFocus)
 	{
+		if (s_Instance == nullptr && s_Instance->m_CurrentScene != nullptr)
+		{
+			return;
+		}
+		OpenGLWindow * window = s_Instance->GetWindow(aWindow);
 		if (aFocus == GL_TRUE)
 		{
-
+			s_Instance->m_CurrentScene->OnWindowFocus(window);
 		}
 		else
 		{
-			
+			s_Instance->m_CurrentScene->OnWindowUnfocus(window);
 		}
 	}
 	void Application::OnWindowClose(GLFWwindow * aWindow)
 	{
 		if (s_Instance != nullptr)
 		{
+			//Get the window from the Application vector.
 			OpenGLWindow * window = s_Instance->GetWindow(aWindow);
-			if (window == s_Instance->m_DefaultWindow)
+			//Notify the scene about the event.
+			if (s_Instance->m_CurrentScene != nullptr)
+			{
+				s_Instance->m_CurrentScene->OnWindowClose(window);
+			}
+
+			bool defaultWindowClose = window == s_Instance->m_DefaultWindow;
+
+			//If the default window is closing. Close the application.
+			if (defaultWindowClose)
 			{
 				s_Instance->Quit();
+			}
+			else //If the window being destroyed is the current context, bind the default window to the current context.
+			{
+				//Windows being destroyed must have their resources released externally since they can be allocated externally.
+				if (window == s_Instance->m_CurrentContext)
+				{
+					s_Instance->m_DefaultWindow->MakeCurrentContext();
+				}
 			}
 		}
 	}
 	void Application::OnWindowChangeSize(GLFWwindow * aWindow, int aWidth, int aHeight)
 	{
-
+		if (s_Instance != nullptr && s_Instance->m_CurrentScene != nullptr)
+		{
+			OpenGLWindow * window = s_Instance->GetWindow(aWindow);
+			s_Instance->m_CurrentScene->OnWindowChangeSize(window, aWidth, aHeight);
+			if (window != nullptr)
+			{
+				window->OnChangeSize(aWidth, aHeight);
+			}
+		}
 	}
 
 	void Application::Start()
 	{
+		//TODO: Find methods with InitializeOnStart attribute and invoke them.
+
 		//TODO: Write code to create gameobjects / scenes..
 		m_CurrentScene = MEM_POOL_ALLOC_T(Scene);
 
-		GameObject * gameObject = MEM_POOL_ALLOC_T(GameObject);
-		gameObject->AddComponent("TestComponent");
+
+		GameObject * testObject = NEW_POOL(GameObject)("Main Object");
+		testObject->AddComponent<TestComponent>();
+
+		GameObject * renderer = NEW_POOL(GameObject)("Renderer");
+		renderer->AddComponent<Renderer>();
+
+		GameObject * camera = NEW_POOL(GameObject)("Camera");
+		camera->AddComponent<Camera>();
+
+		renderer->SetParent(testObject);
+		camera->SetParent(testObject);
+
+
 	}
 
 	void Application::Update()
@@ -357,10 +415,10 @@ namespace Engine
 		}
 
 		m_CurrentScene->Update();
-		m_CurrentScene->PreRender(); //Gather Geometry
-		Graphics::Render();
-		m_CurrentScene->Render(); //Render Shadow Map Pass, Render Scene  => Give Final FBO for post processing
-		m_CurrentScene->PostRender();
+		//m_CurrentScene->PreRender(); //Gather Geometry
+		Graphics::Render(m_CurrentScene);
+		//m_CurrentScene->Render(); //Render Shadow Map Pass, Render Scene  => Give Final FBO for post processing
+		//m_CurrentScene->PostRender();
 
 
 		m_CurrentContext->SwapBuffers();

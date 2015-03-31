@@ -43,15 +43,18 @@ namespace Engine
 
 		static Scene * GetCurrentScene();
 
+		///Adds the window from the vector.
 		void RegisterWindow(OpenGLWindow * aWindow);
+		///Removes the window from the vector.
 		void UnregisterWindow(OpenGLWindow * aWindow);
+
 		void MakeCurrentContext(OpenGLWindow * aWindow);
 
 
-		OpenGLWindow * GetWindow(const std::string & aName);
-		OpenGLWindow * GetWindow(void * aHandle);
-		OpenGLWindow * GetDefaultWindow();
-		OpenGLWindow * GetCurrentWindow();
+		static OpenGLWindow * GetWindow(const std::string & aName);
+		static OpenGLWindow * GetWindow(void * aHandle);
+		static OpenGLWindow * GetDefaultWindow();
+		static OpenGLWindow * GetCurrentWindow();
 
 		
 
@@ -91,7 +94,6 @@ namespace Engine
 	};
 
 	TYPE_DEFINE(Application)
-	TYPE_DEFINE_PTR(Application*, "Applcation Ptr")
 }
 
 #endif

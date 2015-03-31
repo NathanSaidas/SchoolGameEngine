@@ -63,8 +63,6 @@ namespace Engine
 	
 	TYPE_DEFINE(object)
 	TYPE_DEFINE(Object)
-	TYPE_DEFINE_PTR(object*, "object Ptr")
-	TYPE_DEFINE_PTR(Object*, "Object Ptr")
 
 
 

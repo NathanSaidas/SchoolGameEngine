@@ -37,39 +37,83 @@ namespace Engine
 			m_LateInitializationQueue.clear();
 		}
 
+		void Scene::Register(GameObject * aGameObject)
+		{
+			if (!Utilities::Exists<GameObject*>(m_GameObjects, aGameObject))
+			{
+				aGameObject->OnRegistered();
+				m_GameObjects.push_back(aGameObject);
+				m_InitializationQueue.push_back(aGameObject);
+			}
+		}
+		void Scene::Unregister(GameObject * aGameObject)
+		{
+			Utilities::Remove<GameObject*>(m_GameObjects, aGameObject);
+		}
+
 
 		void Scene::Update()
 		{
-			for (std::vector<GameObject*>::iterator it = m_InitializationQueue.begin();m_InitializationQueue.size() > 0 && it != m_InitializationQueue.end();)
+			for (unsigned int i = 0; i < m_InitializationQueue.size();)
 			{
-				if ((*it)->IsActive())
+				GameObject * gameObject = m_InitializationQueue[i];
+
+				if (gameObject != nullptr && gameObject->IsActive())
 				{
-					(*it)->OnInitialize();
-					m_LateInitializationQueue.push_back(*it);
-					std::vector<GameObject*>::iterator prev = it;
-					it++;
-					m_InitializationQueue.erase(prev);
+					gameObject->OnInitialize();
+					m_LateInitializationQueue.push_back(gameObject);
+					m_InitializationQueue.erase(m_InitializationQueue.begin() + i);
 				}
 				else
 				{
-					it++;
+					i++;
 				}
 			}
 
-			for (std::vector<GameObject*>::iterator it = m_LateInitializationQueue.begin();m_LateInitializationQueue.size() > 0 && it != m_LateInitializationQueue.end();)
+			//for (std::vector<GameObject*>::iterator it = m_InitializationQueue.begin();m_InitializationQueue.size() > 0 && it != m_InitializationQueue.end();)
+			//{
+			//	if ((*it)->IsActive())
+			//	{
+			//		(*it)->OnInitialize();
+			//		m_LateInitializationQueue.push_back(*it);
+			//		std::vector<GameObject*>::iterator prev = it;
+			//		it++;
+			//		m_InitializationQueue.erase(prev);
+			//	}
+			//	else
+			//	{
+			//		it++;
+			//	}
+			//}
+
+			for (unsigned int i = 0; i < m_LateInitializationQueue.size();)
 			{
-				if ((*it)->IsActive())
+				GameObject * gameObject = m_LateInitializationQueue[i];
+				if (gameObject != nullptr && gameObject->IsActive())
 				{
-					(*it)->OnLateInitialize();
-					std::vector<GameObject*>::iterator prev = it;
-					it++;
-					m_LateInitializationQueue.erase(prev);
+					gameObject->OnLateInitialize();
+					m_LateInitializationQueue.erase(m_LateInitializationQueue.begin() + i);
 				}
 				else
 				{
-					it++;
+					i++;
 				}
 			}
+
+			//for (std::vector<GameObject*>::iterator it = m_LateInitializationQueue.begin();m_LateInitializationQueue.size() > 0 && it != m_LateInitializationQueue.end();)
+			//{
+			//	if ((*it)->IsActive())
+			//	{
+			//		(*it)->OnLateInitialize();
+			//		std::vector<GameObject*>::iterator prev = it;
+			//		it++;
+			//		m_LateInitializationQueue.erase(prev);
+			//	}
+			//	else
+			//	{
+			//		it++;
+			//	}
+			//}
 
 
 			for (std::vector<GameObject*>::iterator it = m_GameObjects.begin(); it != m_GameObjects.end(); it++)
@@ -133,18 +177,47 @@ namespace Engine
 			}
 		}
 
-		void Scene::Register(GameObject * aGameObject)
+		
+
+		void Scene::OnWindowFocus(OpenGLWindow * aWindow)
 		{
-			if (!Utilities::Exists<GameObject*>(m_GameObjects,aGameObject))
+			for (std::vector<GameObject*>::iterator it = m_GameObjects.begin(); it != m_GameObjects.end(); it++)
 			{
-				aGameObject->OnRegistered();
-				m_GameObjects.push_back(aGameObject);
-				m_InitializationQueue.push_back(aGameObject);
+				if ((*it)->IsActive())
+				{
+					(*it)->OnWindowFocus(aWindow);
+				}
 			}
 		}
-		void Scene::Unregister(GameObject * aGameObject)
+		void Scene::OnWindowUnfocus(OpenGLWindow * aWindow)
 		{
-			Utilities::Remove<GameObject*>(m_GameObjects, aGameObject);
+			for (std::vector<GameObject*>::iterator it = m_GameObjects.begin(); it != m_GameObjects.end(); it++)
+			{
+				if ((*it)->IsActive())
+				{
+					(*it)->OnWindowUnfocus(aWindow);
+				}
+			}
+		}
+		void Scene::OnWindowClose(OpenGLWindow * aWindow)
+		{
+			for (std::vector<GameObject*>::iterator it = m_GameObjects.begin(); it != m_GameObjects.end(); it++)
+			{
+				if ((*it)->IsActive())
+				{
+					(*it)->OnWindowClose(aWindow);
+				}
+			}
+		}
+		void Scene::OnWindowChangeSize(OpenGLWindow * aWindow, int aWidth, int aHeight)
+		{
+			for (std::vector<GameObject*>::iterator it = m_GameObjects.begin(); it != m_GameObjects.end(); it++)
+			{
+				if ((*it)->IsActive())
+				{
+					(*it)->OnWindowChangeSize(aWindow, aWidth, aHeight);
+				}
+			}
 		}
 
 	

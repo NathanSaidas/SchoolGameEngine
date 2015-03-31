@@ -174,6 +174,15 @@
     <ClCompile Include="..\..\Common\Graphics\Material.cpp">
       <Filter>Core\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Common\EntityComponent\Camera.cpp">
+      <Filter>Core\EntityComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\EntityComponent\Renderer.cpp">
+      <Filter>Core\EntityComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Utilities\StringExtensions.cpp">
+      <Filter>Core\Utilities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Common\Memory\AllocationInfo.h">
@@ -406,6 +415,24 @@
     </ClInclude>
     <ClInclude Include="..\..\Common\Graphics\Material.h">
       <Filter>Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\EntityComponent\Camera.h">
+      <Filter>Core\EntityComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\EntityComponent\Renderer.h">
+      <Filter>Core\EntityComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Memory\Pointer.h">
+      <Filter>Core\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Utilities\IniVector3.h">
+      <Filter>Core\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Utilities\StringExtensions.h">
+      <Filter>Core\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Utilities\IniVector4.h">
+      <Filter>Core\Utilities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

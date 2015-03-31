@@ -25,7 +25,6 @@ namespace Engine
 	};
 
 	TYPE_DEFINE(Geometry)
-	TYPE_DEFINE_PTR(Geometry*, "Geometry Ptr")
 }
 
 

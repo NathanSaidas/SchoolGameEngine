@@ -5,6 +5,8 @@
 /// -- January, 29, 2015 - Nathan Hanlan - Added System file.
 #pragma endregion
 
+/// -- Refer to Notes.txt
+
 #include "Func.h"
 #include "Method.h"
 #include "BasicTypes.h"

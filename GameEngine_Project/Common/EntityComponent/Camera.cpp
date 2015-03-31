@@ -1,0 +1,190 @@
+#include "Camera.h"
+#include "GameObject.h"
+#include "../Windows/Application.h"
+#include "../Graphics/Graphics.h"
+
+namespace Engine
+{
+	std::vector<Camera*> Camera::s_Cameras = std::vector<Camera*>();
+
+	CLASS_CPP(Camera,Component)
+	Camera::Camera() : Component()
+	{
+		AddCamera(this);
+
+		OpenGLWindow * window = Application::GetDefaultWindow();
+
+		SetViewport(0.0f, 0.0f, (Float32)window->GetWidth(), (Float32)window->GetHeight());
+		SetFieldOfView(60.0f);
+		SetSize(5.0f);
+		SetNear(0.1f);
+		SetFar(100.0f);
+		SetPerspective();
+
+	}
+	Camera::~Camera()
+	{
+		if (IsRegistered())
+		{
+			Graphics::UnregisterCamera(this);
+			m_IsRegistered = false;
+		}
+		RemoveCamera(this);
+	}
+
+	void Camera::Update()
+	{
+		Render();
+	}
+	void Camera::OnPostRender()
+	{
+		m_IsRegistered = false;
+	}
+	///Will register to the graphics engine to render the scene.
+	void Camera::Render()
+	{
+		if (!IsRegistered())
+		{
+			Graphics::RegisterCamera(this);
+			m_IsRegistered = true;
+		}
+	}
+
+	Matrix4x4 Camera::GetViewMatrix()
+	{
+		Quaternion rotation = Quaternion::Euler(GetGameObject()->GetRotation());
+		Vector3 lookPosition = GetGameObject()->GetPosition() + (rotation * Vector3::Forward());
+		DEBUG_LOG("Look Rotation: %s", lookPosition.ToString().c_str());
+		return Matrix4x4::LookAt(GetGameObject()->GetPosition(),lookPosition, Vector3::Up());
+	}
+
+	Matrix4x4 Camera::GetProjectionMatrix()
+	{
+		Matrix4x4 matrix = Matrix4x4::Identity();
+		OpenGLWindow * defaultWindow = Application::GetDefaultWindow();
+		if (defaultWindow == nullptr)
+		{
+			DEBUG_LOG("Failed to get projection matrix. Missing default window.");
+			return matrix;
+		}
+
+		Float32 windowWidth = (Float32)defaultWindow->GetWidth();
+		Float32 windowHeight = (Float32)defaultWindow->GetHeight();
+
+		if (m_IsOrtho)
+		{
+			//Calculate Width / Height
+			//h = w/h * size => 1.6 * size
+			//w = h/w * size => 0.6 * size
+			//Left -w/2
+			//Right w/2
+			//Top h/2
+			//Bottom -h/2
+
+			float width = windowWidth / windowHeight * m_Size * 0.5f;
+			float height = windowHeight / windowWidth * m_Size * 0.5f;
+			matrix = Matrix4x4::Ortho(-width, width, height, -height, m_Far, m_Near);
+		}
+		else
+		{
+			matrix = Matrix4x4::Perspective(m_FieldOfView, windowWidth / windowHeight, m_Near, m_Far);
+		}
+		return matrix;
+	}
+
+	void Camera::SetViewport(Float32 x, Float32 y, Float32 aWidth, Float32 aHeight)
+	{
+		m_ViewX = x;
+		m_ViewY = y;
+		m_ViewWidth = aWidth;
+		m_ViewHeight = aHeight;
+	}
+	void Camera::GetViewport(Float32 & x, Float32 & y, Float32 & aWidth, Float32 & aHeight)
+	{
+		x = m_ViewX;
+		y = m_ViewY;
+		aWidth = m_ViewWidth;
+		aHeight = m_ViewHeight;
+	}
+
+	void Camera::SetFieldOfView(Float32 aFieldOfView)
+	{
+		m_FieldOfView = aFieldOfView;
+	}
+
+	Float32 Camera::GetFieldOfView()
+	{
+		return m_FieldOfView;
+	}
+
+	void Camera::SetSize(Float32 aSize)
+	{
+		m_Size = aSize;
+	}
+	Float32 Camera::GetSize()
+	{
+		return m_Size;
+	}
+
+	void Camera::SetNear(Float32 aNear)
+	{
+		m_Near = aNear;
+	}
+	Float32 Camera::GetNear()
+	{
+		return m_Near;
+	}
+
+	void Camera::SetFar(Float32 aFar)
+	{
+		m_Far = aFar;
+	}
+	Float32 Camera::GetFar()
+	{
+		return m_Far;
+	}
+
+	void Camera::SetOrtho()
+	{
+		m_IsOrtho = true;
+	}
+	bool Camera::IsOrtho()
+	{
+		return m_IsOrtho;
+	}
+
+	void Camera::SetPerspective()
+	{
+		m_IsOrtho = false;
+	}
+
+	bool Camera::IsPerspective()
+	{
+		return !m_IsOrtho;
+	}
+
+	bool Camera::IsRegistered()
+	{
+		return m_IsRegistered;
+	}
+
+	Array<Camera*> Camera::GetCameras()
+	{
+		Array<Camera*> cameras;
+		Array<Camera*>::Copy(s_Cameras, cameras);
+		return cameras;
+	}
+
+	void Camera::AddCamera(Camera * aCamera)
+	{
+		if (!Utilities::Exists<Camera*>(s_Cameras, aCamera))
+		{
+			s_Cameras.push_back(aCamera);
+		}
+	}
+	
+	void Camera::RemoveCamera(Camera * aCamera)
+	{
+		Utilities::Remove<Camera*>(s_Cameras, aCamera);
+	}
+}

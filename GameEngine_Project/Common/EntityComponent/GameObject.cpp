@@ -10,18 +10,25 @@ namespace Engine
 
 	GameObject::GameObject()
 	{
-		m_Name = "";
+		m_Name = "New GameObject";
 		m_Tag = "";
 		m_RenderMask = 0;
 		m_PhysicsMask = 0;
 		m_IsActive = true;
 		m_Parent = nullptr;
+		m_Position = Vector3::Zero();
+		m_Rotation = Vector3::Zero();
+		m_Scale = Vector3::One();
+		m_LocalPosition = Vector3::Zero();
+		m_LocalRotation = Vector3::Zero();
 
 		Scene * scene = Application::GetCurrentScene();
 		if (scene != nullptr)
 		{
 			scene->Register(this);
 		}
+
+		
 
 	}
 	GameObject::GameObject(const std::string & aName)
@@ -32,11 +39,18 @@ namespace Engine
 		m_PhysicsMask = 0;
 		m_IsActive = true;
 		m_Parent = nullptr;
+		m_Position = Vector3::Zero();
+		m_Rotation = Vector3::Zero();
+		m_Scale = Vector3::One();
+		m_LocalPosition = Vector3::Zero();
+		m_LocalRotation = Vector3::Zero();
+
 		Scene * scene = Application::GetCurrentScene();
 		if (scene != nullptr)
 		{
 			scene->Register(this);
 		}
+		
 	}
 	GameObject::~GameObject()
 	{
@@ -149,6 +163,23 @@ namespace Engine
 		}
 	}
 
+	void GameObject::OnWindowFocus(OpenGLWindow * aWindow)
+	{
+
+	}
+	void GameObject::OnWindowUnfocus(OpenGLWindow * aWindow)
+	{
+
+	}
+	void GameObject::OnWindowClose(OpenGLWindow * aWindow)
+	{
+
+	}
+	void GameObject::OnWindowChangeSize(OpenGLWindow * aWindow, int aWidth, int aHeight)
+	{
+
+	}
+
 	void GameObject::SetActive(bool aFlag)
 	{
 		if (!m_IsActive && aFlag)
@@ -170,7 +201,7 @@ namespace Engine
 	{
 		return m_Name;
 	}
-	void GameObject::SetName(const std::string & aName)
+	void GameObject::SetName(std::string aName)
 	{
 		m_Name = aName;
 	}
@@ -179,7 +210,7 @@ namespace Engine
 	{
 		return m_Tag;
 	}
-	void GameObject::SetTag(const std::string & aTag)
+	void GameObject::SetTag(std::string aTag)
 	{
 		m_Tag = aTag;
 	}
@@ -208,14 +239,106 @@ namespace Engine
 	}
 	void GameObject::SetParent(GameObject * aParent)
 	{
+		if (m_Parent != nullptr)
+		{
+			m_Parent->RemoveChild(this);
+		}
 		m_Parent = aParent;
+		if (m_Parent != nullptr)
+		{
+			m_Parent->AddChild(this);
+		}
 	}
+
+	Vector3 GameObject::GetPosition()
+	{
+		return m_Position;
+	}
+	void GameObject::SetPosition(Vector3 aPosition)
+	{
+		m_Position = aPosition;
+	}
+
+	Vector3 GameObject::GetRotation()
+	{
+		return m_Rotation;
+	}
+	void GameObject::SetRotation(Vector3 aRotation)
+	{
+		m_Rotation = aRotation;
+	}
+
+	Vector3 GameObject::GetScale()
+	{
+		return m_Scale;
+	}
+
+	void GameObject::SetScale(Vector3 aScale)
+	{
+		m_Scale = aScale;
+	}
+
+	Vector3 GameObject::GetLocalPosition()
+	{
+		return m_LocalPosition;
+	}
+	void GameObject::SetLocalPosition(Vector3 aLocalPosition)
+	{
+		m_LocalPosition = aLocalPosition;
+	}
+
+	Vector3 GameObject::GetLocalRotation()
+	{
+		return m_LocalRotation;
+	}
+	void GameObject::SetLocalRotation(Vector3 aLocalRotation)
+	{
+		m_LocalRotation = aLocalRotation;
+	}
+
+	Matrix4x4 GameObject::GetLocalToWorldMatrix()
+	{
+		Matrix4x4 matrix = Matrix4x4::Identity();
+		if (m_Parent != nullptr)
+		{
+			matrix = m_Parent->GetLocalToWorldMatrix();
+			matrix *= Matrix4x4::TRS(m_Position, m_Rotation, m_Scale);
+		}
+		else
+		{
+			matrix = Matrix4x4::TRS(m_Position, m_Rotation, m_Scale);
+		}
+		return matrix;
+	}
+
+	void GameObject::LookAt(Vector3 aPosition)
+	{
+		Vector3 direction = aPosition - GetPosition();
+		direction.Normalize();
+
+		DEBUG_LOG("Direction: %s", direction.ToString().c_str());
+
+		m_Rotation = Quaternion::LookRotation(direction).GetEulerAngles();
+
+		DEBUG_LOG("Euler Rotation: %s", m_Rotation.ToString().c_str());
+	}
+
 	
 	void GameObject::AddChild(GameObject * aChild)
 	{
-		if (!Utilities::Exists<GameObject*>(m_Children, aChild))
+		if (aChild != nullptr && aChild != this)
 		{
-			m_Children.push_back(aChild);
+			if (!Utilities::Exists<GameObject*>(m_Children, aChild))
+			{
+				m_Children.push_back(aChild);
+
+				if (aChild->m_Parent != this)
+				{
+					aChild->m_Parent->RemoveChild(aChild);
+					aChild->m_Parent = this;
+				}
+
+			}
 		}
 	}
 	void GameObject::AddChildren(const std::vector<GameObject*> & aChildren)
@@ -246,7 +369,10 @@ namespace Engine
 	}
 	void GameObject::RemoveChild(GameObject * aChild)
 	{
-		Utilities::Remove<GameObject*>(m_Children, aChild);
+		if (aChild != this)
+		{
+			Utilities::Remove<GameObject*>(m_Children, aChild);
+		}
 	}
 	void GameObject::RemoveChildren(const std::vector<GameObject*> & aChildren)
 	{

@@ -35,6 +35,8 @@ namespace Engine
         GLuint m_IBO;
         bool m_Allocated;
     };
+
+	TYPE_DEFINE(PrimitiveShapeBuffer)
 }
 
 #endif

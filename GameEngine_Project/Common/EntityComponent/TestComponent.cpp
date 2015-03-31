@@ -13,95 +13,109 @@ namespace Engine
 	}
 	TestComponent::~TestComponent()
 	{
-		Shader * shader = m_Material->GetShader();
-		Texture * texture = m_Material->GetTexture();
 
-		texture->Free();
-		MEM_POOL_DEALLOC_T(texture, Texture);
-		shader->Release();
-		MEM_POOL_DEALLOC_T(shader, Shader);
-		MEM_POOL_DEALLOC_T(m_Material, Material);
-		m_Cube->Release(true);
-		MEM_POOL_DEALLOC_T(m_Cube, Mesh);
-		m_Plane->Release(true);
-		MEM_POOL_DEALLOC_T(m_Plane, Mesh);
-
-		MEM_POOL_DEALLOC_T(m_File, IniFileStream);
 	}
 
 	void TestComponent::OnRegister()
 	{
 		DEBUG_LOG("\n\n");
 		DEBUG_LOG("Registered %s", GetType().GetName().c_str());
+	
+		Pointer<Shader> shader = m_Material->GetShader();
+		shader->SetName("Default Shader");
+		shader->Load("DefaultShader.glsl");
+
+		Pointer<Texture> texture = m_Material->GetTexture();
+		texture->SetName("Wall");
+		texture->Load("Wall.png");
+		texture->Upload();
+
+		m_Mesh.MakeUnique(Geometry::CreateCube(2.0f, 2.0f, 2.0f, Color::Crimson(), Memory::AllocatorType::Pool));
+		//m_Mesh.MakeUnique(Geometry::CreatePlane(1.0f, 1.0f, Color::Crimson(), Memory::AllocatorType::Pool));
+
+
+		m_Material->SetName("Default Diffuse");
+
 	}
 	
 	void TestComponent::OnInitialize()
 	{
 		DEBUG_LOG("Initialized %s", GetType().GetName().c_str());
-		m_Material = MEM_POOL_ALLOC_T(Material);
-
-		Shader * shader = MEM_POOL_ALLOC_T(Shader);
-		shader->SetName("Default Shader");
-		shader->Load("DefaultShader.glsl");
-		shader->ReleaseFile();
-		shader->UseShader();
-
-
-		Texture * texture = MEM_POOL_ALLOC_T(Texture);
-		texture->SetName("Wall");
-		texture->Load("Wall4.png");
-		texture->Upload(true);
-
-
-		m_Material->SetName("TestComponent");
-		m_Material->SetShader(shader);
-		m_Material->SetTexture(texture);
-
-
-
-		//m_Mesh = Geometry::CreatePlane(10.0f, 10.0f, Color::White(), Memory::AllocatorType::Pool);
-		m_Cube = Geometry::CreateCube(1.0f, 1.0f, 1.0f, Color::Crimson(), Memory::AllocatorType::Pool);
-		m_Plane = Geometry::CreatePlane(10.0f, 10.0f, Color::White(),Memory::AllocatorType::Pool);
-
-
-		m_File = MEM_POOL_ALLOC_T(IniFileStream);
-		m_File->SetPath("Settings.ini");
-		m_File->Read();
-
-		if (!m_File->BindSection("TestComponent"))
-		{
-			m_File->AddSection("TestComponent");
-			m_File->BindSection("TestComponent");
-			float defaultPos = 0.0f;
-
-			m_File->AddFloat("xPos", defaultPos);
-			m_File->AddFloat("yPos", defaultPos);
-			m_File->AddFloat("zPos", defaultPos);
-
-			m_File->AddFloat("xRot", defaultPos);
-			m_File->AddFloat("yRot", defaultPos);
-			m_File->AddFloat("zRot", defaultPos);
-
-			m_File->Save();
-		}
-
-		if (!m_File->BindSection("Color"))
-		{
-			m_File->AddSection("Color");
-			m_File->BindSection("Color");
-
-			Color color = Color(1.0f, 0.5f, 0.25f, 1.0f);
-
-			m_File->AddFloat("red", color.r);
-			m_File->AddFloat("green", color.g);
-			m_File->AddFloat("blue", color.b);
-			m_File->Save();
-		}
+		Input * input = Input::Instance();
+		input->CreateAxis("Vertical", AxisCode::W, AxisCode::S);
+		input->CreateAxis("Horizontal", AxisCode::D, AxisCode::A);
 
 	}
 	void TestComponent::OnLateInitialize()
 	{
 		DEBUG_LOG("Late Initialization %s", GetType().GetName().c_str());
+
+		m_Camera = GetComponentInChildren<Camera>();
+		m_Renderer = GetComponentInChildren<Renderer>();
+
+		IniFileStream fileStream;
+		fileStream.SetPath("Log.ini");
+
+		fileStream.AddSection("Default");
+		fileStream.BindSection("Default");
+		
+		Matrix4x4 identity = Matrix4x4::Identity();
+		fileStream.AddVector4("Identity[0]", Vector4(identity[0]));
+		fileStream.AddVector4("Identity[1]", Vector4(identity[1]));
+		fileStream.AddVector4("Identity[2]", Vector4(identity[2]));
+		fileStream.AddVector4("Identity[3]", Vector4(identity[3]));
+
+		
+		if (m_Camera != nullptr)
+		{
+			m_Camera->SetFieldOfView(45.0f);
+			GameObject * gameObject = m_Camera->GetGameObject();
+			gameObject->SetPosition(Vector3(4.0f, 3.0f, -3.0f));
+			gameObject->LookAt(Vector3::Zero());
+
+
+			Matrix4x4 view = m_Camera->GetViewMatrix();
+			Matrix4x4 projection = m_Camera->GetProjectionMatrix();
+
+
+
+			fileStream.AddSection("Camera");
+			fileStream.BindSection("Camera");
+			fileStream.AddVector3("Position", gameObject->GetPosition());
+			fileStream.AddVector4("View[0]", Vector4(view[0]));
+			fileStream.AddVector4("View[1]", Vector4(view[1]));
+			fileStream.AddVector4("View[2]", Vector4(view[2]));
+			fileStream.AddVector4("View[3]", Vector4(view[3]));
+			fileStream.AddVector4("Projection[0]", Vector4(projection[0]));
+			fileStream.AddVector4("Projection[1]", Vector4(projection[1]));
+			fileStream.AddVector4("Projection[2]", Vector4(projection[2]));
+			fileStream.AddVector4("Projection[3]", Vector4(projection[3]));
+
+			
+
+		}
+
+		if (m_Renderer != nullptr)
+		{
+			m_Renderer->SetMaterial(m_Material);
+			m_Renderer->SetMesh(m_Mesh);
+
+			GameObject * gameObject = m_Renderer->GetGameObject();
+			
+			Matrix4x4 model = gameObject->GetLocalToWorldMatrix();
+
+			fileStream.AddSection("Renderer");
+			fileStream.BindSection("Renderer");
+			fileStream.AddVector3("Position", gameObject->GetPosition());
+			fileStream.AddVector4("Model[0]", Vector4(model[0]));
+			fileStream.AddVector4("Model[1]", Vector4(model[1]));
+			fileStream.AddVector4("Model[2]", Vector4(model[2]));
+			fileStream.AddVector4("Model[3]", Vector4(model[3]));
+
+		}
+
+		fileStream.Save();
+
 	}
 	
 	void TestComponent::OnDestroy()
@@ -116,10 +130,19 @@ namespace Engine
 	void TestComponent::Update()
 	{
 		Input * input = Input::Instance();
-		if (input->GetKeyDown(KeyCode::T))
+		
+		float v = input->GetAxis("Vertical");
+		float h = input->GetAxis("Horizontal");
+
+		if (m_Camera != nullptr)
 		{
-			OpenGLWindow * currentWindow = Application::GetInstance()->GetCurrentWindow();
-			DEBUG_LOG("Aspect Ratio: %f", currentWindow->GetWidth() / currentWindow->GetHeight());
+			GameObject * renderer = m_Renderer->GetGameObject();
+			Vector3 rendererPosition = renderer->GetPosition();
+
+			rendererPosition.x += h * Time::GetDeltaTime();
+			rendererPosition.z += v * Time::GetDeltaTime();
+
+			renderer->SetPosition(rendererPosition);
 		}
 
 	}
@@ -134,74 +157,7 @@ namespace Engine
 	
 	void TestComponent::OnPreRender()
 	{
-		m_File->Read();
-
-		Vector3 position = Vector3::Zero();
-		Vector3 rotation = Vector3::Zero();
-		Color color = Color(0.0f, 0.0f, 0.0f, 1.0f);
-
-		if (m_File->BindSection("TestComponent"))
-		{
-			position.x = m_File->GetFloat("xPos").GetValue();
-			position.y = m_File->GetFloat("yPos").GetValue();
-			position.z = m_File->GetFloat("zPos").GetValue();
-
-			rotation.x = m_File->GetFloat("xRot").GetValue();
-			rotation.y = m_File->GetFloat("yRot").GetValue();
-			rotation.z = m_File->GetFloat("zRot").GetValue();
-
-
-		}
-
-		if (m_File->BindSection("Color"))
-		{
-			color.r = m_File->GetFloat("red").GetValue();
-			color.g = m_File->GetFloat("green").GetValue();
-			color.b = m_File->GetFloat("blue").GetValue();
-		}
-
-		Matrix4x4 model;
-		Matrix4x4 view;
-		Matrix4x4 projection;
-
-		//glFrontFace(GL_CW);
-
-		Graphics::SetBackgroundColor(color);
-		//Graphics::DrawMesh(model,view, projection, m_Cube, m_Shader);
-
-
-		//projection = Matrix4x4::Perspective(60.0f, 4.0f/3.0f, 0.1f, 100.0f);
-		projection = Matrix4x4::Perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
-		view = Matrix4x4::LookAt(Vector3(0.0f, 15, -15), Vector3(0.0f, 0.0f, 0.0f), Vector3::Up());
-
-		model.SetIdentity();
-		model.Scale(Vector3::One() * 2.0f);
-		model.Translate(Vector3(2.0f,2.0f,-1.0f));
-		//Graphics::DrawMesh(model, view, projection, m_Cube, m_Shader);
-		DrawCall cubeOne = DrawCall::Create(model, Vector3(0.0f, 15, -15), Vector3(0.0f, 0.0f, 0.0f), projection, m_Cube, m_Material);
-
-		model.SetIdentity();
-		model.Scale(Vector3::One() * 2.0f);
-		model.Translate(Vector3(-2.0f, 2.0f, -1.0f));
-		//Graphics::DrawMesh(model, view, projection, m_Cube, m_Shader);
-		DrawCall cubeTwo = DrawCall::Create(model, Vector3(0.0f, 15, -15), Vector3(0.0f, 0.0f, 0.0f), projection, m_Cube, m_Material);
-
-		model.SetIdentity();
-		model.Scale(Vector3::One() * 2.0f);
-		model.Translate(Vector3(0.0f, 4.0f, 0.0f));
-		//Graphics::DrawMesh(model, view, projection, m_Cube, m_Shader);
-		DrawCall cubeThree = DrawCall::Create(model, Vector3(0.0f, 15, -15), Vector3(0.0f, 0.0f, 0.0f), projection, m_Cube, m_Material);
-
-		model.SetIdentity();
-		model.Scale(Vector3::One() * 1.0f);
-		model.Translate(Vector3(0.0f, 0.0f, 0.0f));
-		//Graphics::DrawMesh(model, view, projection, m_Plane, m_Shader);
-		DrawCall plane = DrawCall::Create(model, Vector3(0.0f, 15, -15), Vector3(0.0f, 0.0f, 0.0f), projection, m_Plane, m_Material);
-
-		Graphics::DrawMesh(cubeOne);
-		Graphics::DrawMesh(cubeTwo);
-		Graphics::DrawMesh(cubeThree);
-		Graphics::DrawMesh(plane);
+		
 	}
 	void TestComponent::OnRender()
 	{

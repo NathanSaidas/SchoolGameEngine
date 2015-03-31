@@ -75,7 +75,6 @@ namespace Engine
     };
 
     TYPE_DEFINE(Mesh)
-    TYPE_DEFINE_PTR(Mesh*, "Mesh Ptr")
 
 }
 

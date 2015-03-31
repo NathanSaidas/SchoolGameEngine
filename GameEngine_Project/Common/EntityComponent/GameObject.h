@@ -3,10 +3,13 @@
 
 #include "../BasicTypes.h"
 #include "../Utilities/Utilities.h"
+#include "../Math/Math.h"
 #include "Component.h"
 
 namespace Engine
 {
+	class OpenGLWindow;
+
 
 
 	class GameObject : public object
@@ -38,14 +41,19 @@ namespace Engine
 		void OnRender();
 		void OnPostRender();
 
+		void OnWindowFocus(OpenGLWindow * aWindow);
+		void OnWindowUnfocus(OpenGLWindow * aWindow);
+		void OnWindowClose(OpenGLWindow * aWindow);
+		void OnWindowChangeSize(OpenGLWindow * aWindow, int aWidth, int aHeight);
+
 		void SetActive(bool aFlag);
 		bool IsActive();
 
 		std::string GetName();
-		void SetName(const std::string & aName);
+		void SetName(std::string aName);
 
 		std::string GetTag();
-		void SetTag(const std::string & aTag);
+		void SetTag(std::string aTag);
 
 		int GetRenderMask();
 		void SetRenderMask(int aMask);
@@ -55,6 +63,25 @@ namespace Engine
 
 		GameObject * GetParent();
 		void SetParent(GameObject * aParent);
+
+		Vector3 GetPosition();
+		void SetPosition(Vector3 aPosition);
+
+		Vector3 GetRotation();
+		void SetRotation(Vector3 aRotation);
+
+		Vector3 GetScale();
+		void SetScale(Vector3 aScale);
+
+		Vector3 GetLocalPosition();
+		void SetLocalPosition(Vector3 aLocalPosition);
+
+		Vector3 GetLocalRotation();
+		void SetLocalRotation(Vector3 aLocalRotation);
+
+		Matrix4x4 GetLocalToWorldMatrix();
+
+		void LookAt(Vector3 aPosition);
 		
 		void AddChild(GameObject * aChild);
 		void AddChildren(const std::vector<GameObject*> & aChildren);
@@ -64,6 +91,7 @@ namespace Engine
 		void RemoveChild(GameObject * aChild);
 		void RemoveChildren(const std::vector<GameObject*> & aChildren);
 		void RemoveChildren(const Array<GameObject*> & aChildren);
+
 		//
 		//
 		////Component Getters
@@ -137,11 +165,17 @@ namespace Engine
 		GameObject * m_Parent;
 		std::vector<GameObject*> m_Children;
 		std::vector<Component*> m_Components;
+
+		//Transform Components
+		Vector3 m_Position;
+		Vector3 m_Rotation;
+		Vector3 m_Scale;
+		Vector3 m_LocalPosition;
+		Vector3 m_LocalRotation;
+
 	};
 
 	TYPE_DEFINE(GameObject)
-	TYPE_DEFINE_PTR(GameObject*,"GameObject Ptr")
-
 }
 
 #endif

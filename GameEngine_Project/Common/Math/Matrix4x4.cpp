@@ -85,6 +85,15 @@ namespace Engine
         return mat;
     }
 
+	Matrix4x4 Matrix4x4::TRS(const Vector3 & aPosition, const Vector3 & aRotation, const Vector3 & aScale)
+	{
+		Matrix4x4 mat = Matrix4x4::Identity();
+		mat.Scale(aScale);
+		mat.Rotate(aRotation);
+		mat.Translate(aPosition);
+		return mat;
+	}
+
     void Matrix4x4::Transpose()                                                  
     {
         *this = Matrix4x4(glm::transpose(Raw()));

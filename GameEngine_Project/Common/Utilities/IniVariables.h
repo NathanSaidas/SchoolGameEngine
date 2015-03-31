@@ -7,12 +7,16 @@
 #include "../BasicTypes.h"
 #include "Debug.h"
 
+
+
 namespace Engine
 {
 	const static string INI_BOOL = "Inibool";
 	const static string INI_INT = "Iniint";
 	const static string INI_FLOAT = "Inifloat";
 	const static string INI_STRING = "Inistring";
+	const static string INI_VECTOR_3 = "IniVector3";
+	const static string INI_VECTOR_4 = "IniVector4";
 	const static string INI_BAD_VARIABLE_NAME = "BAD_NAME";
 
 
@@ -221,11 +225,6 @@ namespace Engine
 	TYPE_DEFINE(IniInt);
 	TYPE_DEFINE(IniFloat);
 	TYPE_DEFINE(IniString);
-
-	TYPE_DEFINE_PTR(IniBool*, "IniBool Ptr");
-	TYPE_DEFINE_PTR(IniInt*, "IniInt Ptr");
-	TYPE_DEFINE_PTR(IniFloat*, "IniFloat Ptr");
-	TYPE_DEFINE_PTR(IniString*, "IniString Ptr");
 	
 }
 

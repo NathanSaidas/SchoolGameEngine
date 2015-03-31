@@ -58,7 +58,6 @@ namespace Engine
     };
 
     TYPE_DEFINE(Vector4)
-    TYPE_DEFINE_PTR(Vector4*, "Vector4 Ptr")
 }
 
 #endif

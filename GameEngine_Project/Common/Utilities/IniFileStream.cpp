@@ -29,9 +29,9 @@ namespace Engine
         }
 
 		//Parse each line in the line buffer
-        string line; 
+        std::string line; 
 		//Parse each variable line into words to get the typename, variable name, and value
-        std::vector<string> words; 
+        std::vector<std::string> words; 
 
         while (std::getline(fileStream, line))
         {
@@ -43,7 +43,7 @@ namespace Engine
 			//Section Defined
             if (line[0] == '[')
             {
-                string sectionName = line.substr(1, line.size() - 2);
+                std::string sectionName = line.substr(1, line.size() - 2);
                 
                 AddSection(sectionName);
                 BindSection(sectionName);
@@ -56,16 +56,19 @@ namespace Engine
 			//Variable Defined
             else
             {
-                GetWords(line, words);
-                if (words.size() != 4)
+                Utilities::GetWords(line, words);
+                if (!(
+					words.size() == 4 || 
+					words.size() == 9 || 
+					words.size() == 11))
                 {
                     DEBUG_LOG("Error reading line");
                 }
                 else
                 {
-                    string typeName = words[0];
-                    string variableName = words[1];
-                    string variableValue = words[3];
+                    std::string typeName = words[0];
+                    std::string variableName = words[1];
+                    std::string variableValue = words[3];
 
                     if (typeName == "int")
                     {
@@ -86,6 +89,24 @@ namespace Engine
                     {
                         AddString(variableName, variableValue);
                     }
+					else if (typeName == "Vector3")
+					{
+						Vector3 vec;
+						vec.x = Utilities::S2F(words[4]);
+						vec.y = Utilities::S2F(words[6]);
+						vec.z = Utilities::S2F(words[8]);
+						AddVector3(variableName, vec);
+					}
+					else if (typeName == "Vector4")
+					{
+						Vector4 vec;
+
+						vec.x = Utilities::S2F(words[4]);
+						vec.y = Utilities::S2F(words[6]);
+						vec.z = Utilities::S2F(words[8]);
+						vec.w = Utilities::S2F(words[10]);
+						AddVector4(variableName, vec);
+					}
                     else
                     {
                         DEBUG_LOG("Unsupported type %s", typeName);
@@ -153,7 +174,7 @@ namespace Engine
 	/// </summary>
 	/// <param name="aSectionName">The name of the section.</param>
 	/// <returns> Returns false if a section with the name already exists. </returns>
-	bool IniFileStream::AddSection(const string & aSectionName)
+	bool IniFileStream::AddSection(const std::string & aSectionName)
 	{
 		for (std::vector<IniSection*>::iterator it = m_Sections.begin(); it != m_Sections.end(); it++)
 		{
@@ -173,7 +194,7 @@ namespace Engine
 	/// </summary>
 	/// <param name="aSectionName">The name of the section.</param>
 	/// <returns> Returns false if a section with the name does not exist. </returns>
-	bool IniFileStream::RemoveSection(const string & aSectionName)
+	bool IniFileStream::RemoveSection(const std::string & aSectionName)
 	{
 		for (std::vector<IniSection*>::iterator it = m_Sections.begin(); it != m_Sections.end(); it++)
 		{
@@ -193,7 +214,7 @@ namespace Engine
 	/// </summary>
 	/// <param name="aSectionName">The name of the section.</param>
 	/// <returns> Returns false if a section with the name does not exist. </returns>
-	bool IniFileStream::BindSection(const string & aSectionName)
+	bool IniFileStream::BindSection(const std::string & aSectionName)
 	{
 		for (std::vector<IniSection*>::iterator it = m_Sections.begin(); it != m_Sections.end(); it++)
 		{
@@ -211,7 +232,7 @@ namespace Engine
 	/// Retrieves the names of the sections.
 	/// </summary>
 	/// <param name="aSectionNames">The name of the section.</param>
-	void IniFileStream::GetSectionNames(std::vector<string> & aSectionNames)
+	void IniFileStream::GetSectionNames(std::vector<std::string> & aSectionNames)
 	{
 		for (std::vector<IniSection*>::iterator it = m_Sections.begin(); it != m_Sections.end(); it++)
 		{
@@ -220,67 +241,90 @@ namespace Engine
 	}
 
 	// -- Creates a new variable with the name and value. 
-	void IniFileStream::AddBool(const string & aVariableName, bool & aValue)
+	void IniFileStream::AddBool(const std::string & aVariableName, bool aValue)
 	{
 		if (m_BoundSection != nullptr)
 		{
 			m_BoundSection->AddBool(aVariableName, aValue);
 		}
 	}
-	void IniFileStream::AddInt(const string & aVariableName, int & aValue)
+	void IniFileStream::AddInt(const std::string & aVariableName, int aValue)
 	{
 		if (m_BoundSection != nullptr)
 		{
 			m_BoundSection->AddInt(aVariableName, aValue);
 		}
 	}
-	void IniFileStream::AddFloat(const string & aVariableName, float & aValue)
+	void IniFileStream::AddFloat(const std::string & aVariableName, float aValue)
 	{
 		if (m_BoundSection != nullptr)
 		{
 			m_BoundSection->AddFloat(aVariableName, aValue);
 		}
 	}
-	void IniFileStream::AddString(const string & aVariableName, string & aValue)
+	void IniFileStream::AddString(const std::string & aVariableName, std::string aValue)
 	{
 		if (m_BoundSection != nullptr)
 		{
 			m_BoundSection->AddString(aVariableName, aValue);
 		}
 	}
+	void IniFileStream::AddVector3(const std::string & aVariableName, Vector3 aValue)
+	{
+		if (m_BoundSection != nullptr)
+		{
+			m_BoundSection->AddVector3(aVariableName, aValue);
+		}
+	}
+	void IniFileStream::AddVector4(const std::string & aVariableName, Vector4 aValue)
+	{
+		if (m_BoundSection != nullptr)
+		{
+			m_BoundSection->AddVector4(aVariableName, aValue);
+		}
+	}
 
 	// -- Searches for a variable by name in the currently bound section
-	IniBool IniFileStream::GetBool(const string & aVariableName)
+	IniBool IniFileStream::GetBool(const std::string & aVariableName)
 	{
 		return m_BoundSection != nullptr ? m_BoundSection->GetBool(aVariableName) : IniBool(INI_BAD_VARIABLE_NAME);
 	}
-	IniInt IniFileStream::GetInt(const string & aVariableName)
+	IniInt IniFileStream::GetInt(const std::string & aVariableName)
 	{
         return m_BoundSection != nullptr ? m_BoundSection->GetInt(aVariableName) : IniInt(INI_BAD_VARIABLE_NAME);
 	}
-	IniFloat IniFileStream::GetFloat(const string & aVariableName)
+	IniFloat IniFileStream::GetFloat(const std::string & aVariableName)
 	{
         return m_BoundSection != nullptr ? m_BoundSection->GetFloat(aVariableName) : IniFloat(INI_BAD_VARIABLE_NAME);
 	}
-	IniString IniFileStream::GetString(const string & aVariableName)
+	IniString IniFileStream::GetString(const std::string & aVariableName)
 	{
         return m_BoundSection != nullptr ? m_BoundSection->GetString(aVariableName) : IniString(INI_BAD_VARIABLE_NAME);
 	}
+	IniVector3 IniFileStream::GetVector3(const std::string & aVariableName)
+	{
+		return m_BoundSection != nullptr ? m_BoundSection->GetVector3(aVariableName) : IniVector3(INI_BAD_VARIABLE_NAME);
+	}
 
-	bool IniFileStream::RemoveVariable(const string & aVariableName)
+	IniVector4 IniFileStream::GetVector4(const std::string & aVariableName)
+	{
+		return m_BoundSection != nullptr ? m_BoundSection->GetVector4(aVariableName) : IniVector4(INI_BAD_VARIABLE_NAME);
+	}
+
+	bool IniFileStream::RemoveVariable(const std::string & aVariableName)
 	{
 		return m_BoundSection != nullptr ? m_BoundSection->RemoveVariable(aVariableName) : false;
 	}
-	bool IniFileStream::VariableExists(const string & aVariableName)
+	bool IniFileStream::VariableExists(const std::string & aVariableName)
 	{
 		return m_BoundSection != nullptr ? m_BoundSection->VariableExists(aVariableName) : false;
 	}
 
-	string IniFileStream::GetPath()
+	std::string IniFileStream::GetPath()
 	{
 		return m_Path;
 	}
-	void IniFileStream::SetPath(const string & aPath)
+	void IniFileStream::SetPath(const std::string & aPath)
 	{
 		m_Path = aPath;
 	}

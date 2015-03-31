@@ -84,14 +84,13 @@ namespace Engine
 		UInt8 m_MinorVersion;
 
 		
-
+		void OnChangeSize(int aWidth, int aHeight);
 		
-
+		friend class Application;
 		
 	};
 
 	TYPE_DEFINE(OpenGLWindow)
-	TYPE_DEFINE_PTR(OpenGLWindow*, "Window Ptr")
 }
 
 #endif

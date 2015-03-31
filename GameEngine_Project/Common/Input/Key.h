@@ -25,7 +25,6 @@ namespace Engine
     };
     typedef Key Button;
 	TYPE_DEFINE(Key);
-	TYPE_DEFINE_PTR(Key*, "Key Ptr")
 }
 
 #endif

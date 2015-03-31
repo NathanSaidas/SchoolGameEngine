@@ -24,4 +24,6 @@ namespace Engine
     const char * Error::OUT_OF_FRAME_MEMORY = "Out of Frame Memory";
     const char * Error::OUT_OF_STACK_MEMORY = "Out of Stack Memory";
     const char * Error::OUT_OF_POOL_MEMORY = "Out of Pool Memory";
+
+	const char * Error::BAD_POINTER_COPY = "Bad pointer copy.";
 }

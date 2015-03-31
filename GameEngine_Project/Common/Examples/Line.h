@@ -18,7 +18,6 @@ namespace Engine
 	};
 
     TYPE_DEFINE(Line)
-    TYPE_DEFINE_PTR(Line*, "Line Ptr")
 }
 
 #endif

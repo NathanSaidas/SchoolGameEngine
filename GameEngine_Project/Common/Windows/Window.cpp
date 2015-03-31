@@ -15,7 +15,10 @@ namespace Engine
 	}
 	OpenGLWindow::~OpenGLWindow()
 	{
-
+		if (m_WindowHandle != nullptr)
+		{
+			DestroyWindow();
+		}
 	}
 	void OpenGLWindow::SetDefault()
 	{
@@ -286,7 +289,7 @@ namespace Engine
 
 	bool OpenGLWindow::ShouldClose()
 	{
-		return glfwWindowShouldClose((GLFWwindow*)m_WindowHandle);
+		return glfwWindowShouldClose((GLFWwindow*)m_WindowHandle) == GL_TRUE;
 	}
 
 	void OpenGLWindow::SwapBuffers()
@@ -303,16 +306,18 @@ namespace Engine
 		{
 			app->MakeCurrentContext(this);
 		}
-
-		//if (m_WindowHandle != nullptr)
-		//{
-		//	glfwMakeContextCurrent((GLFWwindow*)m_WindowHandle);
-		//}
 	}
 
 	void * OpenGLWindow::GetHandle()
 	{
 		return m_WindowHandle;
 	}
+
+	void OpenGLWindow::OnChangeSize(int aWidth, int aHeight)
+	{
+		m_Width = aWidth;
+		m_Height = aHeight;
+	}
+
 
 }

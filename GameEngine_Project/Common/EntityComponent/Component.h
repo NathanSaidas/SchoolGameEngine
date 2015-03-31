@@ -37,21 +37,21 @@ namespace Engine
 		template<typename COMPONENT>
 		COMPONENT * GetComponent()
 		{
-			return (TYPE*)GetComponent(Reflection::Runtime::TypeOf<COMPONENT>());
+			return (COMPONENT*)GetComponent(Reflection::Runtime::TypeOf<COMPONENT>());
 		}
 		Component * GetComponentInChildren(const std::string & aTypename);
 		Component * GetComponentInChildren(const Type & aType);
 		template<typename COMPONENT>
 		COMPONENT * GetComponentInChildren()
 		{
-			return (TYPE*)GetComponentInChildren(Reflection::Runtime::TypeOf<COMPONENT>());
+			return (COMPONENT*)GetComponentInChildren(Reflection::Runtime::TypeOf<COMPONENT>());
 		}
 		Component * GetComponentInParent(const std::string & aTypename);
 		Component * GetComponentInParent(const Type & aType);
 		template<typename COMPONENT>
 		COMPONENT * GetComponentInParent()
 		{
-			return (TYPE*)GetComponentInParent(Reflection::Runtime::TypeOf<COMPONENT>());
+			return (COMPONENT*)GetComponentInParent(Reflection::Runtime::TypeOf<COMPONENT>());
 		}
 
 		std::vector<Component*> GetComponents(const std::string & aTypename);
@@ -59,38 +59,46 @@ namespace Engine
 		template<typename COMPONENT>
 		std::vector<COMPONENT*> GetComponents()
 		{
-			return (TYPE*)GetComponents(Reflection::Runtime::TypeOf<COMPONENT>());
+			return (COMPONENT*)GetComponents(Reflection::Runtime::TypeOf<COMPONENT>());
 		}
 		std::vector<Component*> GetComponentsInChildren(const std::string & aTypename);
 		std::vector<Component*> GetComponentsInChildren(const Type & aType);
 		template<typename COMPONENT>
 		std::vector<COMPONENT*> GetComponentsInChildren()
 		{
-			return (TYPE*)GetComponentsInChildren(Reflection::Runtime::TypeOf<COMPONENT>());
+			return (COMPONENT*)GetComponentsInChildren(Reflection::Runtime::TypeOf<COMPONENT>());
 		}
 		std::vector<Component*> GetComponentsInParent(const std::string & aTypename);
 		std::vector<Component*> GetComponentsInParent(const Type & aType);
 		template<typename COMPONENT>
 		std::vector<COMPONENT*> GetComponentsInParent()
 		{
-			return (TYPE*)GetComponentsInParent(Reflection::Runtime::TypeOf<COMPONENT>());
+			return (COMPONENT*)GetComponentsInParent(Reflection::Runtime::TypeOf<COMPONENT>());
 		}
 
 
 	protected:
+		///Gets called immediately when the component is added.
 		virtual void OnRegister();
+		///Gets called first when initialized during the update loop. Gets called once.
 		virtual void OnInitialize();
+		///Gets called after Initialize on all gameobjects/components during the update loop.
 		virtual void OnLateInitialize();
 
 		virtual void OnDestroy();
 		virtual void OnLateDestroy();
 
+		///Gets called during the update loop.
 		virtual void Update();
+		///Gets called after the Update call in the update loop.
 		virtual void LateUpdate();
 		virtual void FixedUpdate();
 
+		///Gets called to gather geometry for the scene when prepping for rendering.
 		virtual void OnPreRender();
+		///Gets called after the scene has been renderered.
 		virtual void OnRender();
+		///Gets calld after extra scene rendering.
 		virtual void OnPostRender();
 		//TODO: Implement when Serialization has been designed / implemented.
 		//void OnSerializeEditor(Stream aStream);
@@ -101,7 +109,6 @@ namespace Engine
 	};
 
 	TYPE_DEFINE(Component)
-	TYPE_DEFINE_PTR(Component*, "Component Ptr")
 }
 
 #endif

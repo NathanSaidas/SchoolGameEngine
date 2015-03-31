@@ -2,6 +2,7 @@
 #define GAME_ENGINE_ARRAY_H
 
 #include "../BasicTypes.h"
+#include <vector>
 
 namespace Engine
 {
@@ -22,7 +23,7 @@ namespace Engine
            
         }
 
-        static void Copy(Array & aSource, Array & aDest)
+        static void Copy(const Array & aSource, Array & aDest)
         {
             aDest.Allocate(aSource.GetCount());
             for (unsigned int i = 0; i < aSource.GetCount(); i++)
@@ -30,6 +31,15 @@ namespace Engine
                 aDest[i] = aSource[i];
             }
         }
+
+		static void Copy(const std::vector<TYPE> & aSource, Array & aDest)
+		{
+			aDest.Allocate(aSource.size());
+			for (unsigned int i = 0; i < aSource.size(); i++)
+			{
+				aDest[i] = aSource[i];
+			}
+		}
 
         UInt32 GetCount() const
         {

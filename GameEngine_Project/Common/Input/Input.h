@@ -104,7 +104,7 @@ namespace Engine
         float GetAxis(string aName);
         AxisCode GetAxisPositiveKey(string aName , int aKey);
         AxisCode GetAxisNegativeKey(string aName , int aKey);
-        bool GetAxisReSetOnRelease(string aName );
+        bool GetAxisResetOnRelease(string aName );
 
         Input();
         ~Input();
@@ -137,7 +137,6 @@ namespace Engine
         friend class Application;
     };
 	TYPE_DEFINE(Input)
-	TYPE_DEFINE_PTR(Input*, "Input")
 }
 
 #endif

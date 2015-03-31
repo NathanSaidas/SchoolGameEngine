@@ -50,29 +50,38 @@ namespace Engine
     {
 
 
-#define TYPE_DEFINE(TYPE)									\
-    template<>                                              \
-        struct Engine::Reflection::TypeTrait < TYPE >   \
+#define TYPE_DEFINE(TYPE)										\
+    template<>													\
+        struct Engine::Reflection::TypeTrait < TYPE >			\
         {                                                       \
         public:													\
         static inline const char * Name()						\
         {														\
         return #TYPE;											\
-    }														\
-    static const bool IS_POINTER = false;					\
-    };                                                      \
+    }															\
+    static const bool IS_POINTER = false;						\
+    };															\
+	template<>													\
+		struct Engine::Reflection::TypeTrait< TYPE ## *>		\
+		{														\
+		public:													\
+			static inline const char * Name()					\
+			{													\
+				return #TYPE;									\
+			}													\
+			static const bool IS_POINTER = true;				\
+		};														\
+		template<>												\
+		struct Engine::Reflection::TypeTrait< TYPE ## **>		\
+		{														\
+		public:													\
+			static inline const char * Name()					\
+			{													\
+				return #TYPE;									\
+			}													\
+			static const bool IS_POINTER = true;				\
+		};														\
 
-#define TYPE_DEFINE_PTR(TYPE,NAME)							\
-    template<>												\
-        struct Engine::Reflection::TypeTrait<TYPE>		\
-        {														\
-        public:													\
-        static inline const char * Name()						\
-        {														\
-        return NAME;											\
-    }														\
-    static const bool IS_POINTER = true;					\
-    };														\
 
 #define TYPE_NAME(TYPE) Engine::Reflection::TypeTrait<TYPE>::Name()
 
@@ -116,32 +125,9 @@ namespace Engine
 		TYPE_DEFINE(unsigned short)
 		TYPE_DEFINE(unsigned int)
 		TYPE_DEFINE(unsigned long)
+		TYPE_DEFINE(std::string)
 		
-		template<>
-		struct TypeTrait<std::string>
-		{
-		public:
-			static inline const char * Name()
-			{
-				return "string";
-			}
-			static const bool IS_POINTER = false;
-		};
 
-
-		TYPE_DEFINE_PTR(char*, "char Ptr")
-		TYPE_DEFINE_PTR(bool*, "bool Ptr")
-		TYPE_DEFINE_PTR(short*, "short Ptr")
-		TYPE_DEFINE_PTR(int*, "int Ptr")
-		TYPE_DEFINE_PTR(float*, "float Ptr")
-		TYPE_DEFINE_PTR(double*, "double Ptr")
-		TYPE_DEFINE_PTR(void*, "void Ptr")
-		TYPE_DEFINE_PTR(long*, "long Ptr")
-		TYPE_DEFINE_PTR(unsigned char*, "unsigned char Ptr")
-		TYPE_DEFINE_PTR(unsigned short*, "unsigned short Ptr")
-		TYPE_DEFINE_PTR(unsigned int*, "unsigned int Ptr")
-		TYPE_DEFINE_PTR(unsigned long*, "unsigned long Ptr")
-		TYPE_DEFINE_PTR(std::string*, "string Ptr");
 
 		template<typename A,typename B>
 		class TypeEqual

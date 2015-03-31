@@ -33,7 +33,6 @@ namespace Engine
 	};
 
 	TYPE_DEFINE(RenderTexture)
-	TYPE_DEFINE_PTR(RenderTexture*, "RenderTexture Ptr")
 }
 
 #endif

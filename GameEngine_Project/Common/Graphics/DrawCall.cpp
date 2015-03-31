@@ -3,14 +3,10 @@
 
 namespace Engine
 {
-	DrawCall DrawCall::Create(Matrix4x4 aModel, Vector3 aCameraPosition, Vector3 aCameraTarget, Matrix4x4 aProjection, Mesh * aMesh, Material * aShader)
+	DrawCall::DrawCall(Matrix4x4 aModel, Pointer<Mesh> aMesh, Pointer<Material> aMaterial)
 	{
-		DrawCall drawCall;
-		drawCall.model = aModel;
-		drawCall.view = Matrix4x4::LookAt(aCameraPosition, aCameraTarget, Vector3::Up());
-		drawCall.projection = aProjection;
-		drawCall.mesh = aMesh;
-		drawCall.material = aShader;
-		return drawCall;
+		model = aModel;
+		mesh = aMesh;
+		material = aMaterial;
 	}
 }

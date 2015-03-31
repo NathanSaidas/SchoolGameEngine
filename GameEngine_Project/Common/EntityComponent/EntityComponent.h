@@ -5,6 +5,8 @@
 #include "GameObject.h"
 #include "Component.h"
 
+#include "Camera.h"
+#include "Renderer.h"
 
 #endif
 

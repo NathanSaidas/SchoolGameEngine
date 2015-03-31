@@ -44,7 +44,6 @@ namespace Engine
     };
 
 	TYPE_DEFINE(InputAxis)
-	TYPE_DEFINE_PTR(InputAxis*, "InputAxis Ptr")
 }
 
 #endif

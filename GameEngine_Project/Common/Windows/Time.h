@@ -20,7 +20,6 @@ namespace Engine
 	};
 
 	TYPE_DEFINE(Time)
-	TYPE_DEFINE_PTR(Time*, "Time Ptr")
 }
 
 #endif

@@ -20,7 +20,6 @@ namespace Engine
 	};
 
 	TYPE_DEFINE(Triangle)
-    TYPE_DEFINE_PTR(Triangle*, "Triangle Ptr")
 }
 
 #endif

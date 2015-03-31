@@ -20,7 +20,8 @@
 
 namespace Engine
 {
-	
+	class Camera;
+	class Scene;
 
     ///This is the manager of graphics operations.
     class Graphics : public object
@@ -34,10 +35,10 @@ namespace Engine
         // -- Terminates the Graphics system.
         static void Terminate();
 
-        // -- An example of a draw function for a primitive
-        static void DrawPrimitive(const PrimitiveShape & aShape, const Vector3 & aPosition, const Quaternion & aRotation, const Vector3 & aScale);
-		static void DrawMesh(const DrawCall & aDrawCall);
-		static void DrawMesh(const Matrix4x4 & aModel, const Matrix4x4 & aView, const Matrix4x4 & aProjection, Mesh * aMesh, Material * aMaterial);
+
+		static void Render(Matrix4x4 & aModel, Pointer<Mesh> aMesh, Pointer<Material> aMaterial);
+		static void Render(const Matrix4x4 & aModel, const Matrix4x4 & aView, const Matrix4x4 & aProjection, Mesh * aMesh, Material * aMaterial);
+		static void RenderImmediate(const Matrix4x4 & aModel, const Matrix4x4 & aView, const Matrix4x4 & aProjection, const Pointer<Mesh> & aMesh, const Pointer<Material> & aMaterial);
 
         // -- Wrapper around OpenGL glUseShader
         static void UseShader(GLuint & aProgramID);
@@ -53,9 +54,9 @@ namespace Engine
         static void BufferData(BufferTarget aTarget, GLsizeiptr aSize, GLvoid * aData, BufferMode aMode);
         // -- Creates a shader based on the shader type with the given source. The result is a valid shader handle. Returns false if failed to create shader.
         static bool CompileShader(GLuint & aHandle, const ShaderType & aShaderType, const std::string & aSource);
-        // -- Links a shader program with the given shaders. (Vertex, Fragment, Geometry) in that order.
-        static bool LinkShaderProgram(GLuint & aProgram, const GLuint aShaders[], const bool aShadersEnabled[]);
-        // -- Retrieves the current buffer target bound.
+		// -- Links a shader program.
+		static bool LinkShaderProgram(GLuint & aProgram, const GLuint aShaders[], const bool aShadersEnabled[]);
+        // -- Links a shader program with the given shaders. (Vertex, Fragment, Geometry) in 
         static BufferTarget GetCurrentBoundTarget();
         // -- Retrieves the current buffer bound.
         static GLuint GetCurrentBoundBuffer();
@@ -66,7 +67,7 @@ namespace Engine
         // -- Uploads a mesh to OpenGL, use Mesh.Upload instead.
         static bool LoadMesh(Mesh * aMesh, GLuint & aVBO, GLuint & aIBO);
 
-		static void Render();
+		static void Render(Scene * aScene);
 		static bool CheckForGLErrors(const char* file = __FILE__, int line = __LINE__);
     private:
         // -- Instance of the Graphics singleton
@@ -99,24 +100,27 @@ namespace Engine
         
         // -- Primitive Buffer Targets End.
 
-        //DrawMesh(Mesh, Material(Shaders/Textures), Position, Rotation, Scale)
-
-        void DrawPoint(const Vector3 & aPosition, const bool & aImmediate, GLsizeiptr aAttributeCount, GLvoid * aAttributes, GLsizeiptr aIndiciesCount, GLvoid * aIndicies);
-        
-        void DrawPolygon(const PrimitiveMode & aMode, Float32 * aVertices, SInt32 aVertexSize, SInt32 aVertexCount, Float32 * aColors, SInt32 aColorSize);
-
 		// -- Draw Call Stuffs
-		Mesh * m_FrameBufferMesh;
-		Vector3 m_DirectionalPosition;
-		Vector3 m_DirectionalLookAt;
-
-		Shader * m_DefaultShader;
-		Shader * m_ShadowMapShader;
-		Shader * m_DepthShader;
-		RenderTexture * m_ShadowMapTexture;
 		std::vector<DrawCall> m_DrawCalls;
 
+		
+		static void RegisterCamera(Camera * aCamera);
+		static void UnregisterCamera(Camera * aCamera);
+		std::vector<Camera*> m_RenderCameras;
+
+		void RenderScene(Scene * aScene);
+		void RenderCamera(Scene * aScene, Camera * aCamera);
+
+		static void EnableVertexAttrib(GLint aLocation, GLint aSize, const GLvoid * aOffset);
+		static void DisableVertexAttrib(GLint aLocation);
+		static void SetMatrix(GLint aLocation, const Matrix4x4 & aMatrix);
+		static void SetFloat(GLint aLocation, Float32 aFloat);
+		static void SetTexture(GLint aLocation, GLenum aUnit, Texture * aTexture);
+
+		friend Camera;
     };
+
+	TYPE_DEFINE(Graphics)
 }
 
 #endif

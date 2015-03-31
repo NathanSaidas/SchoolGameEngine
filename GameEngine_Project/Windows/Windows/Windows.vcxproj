@@ -84,8 +84,10 @@
   <ItemGroup>
     <ClCompile Include="..\..\Common\BasicTypes.cpp" />
     <ClCompile Include="..\..\Common\Engine.cpp" />
+    <ClCompile Include="..\..\Common\EntityComponent\Camera.cpp" />
     <ClCompile Include="..\..\Common\EntityComponent\Component.cpp" />
     <ClCompile Include="..\..\Common\EntityComponent\GameObject.cpp" />
+    <ClCompile Include="..\..\Common\EntityComponent\Renderer.cpp" />
     <ClCompile Include="..\..\Common\EntityComponent\Scene.cpp" />
     <ClCompile Include="..\..\Common\EntityComponent\TestComponent.cpp" />
     <ClCompile Include="..\..\Common\Examples\ISerializeable.cpp" />
@@ -123,6 +125,7 @@
     <ClCompile Include="..\..\Common\Utilities\IniFileStream.cpp" />
     <ClCompile Include="..\..\Common\Utilities\IniSection.cpp" />
     <ClCompile Include="..\..\Common\Utilities\IniVariables.cpp" />
+    <ClCompile Include="..\..\Common\Utilities\StringExtensions.cpp" />
     <ClCompile Include="..\..\Common\Utilities\Utilities.cpp" />
     <ClCompile Include="..\..\Common\Windows\Application.cpp" />
     <ClCompile Include="..\..\Common\Windows\Time.cpp" />
@@ -132,9 +135,11 @@
   <ItemGroup>
     <ClInclude Include="..\..\Common\BasicTypes.h" />
     <ClInclude Include="..\..\Common\Engine.h" />
+    <ClInclude Include="..\..\Common\EntityComponent\Camera.h" />
     <ClInclude Include="..\..\Common\EntityComponent\Component.h" />
     <ClInclude Include="..\..\Common\EntityComponent\EntityComponent.h" />
     <ClInclude Include="..\..\Common\EntityComponent\GameObject.h" />
+    <ClInclude Include="..\..\Common\EntityComponent\Renderer.h" />
     <ClInclude Include="..\..\Common\EntityComponent\Scene.h" />
     <ClInclude Include="..\..\Common\EntityComponent\TestComponent.h" />
     <ClInclude Include="..\..\Common\Examples\Examples.h" />
@@ -176,6 +181,7 @@
     <ClInclude Include="..\..\Common\Memory\MemoryInfo.h" />
     <ClInclude Include="..\..\Common\Memory\MemoryManager.h" />
     <ClInclude Include="..\..\Common\Memory\MemoryUtils.h" />
+    <ClInclude Include="..\..\Common\Memory\Pointer.h" />
     <ClInclude Include="..\..\Common\Memory\PoolAllocator.h" />
     <ClInclude Include="..\..\Common\Memory\StackAllocator.h" />
     <ClInclude Include="..\..\Common\Method.h" />
@@ -202,6 +208,9 @@
     <ClInclude Include="..\..\Common\Utilities\IniFileStream.h" />
     <ClInclude Include="..\..\Common\Utilities\IniSection.h" />
     <ClInclude Include="..\..\Common\Utilities\IniVariables.h" />
+    <ClInclude Include="..\..\Common\Utilities\IniVector3.h" />
+    <ClInclude Include="..\..\Common\Utilities\IniVector4.h" />
+    <ClInclude Include="..\..\Common\Utilities\StringExtensions.h" />
     <ClInclude Include="..\..\Common\Utilities\Utilities.h" />
     <ClInclude Include="..\..\Common\Windows\Application.h" />
     <ClInclude Include="..\..\Common\Windows\OpenGLProfile.h" />

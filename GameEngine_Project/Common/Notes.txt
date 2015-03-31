@@ -12,6 +12,17 @@ LANG -> General -> Additional Includes
 Desc: Adds the includes directory to the available includes for "<>" access.
 Include: $(ProjectDir)..\..\Libraries\includes
 
+Object Overhead.
+Using the systems included in the engine comes memory overhead on each instance of class.
+
+								 DEBUG  |  RELEASE	|	NOTES
+Default(Zero systems):			0 bytes	| 0 bytes	|	Basic raw data. Can only reflect through TYPE_DEFINE macro
+Memory Management Pool:			4 bytes	| 4 bytes	|	Fast Allocation / Deallocation any order.
+Memory Management Frame:		4 bytes	| 4 bytes	|	Fast Allocation / Deallocation a single frame of gameplay.
+Memory Management Stack:		8 bytes | 4 bytes	|	Fast Allocation / Deallocation in order of allocation / deallocation
+Reflection(Virtual Func):		4 bytes | 4 bytes	|	Allows additional information to be added to objects for runtime conditions.
+Memory Pointer:					4 bytes | 4 bytes	|	Allows track of memory references. (Garbage Collection).
+
 
 Rendering Engine (OpenGL):
 

@@ -61,7 +61,6 @@ namespace Engine
 	};
 
 	TYPE_DEFINE(Texture);
-	TYPE_DEFINE_PTR(Texture*, "Texture Ptr")
 }
 
 #endif

@@ -83,6 +83,18 @@
 #define MEM_FRAME_ALLOC_T(TYPE) new (MEM_FRAME_ALLOC(sizeof(TYPE),__alignof(TYPE)))TYPE()
 #endif
 
+#ifndef NEW_POOL
+#define NEW_POOL(TYPE) new (MEM_POOL_ALLOC(sizeof(TYPE),__alignof(TYPE)))TYPE
+#endif
+
+#ifndef NEW_STACK
+#define NEW_STACK(TYPE) new (MEM_STACK_ALLOC(sizeof(TYPE),__alignof(TYPE)))TYPE
+#endif
+
+#ifndef NEW_FRAME
+#define NEW_FRAME(TYPE) new (MEM_FRAME_ALLOC(sizeof(TYPE),__alignof(TYPE)))TYPE
+#endif
+
 #ifndef MEM_DEALLOC
 #define MEM_DEALLOC(ADDRESS,ALLOCATOR_TYPE,SIZE) Memory::MemoryManager::GetInstance()->Deallocate(ADDRESS,ALLOCATOR_TYPE,SIZE)
 #endif

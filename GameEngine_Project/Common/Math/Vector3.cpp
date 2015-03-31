@@ -1,5 +1,6 @@
 #include "Vector3.h"
 #include "Vector4.h"
+#include "../Utilities/StringExtensions.h"
 #ifndef GLM_FORCE_RADIANS
 #define GLM_FORCE_RADIANS
 #endif
@@ -136,6 +137,11 @@ namespace Engine
     {
         return glm::vec3(x, y, z);
     }
+
+	std::string Vector3::ToString()
+	{
+		return std::string("x: ").append(Utilities::F2S(x)).append(" y: ").append(Utilities::F2S(y)).append(" z: ").append(Utilities::F2S(z));
+	}
 }
 
 #ifdef GLM_FORCE_RADIANS

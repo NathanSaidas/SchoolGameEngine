@@ -23,7 +23,6 @@ namespace Engine
 	};
 
 	TYPE_DEFINE(Shape)
-    TYPE_DEFINE_PTR(Shape*, "Shape Ptr")
 }
 
 #endif

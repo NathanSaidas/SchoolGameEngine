@@ -52,6 +52,7 @@ namespace Engine
 
     };
 
+	TYPE_DEFINE(Shader)
 }
 
 #endif

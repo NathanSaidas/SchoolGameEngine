@@ -30,6 +30,7 @@ namespace Engine
         static Matrix4x4 Perspective(const Float32 & aFOV, const Float32 & aAspectRatio, const Float32 & aNear, const Float32 & aFar);
         static Matrix4x4 LookAt(const Vector3 & aCameraPosition, const Vector3 & aTargetPosition, const Vector3 & aUpDirection);
         static Matrix4x4 Identity();
+		static Matrix4x4 TRS(const Vector3 & aPosition, const Vector3 & aRotation, const Vector3 & aScale);
         
         void Transpose();
         void Inverse();
@@ -42,12 +43,26 @@ namespace Engine
 
 
         glm::mat4 Raw() const;
+
+		Matrix4x4 operator*=(const Matrix4x4 & aMatrix)
+		{
+			glm::mat4 a = Raw();
+			glm::mat4 b = aMatrix.Raw();
+			*this = a * b;
+			return *this;
+		}
+
+		Matrix4x4 operator *(const Matrix4x4 & aMatrix)
+		{
+			glm::mat4 a = Raw();
+			glm::mat4 b = aMatrix.Raw();
+			return a * b;
+		}
         
 
     };
 
     TYPE_DEFINE(Matrix4x4)
-    TYPE_DEFINE_PTR(Matrix4x4*, "Matrix4x4 Ptr")
 }
 
 #endif

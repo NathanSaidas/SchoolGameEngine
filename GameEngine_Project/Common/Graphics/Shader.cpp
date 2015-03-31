@@ -50,7 +50,7 @@ namespace Engine
                 continue;
             }
             words.clear();
-            GetWords(line, words);
+            Utilities::GetWords(line, words);
             if (words.size() > 0)
             {
                 if (words[0] == "#implement" && words.size() > 1)
@@ -121,21 +121,27 @@ namespace Engine
     //Loads the loaded shader source into opengl/direct3D
     void Shader::LoadProgram()
     {
+		//Check for Pre-existing errors.
+		Graphics::CheckForGLErrors(__FILE__, __LINE__);
         ReleaseProgram();
 
         if (m_VertexShaderSource.size() != 0)
         {
             m_VertexShaderLoaded = Graphics::CompileShader(m_VertexShader, ShaderType::Vertex, m_VertexShaderSource);
+			Graphics::CheckForGLErrors(__FILE__, __LINE__);
         }
         if (m_FragmentShaderSource.size() != 0)
         {
             m_FragmentShaderLoaded = Graphics::CompileShader(m_FragmentShader, ShaderType::Fragment, m_FragmentShaderSource);
+			Graphics::CheckForGLErrors(__FILE__, __LINE__);
         }
         if (m_GeometryShaderSource.size() != 0)
         {
             m_GeometryShaderLoaded = Graphics::CompileShader(m_GeometryShader, ShaderType::Geometry, m_GeometryShaderSource);
+			Graphics::CheckForGLErrors(__FILE__, __LINE__);
         }
 
+		//Order Matters, Vertex => Fragment => Geometry
         GLuint shaders[] = { m_VertexShader, m_FragmentShader, m_GeometryShader };
         bool shadersLoaded[] = { m_VertexShaderLoaded, m_FragmentShaderLoaded, m_GeometryShaderLoaded };
 
@@ -145,7 +151,14 @@ namespace Engine
         }
 		else
 		{
+			Graphics::CheckForGLErrors(__FILE__, __LINE__);
 			m_ShaderHandleLoaded = true;
+
+			//TODO(Nathan): Extract Shader Variables
+			glUseProgram(m_ShaderHandle);
+			glBindFragDataLocation(m_ShaderHandle, 0, "v_FragColor");
+			glUseProgram(0);
+			Graphics::CheckForGLErrors(__FILE__, __LINE__);
 		}
         //Else Successful Shader Compile
 

@@ -21,6 +21,13 @@ namespace Engine
     {
 
     }
+	Quaternion::Quaternion(Float32 w, Float32 x, Float32 y, Float32 z) : object(), glm::quat()
+	{
+		this->w = w;
+		this->x = x;
+		this->y = y;
+		this->z = z;
+	}
     Quaternion::~Quaternion()
     {
 

@@ -57,7 +57,6 @@ namespace Engine
     };
 
     TYPE_DEFINE(Color)
-    TYPE_DEFINE_PTR(Color*, "Color Ptr")
 }
 
 #endif

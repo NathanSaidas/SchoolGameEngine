@@ -13,6 +13,7 @@
 #include "MemoryInfo.h"
 #include "MemoryUtils.h"
 #include "MemoryManager.h"
+#include "Pointer.h"
 
 
 namespace Engine

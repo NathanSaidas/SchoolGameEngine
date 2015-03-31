@@ -2,6 +2,9 @@
 #define GAME_ENGINE_MATERIAL_H
 
 #include "../BasicTypes.h"
+#include "Shader.h"
+#include "Texture.h"
+#include "../Memory/Memory.h"
 
 namespace Engine
 {
@@ -15,18 +18,17 @@ namespace Engine
 		Material();
 		~Material();
 
-		void SetShader(Shader * aShader);
-		Shader * GetShader();
+		void SetShader(Pointer<Shader> aShader);
+		Pointer<Shader> GetShader();
 
-		void SetTexture(Texture * aTexture);
-		Texture * GetTexture();
+		void SetTexture(Pointer<Texture> aTexture);
+		Pointer<Texture> GetTexture();
 	private:
-		Shader * m_Shader;
-		Texture * m_Texture;
+		Pointer<Shader> m_Shader;
+		Pointer<Texture> m_Texture;
 	};
 
 	TYPE_DEFINE(Material)
-	TYPE_DEFINE_PTR(Material*, "Material Ptr")
 }
 
 #endif

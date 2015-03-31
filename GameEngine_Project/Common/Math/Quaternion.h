@@ -16,6 +16,7 @@ namespace Engine
     public:
         Quaternion();
         Quaternion(glm::quat & aQuat);
+		Quaternion(Float32 w, Float32 x, Float32 y, Float32 z);
         ~Quaternion();
 
         static float Angle(const Quaternion & aQuatA, const Quaternion & aQuatB);
@@ -35,7 +36,6 @@ namespace Engine
     };
 
     TYPE_DEFINE(Quaternion)
-    TYPE_DEFINE_PTR(Quaternion*, "Quaternion Ptr")
 }
 
 #endif

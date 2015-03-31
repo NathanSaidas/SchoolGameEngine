@@ -142,7 +142,7 @@ namespace Engine
         }
         m_MouseButtons[aButton]->OnEvent(aAction);
     }
-    void Input::ProcessMouseMove(float aX, float aY)
+    void Input::ProcessMouseMove(Float32 aX, Float32 aY)
     {
         m_LastMousePosition = m_MousePosition;
 
@@ -150,7 +150,7 @@ namespace Engine
         m_MousePosition.y = aY;
     }
     //x and y represent direction
-    void Input::ProcessMouseScroll(float aX, float aY)
+	void Input::ProcessMouseScroll(Float32 aX, Float32 aY)
     {
         m_MouseScrollWheel.x = aX;
         m_MouseScrollWheel.y = aY;
@@ -158,7 +158,7 @@ namespace Engine
 
     void Input::DestroyAxis(string aName)
     {
-        for(int i = 0; i < m_Axis.size(); i++)
+        for(unsigned int i = 0; i < m_Axis.size(); i++)
         {
             if(m_Axis[i]->Name() == aName)
             {
@@ -184,48 +184,52 @@ namespace Engine
     }
     void Input::SetAxisPositiveKey(string aName, AxisCode aKeyCode, int aKey)
     {
-        for(int i = 0; i < m_Axis.size(); i++)
-        {
-            if(m_Axis[i]->Name() == aName)
-            {
-                m_Axis[i]->SetPositiveKey(aKeyCode,aKey);
-                return;
-            }
-        }
+		for (std::vector<InputAxis*>::iterator it = m_Axis.begin(); it != m_Axis.end(); it++)
+		{
+			InputAxis * axis = *it;
+			if (axis->Name() == aName)
+			{
+				axis->SetPositiveKey(aKeyCode, aKey);
+				return;
+			}
+		}
     }
     void Input::SetAxisNegativeKey(string aName, AxisCode aKeyCode, int aKey)
     {
-        for(int i = 0; i < m_Axis.size(); i++)
-        {
-            if(m_Axis[i]->Name() == aName)
-            {
-                m_Axis[i]->SetNegativeKey(aKeyCode,aKey);
-                return;
-            }
-        }
+		for (std::vector<InputAxis*>::iterator it = m_Axis.begin(); it != m_Axis.end(); it++)
+		{
+			InputAxis * axis = *it;
+			if (axis->Name() == aName)
+			{
+				axis->SetNegativeKey(aKeyCode, aKey);
+				return;
+			}
+		}
     }
-    void Input::SetAxisReSetOnRelease(string aName, bool aReSetflag)
+    void Input::SetAxisReSetOnRelease(string aName, bool aResetflag)
     {
-        for(int i = 0; i < m_Axis.size(); i++)
-        {
-            if(m_Axis[i]->Name() == aName)
-            {
-                m_Axis[i]->SetResetOnRelease(aReSetflag);
-                return;
-            }
-        }
+		for (std::vector<InputAxis*>::iterator it = m_Axis.begin(); it != m_Axis.end(); it++)
+		{
+			InputAxis * axis = *it;
+			if (axis->Name() == aName)
+			{
+				axis->SetResetOnRelease(aResetflag);
+				return;
+			}
+		}
     }
 
     float Input::GetAxis(string aName)
     {
-        for(int i = 0; i < m_Axis.size(); i++)
-        {
-            if(m_Axis[i]->Name() == aName)
-            {
-                return m_Axis[i]->AxisValue();
-            }
-        }
-        return 0.0f;
+		for (std::vector<InputAxis*>::iterator it = m_Axis.begin(); it != m_Axis.end(); it++)
+		{
+			InputAxis * axis = *it;
+			if (axis->Name() == aName)
+			{
+				return axis->AxisValue();
+			}
+		}
+		return 0.0f;
     }
     AxisCode Input::GetAxisPositiveKey(string aName, int aKey)
     {
@@ -249,7 +253,7 @@ namespace Engine
         }
         return AxisCode::NONE;
     }
-    bool Input::GetAxisReSetOnRelease(string aName)
+    bool Input::GetAxisResetOnRelease(string aName)
     {
         for(int i = 0; i < m_Axis.size(); i++)
         {

@@ -29,15 +29,17 @@ namespace Engine
 		void OnPostRender();
 
 	private:
-		Mesh * m_Cube;
-		Mesh * m_Plane;
-		Material * m_Material;
-		IniFileStream * m_File;
+
+		Renderer * m_Renderer = nullptr;
+		Camera * m_Camera = nullptr;
+
+		Pointer<Mesh> m_Mesh;
+		Pointer<Material> m_Material;
+
 	};
 
 
 	TYPE_DEFINE(TestComponent)
-	TYPE_DEFINE_PTR(TestComponent*, "TestComponent Ptr")
 
 }
 

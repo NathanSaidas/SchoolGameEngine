@@ -44,7 +44,7 @@ namespace Engine
     }
 
 	// -- Creates a new variable with the name and value. 
-	void IniSection::AddBool(const string & aVariableName, bool & aValue)
+	void IniSection::AddBool(const std::string & aVariableName, bool aValue)
 	{
 		if (!VariableExists(aVariableName))
 		{
@@ -54,7 +54,7 @@ namespace Engine
 			m_Variables.push_back(variable);
 		}
 	}
-	void IniSection::AddInt(const string & aVariableName, int & aValue)
+	void IniSection::AddInt(const std::string & aVariableName, int aValue)
 	{
 		if (!VariableExists(aVariableName))
 		{
@@ -64,7 +64,7 @@ namespace Engine
 			m_Variables.push_back(variable);
 		}
 	}
-	void IniSection::AddFloat(const string & aVariableName, float & aValue)
+	void IniSection::AddFloat(const std::string & aVariableName, float aValue)
 	{
 		if (!VariableExists(aVariableName))
 		{
@@ -74,7 +74,7 @@ namespace Engine
 			m_Variables.push_back(variable);
 		}
 	}
-	void IniSection::AddString(const string & aVariableName, string & aValue)
+	void IniSection::AddString(const std::string & aVariableName, std::string aValue)
 	{
 		if (!VariableExists(aVariableName))
 		{
@@ -85,8 +85,30 @@ namespace Engine
 		}
 	}
 
+	void IniSection::AddVector3(const std::string & aVariableName, Vector3 aValue)
+	{
+		if (!VariableExists(aVariableName))
+		{
+			IniVector3 * variable = new IniVector3();
+			variable->SetVariableName(aVariableName);
+			variable->SetValue(aValue);
+			m_Variables.push_back(variable);
+		}
+	}
+
+	void IniSection::AddVector4(const std::string & aVariableName, Vector4 aValue)
+	{
+		if (!VariableExists(aVariableName))
+		{
+			IniVector4 * variable = new IniVector4();
+			variable->SetVariableName(aVariableName);
+			variable->SetValue(aValue);
+			m_Variables.push_back(variable);
+		}
+	}
+
 	// -- Searches for a variable by name
-	IniBool IniSection::GetBool(const string & aVariableName)
+	IniBool IniSection::GetBool(const std::string & aVariableName)
 	{
 		for (std::vector<Object*>::iterator it = m_Variables.begin(); it != m_Variables.end(); it++)
 		{
@@ -106,7 +128,7 @@ namespace Engine
 		}
 		return IniBool(INI_BAD_VARIABLE_NAME);
 	}
-	IniInt IniSection::GetInt(const string & aVariableName)
+	IniInt IniSection::GetInt(const std::string & aVariableName)
 	{
 		for (std::vector<Object*>::iterator it = m_Variables.begin(); it != m_Variables.end(); it++)
 		{
@@ -115,18 +137,13 @@ namespace Engine
 				IniInt * intVar = dynamic_cast<IniInt*>(*it);
 				if (intVar != nullptr && intVar->GetVariableName() == aVariableName)
 				{
-					IniInt variable;
-					variable.SetName(intVar->GetName());
-					variable.SetVariableName(intVar->GetVariableName());
-					variable.SetValue(intVar->GetValue());
-					return variable;
-                    //return *intVar;
+                    return *intVar;
 				}
 			}
 		}
 		return IniInt(INI_BAD_VARIABLE_NAME);
 	}
-	IniFloat IniSection::GetFloat(const string & aVariableName)
+	IniFloat IniSection::GetFloat(const std::string & aVariableName)
 	{
 		for (std::vector<Object*>::iterator it = m_Variables.begin(); it != m_Variables.end(); it++)
 		{
@@ -135,18 +152,13 @@ namespace Engine
 				IniFloat * floatVar = dynamic_cast<IniFloat*>(*it);
 				if (floatVar != nullptr && floatVar->GetVariableName() == aVariableName)
 				{
-					//IniFloat variable;
-					//variable.SetName(floatVar->GetName());
-					//variable.SetVariableName(floatVar->GetVariableName());
-					//variable.SetValue(floatVar->GetValue());
-					//return variable;
                     return *floatVar;
 				}
 			}
 		}
 		return IniFloat(INI_BAD_VARIABLE_NAME);
 	}
-	IniString IniSection::GetString(const string & aVariableName)
+	IniString IniSection::GetString(const std::string & aVariableName)
 	{
 		for (std::vector<Object*>::iterator it = m_Variables.begin(); it != m_Variables.end(); it++)
 		{
@@ -155,11 +167,6 @@ namespace Engine
 				IniString * stringVar = dynamic_cast<IniString*>(*it);
 				if (stringVar != nullptr && stringVar->GetVariableName() == aVariableName)
 				{
-					//IniString variable;
-					//variable.SetName(stringVar->GetName());
-					//variable.SetVariableName(stringVar->GetVariableName());
-					//variable.SetValue(stringVar->GetValue());
-					//return variable;
                     return *stringVar;
 				}
 			}
@@ -167,12 +174,44 @@ namespace Engine
 		return IniString(INI_BAD_VARIABLE_NAME);
 	}
 
-	// -- Removes a variable by name
-	bool IniSection::RemoveVariable(const string & aVariableName)
+	IniVector3 IniSection::GetVector3(const std::string & aVariableName)
 	{
 		for (std::vector<Object*>::iterator it = m_Variables.begin(); it != m_Variables.end(); it++)
 		{
-			string typeName = (*it)->GetName();
+			if ((*it)->GetName() == INI_VECTOR_3)
+			{
+				IniVector3 * vectorVar = dynamic_cast<IniVector3*>(*it);
+				if (vectorVar != nullptr && vectorVar->GetVariableName() == aVariableName)
+				{
+					return *vectorVar;
+				}
+			}
+		}
+		return IniVector3(INI_BAD_VARIABLE_NAME);
+	}
+
+	IniVector4 IniSection::GetVector4(const std::string & aVariableName)
+	{
+		for (std::vector<Object*>::iterator it = m_Variables.begin(); it != m_Variables.end(); it++)
+		{
+			if ((*it)->GetName() == INI_VECTOR_4)
+			{
+				IniVector4 * vectorVar = dynamic_cast<IniVector4*>(*it);
+				if (vectorVar != nullptr && vectorVar->GetVariableName() == aVariableName)
+				{
+					return *vectorVar;
+				}
+			}
+		}
+		return IniVector4(INI_BAD_VARIABLE_NAME);
+	}
+
+	// -- Removes a variable by name
+	bool IniSection::RemoveVariable(const std::string & aVariableName)
+	{
+		for (std::vector<Object*>::iterator it = m_Variables.begin(); it != m_Variables.end(); it++)
+		{
+			std::string typeName = (*it)->GetName();
 
 			if (typeName == INI_BOOL)
 			{
@@ -215,7 +254,7 @@ namespace Engine
 		return false;
 	}
 
-	bool IniSection::VariableExists(const string & aVariableName)
+	bool IniSection::VariableExists(const std::string & aVariableName)
 	{
 		if (GetBool(aVariableName).GetVariableName() != INI_BAD_VARIABLE_NAME)
 		{
