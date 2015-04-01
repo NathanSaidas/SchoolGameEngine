@@ -169,6 +169,19 @@ namespace Engine
 		return m_IsRegistered;
 	}
 
+    Vector2 Camera::WorldToScreenSpace(const Vector3 & aPosition)
+    {
+        Matrix4x4 projection = GetProjectionMatrix();
+        Matrix4x4 view = GetViewMatrix();
+        Vector4 clipSpacePos = projection * (view * Vector4(aPosition.x, aPosition.y, aPosition.z, 1.0f));
+        Vector3 ndcSpacePos = Vector3(clipSpacePos.x, clipSpacePos.y, clipSpacePos.z) / clipSpacePos.w;
+        Vector2 viewSize;
+        Vector2 viewOffset;
+        GetViewport(viewOffset.x, viewOffset.y, viewSize.x, viewSize.y);
+        Vector2 windowSpacePos = ((Vector2(ndcSpacePos.x, ndcSpacePos.y) + 1.0f) / 2.0f) * viewSize + viewOffset;
+        return windowSpacePos;
+    }
+
 	Array<Camera*> Camera::GetCameras()
 	{
 		Array<Camera*> cameras;

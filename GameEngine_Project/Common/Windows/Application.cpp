@@ -406,8 +406,6 @@ namespace Engine
 		Time::s_DeltaTime = deltaTime;
 		Time::s_Time = currentTime;
 
-		
-		Graphics::Clear();
 
 		if (m_CurrentContext == nullptr)
 		{

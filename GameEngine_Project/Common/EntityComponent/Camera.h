@@ -51,6 +51,8 @@ namespace Engine
 
 		bool IsRegistered();
 
+        Vector2 WorldToScreenSpace(const Vector3 & aPosition);
+
 		static Array<Camera*> GetCameras();
 
 	private:

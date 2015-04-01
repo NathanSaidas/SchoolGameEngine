@@ -28,29 +28,36 @@ namespace Engine
 		m_Height = aHeight;
 		Graphics::CheckForGLErrors(__FILE__, __LINE__);
 		//Create Framebuffer
+        m_IsAllocated = true;
 		glGenFramebuffers(1, &m_FBOHandle);
-		
+        glBindFramebuffer(GL_FRAMEBUFFER, m_FBOHandle);
+
 		//Create Color Texture
 		glGenTextures(1, &m_TextureHandle);
 		glBindTexture(GL_TEXTURE_2D, m_TextureHandle);
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexImage2D(
 			GL_TEXTURE_2D, 
 			0, 
-			GL_RGBA, 
+			GL_RGB, 
 			m_Width, m_Height, 
 			0,
-			GL_RGBA, 
+			GL_RGB, 
 			GL_UNSIGNED_BYTE, 
 			0);
 		glBindTexture(GL_TEXTURE_2D, 0);
 		Graphics::CheckForGLErrors(__FILE__, __LINE__);
 		//Create Depth Texture
-		glGenTextures(1, &m_DepthTextureHandle);
+        //glGenRenderbuffers(1, &m_DepthTextureHandle);
+        //glBindRenderbuffer(GL_RENDERBUFFER, m_DepthTextureHandle);
+        //glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, m_Width, m_Height);
+        //glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_DepthTextureHandle);
+        
+        glGenTextures(1, &m_DepthTextureHandle);
 		glBindTexture(GL_TEXTURE_2D, m_DepthTextureHandle);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -59,22 +66,28 @@ namespace Engine
 		glTexImage2D(
 			GL_TEXTURE_2D, 
 			0, 
-			GL_DEPTH_COMPONENT, 
+			GL_DEPTH_COMPONENT24, 
 			m_Width, m_Height,
 			0,
 			GL_DEPTH_COMPONENT, 
-			GL_UNSIGNED_BYTE, 0);
+			GL_FLOAT, 0);
 		glBindTexture(GL_TEXTURE_2D, 0);
 		Graphics::CheckForGLErrors(__FILE__, __LINE__);
 
+        //glFramebufferTexture(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT)
+
 		//Attahc color / depth textures to the frame buffer.
-		glBindFramebuffer(GL_FRAMEBUFFER, m_FBOHandle);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_TextureHandle, 0);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_DepthTextureHandle, 0);
+		//glBindFramebuffer(GL_FRAMEBUFFER, m_FBOHandle);
+		//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_TextureHandle, 0);
+		//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_DepthTextureHandle, 0);
+
+        glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, m_TextureHandle, 0);
+        glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, m_DepthTextureHandle, 0);
 
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		{
 			DEBUG_LOG("Failed to create Render Texture");
+            Release();
 		}
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		Graphics::CheckForGLErrors(__FILE__, __LINE__);

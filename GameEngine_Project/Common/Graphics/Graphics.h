@@ -115,9 +115,24 @@ namespace Engine
 		static void DisableVertexAttrib(GLint aLocation);
 		static void SetMatrix(GLint aLocation, const Matrix4x4 & aMatrix);
 		static void SetFloat(GLint aLocation, Float32 aFloat);
-		static void SetTexture(GLint aLocation, GLenum aUnit, Texture * aTexture);
+		static void SetTexture(GLint aLocation, GLenum aUnit, Pointer<Texture> aTexture);
+        static void SetTexture(GLint aLocation, GLenum aUnit, Pointer<RenderTexture> aTexture);
 
 		friend Camera;
+
+
+        //-1, 1----1, 1
+        //  |       |
+        //  |       |
+        //-1,-1----1,-1
+
+        //0.0
+        //0.0
+        Pointer<Mesh> m_Screen;
+        Pointer<Material> m_ScreenMaterial;
+        Pointer<RenderTexture> m_ScreenRenderTexture;
+
+        void RenderScreen();
     };
 
 	TYPE_DEFINE(Graphics)

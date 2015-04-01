@@ -10,6 +10,8 @@ uniform mat4 u_Projection;
 uniform float u_Time;
 uniform float u_DeltaTime;
 
+// -- Texture
+uniform sampler2D u_Texture;
 
 
 // -- Basic Attributes.
@@ -47,6 +49,9 @@ uniform mat4 u_Projection;
 uniform float u_Time;
 uniform float u_DeltaTime;
 
+// -- Texture
+uniform sampler2D u_Texture;
+
 
 // -- Attributes from Vertex Shader
 in vec2 v_TexCoords;
@@ -60,7 +65,8 @@ out vec4 v_FragColor;
 
 void main()
 {
-	v_FragColor = v_Color;
+	vec4 color = texture(u_Texture, v_TexCoords);
+	v_FragColor = v_Color * color;
 }
 
 #end

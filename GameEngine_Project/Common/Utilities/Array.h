@@ -18,6 +18,10 @@ namespace Engine
             m_Elements = nullptr;
             m_Count = 0;
         }
+        Array(UInt32 aElements)
+        {
+            Allocate(aElements);
+        }
         ~Array()
         {
            

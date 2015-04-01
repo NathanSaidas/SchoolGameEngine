@@ -28,11 +28,64 @@ namespace Engine
 
 	CLASS_CPP(Graphics, object)
 
-		Graphics * Graphics::s_Instance = nullptr;
+	Graphics * Graphics::s_Instance = nullptr;
 	Graphics::Graphics()
 	{
 		InitializePrimitiveBuffers();
 
+        Array<Vector3> positions(4);
+        positions[0] = Vector3(-1.0f,  1.0f, -0.5f);
+        positions[1] = Vector3( 1.0f,  1.0f, -0.5f);
+        positions[2] = Vector3( 1.0f, -1.0f, -0.5f);
+        positions[3] = Vector3(-1.0f, -1.0f, -0.5f);
+
+        Array<Color> colors(4);
+        colors[0] = colors[1] = colors[2] = colors[3] = Color::White();
+
+        Array<Vector2> texCoords(4);
+        texCoords[0] = Vector2(1.0f, 1.0f); //top left
+        texCoords[1] = Vector2(0.0f, 1.0f); //top right
+        texCoords[2] = Vector2(0.0f, 0.0f);
+        texCoords[3] = Vector2(1.0f, 0.0f);
+
+        Array<Vector3> normals(4);
+        normals[0] = normals[1] = normals[2] = normals[3] = Vector3::Back();
+
+
+        Array<UInt16> indicies(6);
+        indicies[0] = 0;
+        indicies[1] = 2;
+        indicies[3] = 3;
+        indicies[4] = 0;
+        indicies[5] = 1;
+        indicies[6] = 2;
+        
+
+        m_Screen->SetPositions(positions);
+        m_Screen->SetColors(colors);
+        m_Screen->SetTexCoords(texCoords);
+        m_Screen->SetNormals(normals);
+        m_Screen->SetIndices(indicies);
+        m_Screen->Upload();
+
+        Pointer<Texture> texture;
+        Pointer<Shader> shader;
+
+        shader->Load("DefaultTextureShader.glsl");
+
+        texture->Load("Wall3.png");
+        texture->Upload();
+
+        m_ScreenMaterial->SetShader(shader);
+        m_ScreenMaterial->SetTexture(texture);
+
+        OpenGLWindow * window = Application::GetDefaultWindow();
+
+        CheckForGLErrors(__FILE__, __LINE__);
+
+        m_ScreenRenderTexture->Create(window->GetWidth(), window->GetHeight());
+
+        CheckForGLErrors(__FILE__, __LINE__);
 	}
 
 	Graphics::~Graphics()
@@ -163,6 +216,7 @@ namespace Engine
 		GLint u_Projection = shader->GetUniformLocation("u_Projection");
 		GLint u_Time = shader->GetUniformLocation("u_Time");
 		GLint u_DeltaTime = shader->GetUniformLocation("u_DeltaTime");
+        GLint u_Texture = shader->GetUniformLocation("u_Texture");
 
 		EnableVertexAttrib(a_Position, 3, VERTEX_ATTRIB(position));
 		EnableVertexAttrib(a_TextureCoordinate, 2, VERTEX_ATTRIB(texCoord));
@@ -175,6 +229,7 @@ namespace Engine
 		SetMatrix(u_Projection, aProjection);
 		SetFloat(u_Time, time);
 		SetFloat(u_DeltaTime, deltaTime);
+        SetTexture(u_Texture, 0, texture);
 
 		glDrawElements((GLenum)PrimitiveMode::Triangles, aMesh->GetIndexCount(), GL_UNSIGNED_SHORT, 0);
 
@@ -402,63 +457,6 @@ namespace Engine
 			s_Instance->RenderScene(aScene);
 		}
 		return;
-
-		//OpenGLWindow * currentWindow = Application::GetInstance()->GetCurrentWindow();
-		//RenderTexture * shadowMap = s_Instance->m_ShadowMapTexture;
-		//
-		//glBindFramebuffer(GL_FRAMEBUFFER, shadowMap->GetFBOHandle());
-		//glViewport(0, 0, shadowMap->GetWidth(), shadowMap->GetHeight());
-		//
-		//Clear();
-		//
-		//Material material;
-		//material.SetShader(s_Instance->m_ShadowMapShader);
-		//
-		//
-		////Specify the ViewPort
-		//for (std::vector<DrawCall>::iterator it = s_Instance->m_DrawCalls.begin(); it != s_Instance->m_DrawCalls.end(); it++)
-		//{
-		//	DrawCall call = *it;
-		//	material.SetTexture(call.material->GetTexture());
-		//	//DrawMesh(call.model, call.view, call.projection, call.mesh, &material);
-		//}
-		//
-		//glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		//
-		//
-		//material.SetShader(s_Instance->m_DefaultShader);
-		//glViewport(0, 0, currentWindow->GetWidth(), currentWindow->GetHeight());
-		//
-		//for (std::vector<DrawCall>::iterator it = s_Instance->m_DrawCalls.begin(); it != s_Instance->m_DrawCalls.end(); it++)
-		//{
-		//	DrawCall call = *it;
-		//	material.SetTexture(call.material->GetTexture());
-		//	//DrawMesh(call.model, call.view, call.projection, call.mesh, &material);
-		//}
-		//
-		//
-		//s_Instance->m_DrawCalls.clear();
-		//
-		//Matrix4x4 model;
-		//model.SetIdentity();
-		//model.Scale(Vector3(0.5f,0.65f, 1.0f));
-		//model.Rotate(Vector3(90.0f, 0.0f, 0.0f));
-		//
-		//model[3][0] = -0.75f;
-		//model[3][1] = 0.75f;
-		//model[3][2] = 0.0;
-		//
-		//
-		//
-		//Matrix4x4 identity;
-		//identity.SetIdentity();
-		//
-		//material.SetTexture(nullptr);
-		//
-		//
-		//DrawMesh(model, identity, identity, s_Instance->m_FrameBufferMesh, &material);
-		//CheckForGLErrors(__FILE__, __LINE__);
-
 	}
 
 	bool Graphics::CheckForGLErrors(const char* file, int line)
@@ -528,15 +526,33 @@ namespace Engine
 			return;
 		}
 		//Gather Geometry / Drawcalls
+
+        glDepthFunc(GL_LESS);
+        glEnable(GL_DEPTH_TEST);
+
+        glBindFramebuffer(GL_FRAMEBUFFER, m_ScreenRenderTexture->GetFBOHandle());
+
+        Clear();
+
 		aScene->PreRender();
 		for (std::vector<Camera*>::iterator it = m_RenderCameras.begin(); it != m_RenderCameras.end(); it++)
 		{
 			RenderCamera(aScene, *it);
 		}
+        glBindFramebuffer(GL_FRAMEBUFFER, 0); 
+
+       
+
 		aScene->Render();
 		m_RenderCameras.clear();
 		m_DrawCalls.clear();
-		aScene->PostRender();
+		
+        Clear();
+        RenderScreen();
+        
+        aScene->PostRender();
+
+
 	}
 
 	void Graphics::RenderCamera(Scene * aScene, Camera * aCamera)
@@ -589,14 +605,91 @@ namespace Engine
 			glUniform1f(aLocation, aFloat);
 		}
 	}
-	void Graphics::SetTexture(GLint aLocation, GLenum aUnit, Texture * aTexture)
+	void Graphics::SetTexture(GLint aLocation, GLenum aUnit, Pointer<Texture> aTexture)
 	{
-		if (aLocation != -1 && aTexture != nullptr && aTexture->IsUploaded())
+		if (aLocation != -1)
 		{
-			glActiveTexture(GL_TEXTURE0 + aUnit);
-			glBindTexture(GL_TEXTURE_2D, aTexture->GetHandle());
-			glUniform1i(aLocation, aUnit);
-
+            if (aTexture.IsAlive() && aTexture->IsUploaded())
+            {
+                glActiveTexture(GL_TEXTURE0 + aUnit);
+                glBindTexture(GL_TEXTURE_2D, aTexture->GetHandle());
+                glUniform1i(aLocation, aUnit);
+            }
 		}
 	}
+
+    void Graphics::SetTexture(GLint aLocation, GLenum aUnit, Pointer<RenderTexture> aTexture)
+    {
+        if (aLocation != -1)
+        {
+            if (aTexture.IsAlive() && aTexture->IsAllocated())
+            {
+                glActiveTexture(GL_TEXTURE0 + aUnit);
+                glBindTexture(GL_TEXTURE_2D, aTexture->GetDepthHandle());
+                glUniform1i(aLocation, aUnit);
+            }
+        }
+    }
+
+    void Graphics::RenderScreen()
+    {
+        Matrix4x4 identity = Matrix4x4::Identity();
+
+        BindBuffer(BufferTarget::Array, m_Screen->GetVBO());
+        BindBuffer(BufferTarget::ElementArray, m_Screen->GetIBO());
+
+        Pointer<Shader> shader = m_ScreenMaterial->GetShader();
+        Pointer<Texture> texture = m_ScreenMaterial->GetTexture();
+
+        if (!shader.IsAlive())
+        {
+            return;
+        }
+
+        if (!m_Screen->IsUploaded() || !shader->UseShader())
+        {
+            return;
+        }
+
+        GLint a_Position = shader->GetAttributeLocation("a_Position");
+        GLint a_TextureCoordinate = shader->GetAttributeLocation("a_TexCoords");
+        GLint a_Normal = shader->GetAttributeLocation("a_Normal");
+        GLint a_Color = shader->GetAttributeLocation("a_Color");
+
+        GLint u_MVP = shader->GetUniformLocation("u_MVP");
+        GLint u_Model = shader->GetUniformLocation("u_Model");
+        GLint u_View = shader->GetUniformLocation("u_View");
+        GLint u_Projection = shader->GetUniformLocation("u_Projection");
+        GLint u_Time = shader->GetUniformLocation("u_Time");
+        GLint u_DeltaTime = shader->GetUniformLocation("u_DeltaTime");
+        GLint u_Texture = shader->GetUniformLocation("u_Texture");
+
+        EnableVertexAttrib(a_Position, 3, VERTEX_ATTRIB(position));
+        EnableVertexAttrib(a_TextureCoordinate, 2, VERTEX_ATTRIB(texCoord));
+        EnableVertexAttrib(a_Normal, 3, VERTEX_ATTRIB(normal));
+        EnableVertexAttrib(a_Color, 4, VERTEX_ATTRIB(color));
+
+        SetMatrix(u_MVP, identity);
+        SetMatrix(u_Model, identity);
+        SetMatrix(u_View, identity);
+        SetMatrix(u_Projection, identity);
+        SetFloat(u_Time, Time::GetTime());
+        SetFloat(u_DeltaTime, Time::GetDeltaTime());
+        SetTexture(u_Texture, 0, m_ScreenRenderTexture);
+        //SetTexture(u_Texture,0, texture);
+
+        //glDrawElements((GLenum)PrimitiveMode::TriangleFans, m_Screen->GetIndexCount(), GL_UNSIGNED_SHORT, 0);
+
+        glDrawArrays((GLenum)PrimitiveMode::TriangleFans, 0, 4);
+
+        DisableVertexAttrib(a_Position);
+        DisableVertexAttrib(a_TextureCoordinate);
+        DisableVertexAttrib(a_Normal);
+        DisableVertexAttrib(a_Color);
+
+        BindBuffer(BufferTarget::Array, 0);
+        BindBuffer(BufferTarget::ElementArray, 0);
+        glUseProgram(0);
+
+    }
 }
