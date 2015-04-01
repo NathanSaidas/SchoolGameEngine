@@ -50,37 +50,7 @@ namespace Engine
     {
 
 
-#define TYPE_DEFINE(TYPE)										\
-    template<>													\
-        struct Engine::Reflection::TypeTrait < TYPE >			\
-        {                                                       \
-        public:													\
-        static inline const char * Name()						\
-        {														\
-        return #TYPE;											\
-    }															\
-    static const bool IS_POINTER = false;						\
-    };															\
-	template<>													\
-		struct Engine::Reflection::TypeTrait< TYPE ## *>		\
-		{														\
-		public:													\
-			static inline const char * Name()					\
-			{													\
-				return #TYPE;									\
-			}													\
-			static const bool IS_POINTER = true;				\
-		};														\
-		template<>												\
-		struct Engine::Reflection::TypeTrait< TYPE ## **>		\
-		{														\
-		public:													\
-			static inline const char * Name()					\
-			{													\
-				return #TYPE;									\
-			}													\
-			static const bool IS_POINTER = true;				\
-		};														\
+
 
 
 #define TYPE_NAME(TYPE) Engine::Reflection::TypeTrait<TYPE>::Name()

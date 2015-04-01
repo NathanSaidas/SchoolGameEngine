@@ -179,15 +179,15 @@ namespace Engine
         }
         void Runtime::BindIntegerAttributes(IntAttribute & aAttribute, Type & aType)
         {
-            if (aAttribute.Is(MetaObjectLinker::ATTRIBUTE_TYPE_ALIGNMENT))
+            if (aAttribute.Is(Attribute("",MetaObjectLinker::ATTRIBUTE_TYPE_ALIGNMENT)))
             {
                 aType.m_Alignment = aAttribute.GetValue();
             }
-            else if (aAttribute.Is(MetaObjectLinker::ATTRIBUTE_TYPE_SIZE))
+			else if (aAttribute.Is(Attribute("",MetaObjectLinker::ATTRIBUTE_TYPE_SIZE)))
             {
                 aType.m_Size = aAttribute.GetValue();
             }
-            else if (aAttribute.Is(MetaObjectLinker::ATTRIBUTE_TYPE_TYPE_ID))
+			else if (aAttribute.Is(Attribute("",MetaObjectLinker::ATTRIBUTE_TYPE_TYPE_ID)))
             {
                 aType.m_TypeID = aAttribute.GetValue();
             }
@@ -198,41 +198,41 @@ namespace Engine
         }
         void Runtime::BindBoolAttributes(BoolAttribute & aAttribute, Type & aType)
         {
-            if (aAttribute.Is(MetaObjectLinker::ATTRIBUTE_TYPE_IS_ABSTRACT))
+			if (aAttribute.Is(Attribute("",MetaObjectLinker::ATTRIBUTE_TYPE_IS_ABSTRACT)))
             {
                 aType.m_IsAbstract = aAttribute.GetValue();
             }
-            else if (aAttribute.Is(MetaObjectLinker::ATTRIBUTE_TYPE_IS_CLASS))
+			else if (aAttribute.Is(Attribute("",MetaObjectLinker::ATTRIBUTE_TYPE_IS_CLASS)))
             {
                 aType.m_IsClass = aAttribute.GetValue();
             }
-            else if (aAttribute.Is(MetaObjectLinker::ATTRIBUTE_TYPE_IS_INTERFACE))
+			else if (aAttribute.Is(Attribute("",MetaObjectLinker::ATTRIBUTE_TYPE_IS_INTERFACE)))
             {
                 aType.m_IsInterface = aAttribute.GetValue();
             }
         }
         void Runtime::BindStringAttributes(StringAttribute & aAttribute, Type & aType)
         {
-            if (aAttribute.Is(MetaObjectLinker::ATTRIBUTE_TYPE_BASE_CLASS_NAME))
+			if (aAttribute.Is(Attribute("",MetaObjectLinker::ATTRIBUTE_TYPE_BASE_CLASS_NAME)))
             {
                 aType.m_BaseClass = aAttribute.GetValue();
             }
-            else if (aAttribute.Is(MetaObjectLinker::ATTRIBUTE_TYPE_NAME))
+			else if (aAttribute.Is(Attribute("",MetaObjectLinker::ATTRIBUTE_TYPE_NAME)))
             {
                 aType.m_Name = aAttribute.GetValue();
             }
-            else if (aAttribute.Is(MetaObjectLinker::ATTRIBUTE_TYPE_INTERFACE))
+			else if (aAttribute.Is(Attribute("",MetaObjectLinker::ATTRIBUTE_TYPE_INTERFACE)))
             {
                 aType.m_Interfaces.push_back(aAttribute.GetValue());
             }
         }
         void Runtime::BindFunctionAttributes(FunctionAttribute & aAttribute, Type & aType)
         {
-            if (aAttribute.Is(MetaObjectLinker::ATTRIBUTE_TYPE_CREATE_FUNC))
+			if (aAttribute.Is(Attribute("",MetaObjectLinker::ATTRIBUTE_TYPE_CREATE_FUNC)))
             {
                 aType.m_Constructor = aAttribute.GetValue();
             }
-            else if (aAttribute.Is(MetaObjectLinker::ATTRIBUTE_TYPE_DESTROY_FUNC))
+			else if (aAttribute.Is(Attribute("",MetaObjectLinker::ATTRIBUTE_TYPE_DESTROY_FUNC)))
             {
                 aType.m_Destructor = aAttribute.GetValue();
             }

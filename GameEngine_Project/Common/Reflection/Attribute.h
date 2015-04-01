@@ -3,46 +3,74 @@
 
 #pragma region CHANGE LOG
 /// -- January, 29, 2015 - Nathan Hanlan - Added Attribute class/file
+/// -- April, 1, 2015 - Nathan Hanlan - Added Doxygen Style Comments.
+/// -- April, 1, 2015 - Nathan Hanlan - Defined a type trait for Attribute.
 #pragma endregion
 
+//Using cstring library for strcmp function
 #include <cstring>
+//Using TypeTrait to add some reflection information to this class.
+#include "TypeTrait.h"
 
 namespace Engine
 {
     namespace Reflection
     {
-        ///This class define the base of all attributes to come.
-        ///It holds information related to its attribute name and the class type
-        ///it belongs to.
+		/**
+		*	Attributes define raw meta data for class types. Attributes get compiled and linked into Type objects later using AttributeBinders.
+		*/
         class Attribute
         {
         public:
+			/**
+			* Constructor for Attribute. Attributes require a class name and an attribute name.
+			* @param aClassName The name of the class to bind the attribute to.
+			* @param aAttributeName The name of the attribute type. See MetaObjectLinker.h for reserved attribute types.
+			*/
             Attribute(const char * aClassName, const char * aAttributeName)
             {
                 m_ClassName = const_cast<char*>(aClassName);
                 m_AttributeName = const_cast<char*>(aAttributeName);
             }
 
+			/** 
+			* Gets the name of the class.
+			* @return Returns the name of the class.
+			*/
             inline char * GetClassName()
             {
                 return m_ClassName;
             }
+			/**
+			* Gets the name of the attribute type.
+			* @return Returns the attribute type name.
+			*/
             inline char * GetAttributeName()
             {
                 return m_AttributeName;
             }
-            inline bool Is(const char * aName)
+			/** 
+			* Determines if the Attribute is equal
+			* @param aAttribute The attribute to compare attribute type names with.
+			* @return Returns true if they are equal, false otherwise.
+			*/
+            inline bool Is(const Attribute & aAttribute)
             {
-                return strcmp(m_AttributeName, aName) == 0;
+                return strcmp(m_AttributeName, aAttribute.m_AttributeName) == 0;
             }
         private:
-            char * m_ClassName;
+			/**
+			* The name of the class to bind to during linking.
+			*/
+			char * m_ClassName;
+			/**
+			* The attribute type name for linking.
+			*/
             char * m_AttributeName;
         };
 
-
+		TYPE_DEFINE(Attribute)
     }
-    
 }
 
 #endif
