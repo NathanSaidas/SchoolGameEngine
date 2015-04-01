@@ -45,6 +45,15 @@ namespace Engine
 		input->CreateAxis("Vertical", AxisCode::W, AxisCode::S);
 		input->CreateAxis("Horizontal", AxisCode::D, AxisCode::A);
 
+		Stream stream;
+		BinaryFormatter formatter;
+
+		std::string value = "hello world. This is a crazy sentence";
+		std::string result = "";
+
+		formatter.Serialize(value, stream);
+		formatter.Deserialize(result, stream);
+
 	}
 	void TestComponent::OnLateInitialize()
 	{

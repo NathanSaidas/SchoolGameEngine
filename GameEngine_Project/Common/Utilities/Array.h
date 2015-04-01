@@ -88,6 +88,12 @@ namespace Engine
             return m_Elements[aIndex];
         }
 
+		TYPE * GetElements() const
+		{
+			return m_Elements;
+		}
+
+
         TYPE * GetElements()
         {
             return m_Elements;

@@ -34,6 +34,9 @@
     <Filter Include="Core\Input">
       <UniqueIdentifier>{ba47bea2-057b-4ece-8257-df4ea7dcefd0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Resources">
+      <UniqueIdentifier>{d3f22aa1-8cd6-407f-aef2-fb185cac7abf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -181,6 +184,21 @@
       <Filter>Core\EntityComponent</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Common\Utilities\StringExtensions.cpp">
+      <Filter>Core\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Resource\Resource.cpp">
+      <Filter>Core\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Resource\ResourceDatabase.cpp">
+      <Filter>Core\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Utilities\Stream.cpp">
+      <Filter>Core\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Utilities\IFormatter.cpp">
+      <Filter>Core\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Utilities\BinaryFormatter.cpp">
       <Filter>Core\Utilities</Filter>
     </ClCompile>
   </ItemGroup>
@@ -432,6 +450,21 @@
       <Filter>Core\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Common\Utilities\IniVector4.h">
+      <Filter>Core\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Resource\Resource.h">
+      <Filter>Core\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Resource\ResourceDatabase.h">
+      <Filter>Core\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Utilities\Stream.h">
+      <Filter>Core\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Utilities\IFormatter.h">
+      <Filter>Core\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Utilities\BinaryFormatter.h">
       <Filter>Core\Utilities</Filter>
     </ClInclude>
   </ItemGroup>
