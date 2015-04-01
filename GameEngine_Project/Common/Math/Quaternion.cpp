@@ -2,9 +2,7 @@
 #include "Vector3.h"
 #include "Matrix4x4.h"
 
-#ifndef GLM_FORCE_RADIANS
-#define GLM_FORCE_RADIANS
-#endif
+
 #include <glm\gtx\vector_angle.hpp>
 
 

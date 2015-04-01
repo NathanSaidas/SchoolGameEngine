@@ -8,9 +8,10 @@ namespace Engine
 	/**
 	* BinaryFormatter formats the primitive data types into a stream in a binary format.
 	*/
-	class BinaryFormatter : public object , IFormatter
+	class BinaryFormatter : public object , public IFormatter
 	{
 		CLASS_HEADER(BinaryFormatter)
+        CLASS_ATTRIBUTE_INTERFACE_HEADER(BinaryFormatter,IFormatter)
 	public:
 
 		void Serialize(SInt32 aValue, Stream & aStream);

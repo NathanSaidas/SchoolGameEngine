@@ -7,6 +7,7 @@
 #pragma endregion
 
 
+#include <limits>
 #include "TypeTrait.h"
 #include "MetaObjectLinker.h"
 
@@ -133,6 +134,29 @@ namespace Engine
             {
                 StringAttribMap & stringAttributes = MetaObjectLinker::GetStringAttributes();
                 stringAttributes.insert(StringAttribPair(const_cast<char*>(aClassName), StringAttribute(aClassName, aPropertyName, aPropertyValue)));
+                return GetInstance();
+            }
+
+            //static MetaObject DeclareMember(const char * aClassName, const char * aMemberName, size_t offset)
+            //{
+            //    char * classname = "TestComponent";
+            //    char * memberName = "m_Material";
+            //    //IntPtr offset = offsetof(TestComponent, m_Material);
+            //    //Type type = m_Material->GetType();
+            //
+            //    return GetInstance();
+            //}
+
+            static MetaObject DeclareMemberType(const char * aClassName, const char * aMemberName, size_t aOffset, const char * aTypename, bool aPublic)
+            {
+                MemberInfo info = MemberInfo(const_cast<char*>(aClassName), const_cast<char*>(aMemberName), const_cast<char*>(aTypename), aOffset, aPublic);
+
+                MemberAttribMap & memberAttributes = MetaObjectLinker::GetMemberAttributes();
+                memberAttributes.insert(
+                    MemberAttribPair(const_cast<char*>(aClassName),
+                    MemberAttribute(aClassName, MetaObjectLinker::ATTRIBUTE_TYPE_MEMBER_INFO, info)));
+              
+
                 return GetInstance();
             }
 

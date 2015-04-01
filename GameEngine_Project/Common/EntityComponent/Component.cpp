@@ -59,6 +59,19 @@ namespace Engine
 
 	}
 
+    void Component::OnSerializeEditor(IFormatter * aFormatter, Stream & aStream)
+    {
+        if (aFormatter != nullptr)
+        {
+
+
+        }
+    }
+    void Component::OnDeserializeEditor(IFormatter * aFormatter, Stream & aStream)
+    {
+
+    }
+
 	GameObject * Component::GetGameObject()
 	{
 		return m_GameObject;

@@ -16,17 +16,17 @@ namespace Engine
         }
         Runtime::~Runtime()
         {
-            for (std::map<std::string, Type>::iterator typeIt = m_CompiledTypes.begin(); typeIt != m_CompiledTypes.end(); ++typeIt)
-            {
-                std::vector<ClassMember*> members = typeIt->second.m_Members;
-                for (std::vector<ClassMember*>::iterator it = members.begin(); it != members.end(); ++it)
-                {
-                    if ((*it) != nullptr)
-                    {
-                        delete (*it);
-                    }
-                }
-            }
+            //for (std::map<std::string, Type>::iterator typeIt = m_CompiledTypes.begin(); typeIt != m_CompiledTypes.end(); ++typeIt)
+            //{
+            //    std::vector<ClassMember*> members = typeIt->second.m_Members;
+            //    for (std::vector<ClassMember*>::iterator it = members.begin(); it != members.end(); ++it)
+            //    {
+            //        if ((*it) != nullptr)
+            //        {
+            //            delete (*it);
+            //        }
+            //    }
+            //}
         }
 
         void Runtime::Initialize()
@@ -61,7 +61,7 @@ namespace Engine
             BoolAttribMap & boolAttributes = MetaObjectLinker::GetBooleanAttributes();
             StringAttribMap & stringAttributes = MetaObjectLinker::GetStringAttributes();
             FuncAttribMap & functionAttributes = MetaObjectLinker::GetFuncAttributes();
-            MemberMap & members = MetaObjectLinker::GetMembers();
+            MemberAttribMap & members = MetaObjectLinker::GetMemberAttributes();
 
             for (std::vector<char*>::iterator typeIter = types.begin(); typeIter != types.end(); ++typeIter)
             {
@@ -70,7 +70,7 @@ namespace Engine
                 BoolAttribIterator boolKeyIter = boolAttributes.equal_range((*typeIter));
                 StringAttribIterator stringKeyIter = stringAttributes.equal_range((*typeIter));
                 FuncAttribIterator functionKeyIter = functionAttributes.equal_range((*typeIter));
-                MemberIterator memberKeyIter = members.equal_range((*typeIter));
+                MemberAttribIterator memberKeyIter = members.equal_range((*typeIter));
 
                 Type type;
 
@@ -115,9 +115,13 @@ namespace Engine
                     s_Instance->BindFunctionAttributes((*it).second, type);
                 }
 
-                for (MemberMap::iterator it = memberKeyIter.first; it != memberKeyIter.second; ++it)
+                for (MemberAttribMap::iterator it = memberKeyIter.first; it != memberKeyIter.second; ++it)
                 {
-                    type.m_Members.push_back((*it).second);
+                    if (aContext != nullptr)
+                    {
+
+                    }
+                    s_Instance->BindMemberInfoAttribute((*it).second, type);
                 }
 
                 printf("Compiled Type: %s\n", type.GetName().c_str());
@@ -237,6 +241,14 @@ namespace Engine
                 aType.m_Destructor = aAttribute.GetValue();
             }
         }
+        void Runtime::BindMemberInfoAttribute(MemberAttribute & aAttribute, Type & aType)
+        {
+            if (aAttribute.Is(Attribute("", MetaObjectLinker::ATTRIBUTE_TYPE_MEMBER_INFO)))
+            {
+                aType.m_Members.push_back(aAttribute.GetValue());
+            }
+        }
+
 
     }
 

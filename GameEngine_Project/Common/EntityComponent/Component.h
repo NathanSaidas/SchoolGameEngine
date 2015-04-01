@@ -2,6 +2,7 @@
 #define GAME_ENGINE_COMPONENT_H
 
 #include "../BasicTypes.h"
+#include "../Utilities/Utilities.h"
 
 namespace Engine
 {
@@ -13,9 +14,6 @@ namespace Engine
 	public:
 		Component();
 		~Component();
-
-
-	
 
 		GameObject * GetGameObject();
 
@@ -101,8 +99,8 @@ namespace Engine
 		///Gets calld after extra scene rendering.
 		virtual void OnPostRender();
 		//TODO: Implement when Serialization has been designed / implemented.
-		//void OnSerializeEditor(Stream aStream);
-		//void OnDeserializeEditor(Stream aStream);
+        virtual void OnSerializeEditor(IFormatter * aFormatter, Stream & aStream);
+        virtual void OnDeserializeEditor(IFormatter * aFormatter, Stream & aStream);
 	private:
 		GameObject * m_GameObject;
 		friend GameObject;

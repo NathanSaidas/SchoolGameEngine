@@ -12,9 +12,10 @@ namespace Engine
 
 
 
-	class GameObject : public object
+	class GameObject : public object, public ISerializeable
 	{
-		CLASS_HEADER(GameObject)
+        CLASS_HEADER(GameObject)
+        CLASS_ATTRIBUTE_INTERFACE_HEADER(GameObject, ISerializeable)
 	public:
 		GameObject();
 		GameObject(const std::string & aName);
@@ -153,8 +154,8 @@ namespace Engine
 
 
 		//TODO: Implement when Serialization has been designed / implemented.
-		//void OnSerializeEditor(Stream aStream);
-		//void OnDeserializeEditor(Stream aStream);
+        void OnSerialize(IFormatter * aFormatter, Stream & aStream);
+        void OnDeserialize(IFormatter * aFormatter, Stream & aStream);
 
 	private:
 		std::string m_Name;

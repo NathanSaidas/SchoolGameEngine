@@ -5,6 +5,7 @@
 /// -- January, 29, 2015 - Nathan Hanlan - Added file Reflection. Added TYPE_DEFINE, TYPE_DEFINE_PTR, TYPE_NAME macros
 /// -- January, 30, 2015 - Nathan Hanlan - Added MetaObject / Runtime includes as well as macros for defining Types.
 /// -- March,   15, 2015 - Nathan Hanlan - Added type traits for std::string
+/// -- April,   1, 2015 - Nathan Hanlan - Added in MemberAttribute and MemberInfo to replace ClassMember class. 
 /// -- 
 #pragma endregion
 
@@ -19,8 +20,9 @@
 #include "MetaObjectLinker.h"
 #include "Runtime.h"
 #include "AttributeBinder.h"
-#include "ClassMember.h"
 #include "MethodInfo.h"
+#include "MemberAttribute.h"
+#include "MemberInfo.h"
 #include "../Type.h"
 
 //////////////////////
@@ -56,30 +58,49 @@ namespace Engine
 #define TYPE_NAME(TYPE) Engine::Reflection::TypeTrait<TYPE>::Name()
 
 #define CLASS_HEADER(TYPE)                                                          \
-    static const Engine::Reflection::MetaObject<TYPE> ATTRIBUTE_CLASS;              \
+    static const Engine::Reflection::MetaObject<TYPE> HIDDEN_CLASS;              \
     public:                                                                         \
     virtual Engine::Type GetType();                                                 \
     private:                                                                        \
 
 #define CLASS_CPP(TYPE,BASECLASS)                                                                                                                               \
-    const Engine::Reflection::MetaObject<TYPE> TYPE::ATTRIBUTE_CLASS = Engine::Reflection::MetaObject<TYPE>::DefineClass(#TYPE, #BASECLASS);    \
+    const Engine::Reflection::MetaObject<TYPE> TYPE::HIDDEN_CLASS = Engine::Reflection::MetaObject<TYPE>::DefineClass(#TYPE, #BASECLASS);    \
     Engine::Type TYPE::GetType() { static Engine::Type type = Engine::Reflection::Runtime::TypeOf(#TYPE); return type; }                \
 
-#define ABSTRACT_CLASS_HEADER(TYPE) static const Engine::Reflection::MetaObject<TYPE> ATTRIBUTE_ABSTRACT_CLASS;
-#define ABSTRACT_CLASS_CPP(TYPE,BASECLASS) const Engine::Reflection::MetaObject<TYPE> TYPE::ATTRIBUTE_ABSTRACT_CLASS = Engine::Reflection::MetaObject<TYPE>::DefineAbstractClass(#TYPE, #BASECLASS);
+#define ABSTRACT_CLASS_HEADER(TYPE) static const Engine::Reflection::MetaObject<TYPE> HIDDEN_ABSTRACT_CLASS;
+#define ABSTRACT_CLASS_CPP(TYPE,BASECLASS) const Engine::Reflection::MetaObject<TYPE> TYPE::HIDDEN_ABSTRACT_CLASS = Engine::Reflection::MetaObject<TYPE>::DefineAbstractClass(#TYPE, #BASECLASS);
 
-#define INTERFACE_HEADER(TYPE) static const Engine::Reflection::MetaObject<TYPE> ATTRIBUTE_INTERFACE; 
-#define INTERFACE_CPP(TYPE) const Engine::Reflection::MetaObject<TYPE> TYPE::ATTRIBUTE_INTERFACE = Engine::Reflection::MetaObject<TYPE>::DefineInterface(#TYPE);
+#define INTERFACE_HEADER(TYPE) static const Engine::Reflection::MetaObject<TYPE> HIDDEN_INTERFACE; public: virtual Engine::Type GetType(); private:
+#define INTERFACE_CPP(TYPE) const Engine::Reflection::MetaObject<TYPE> TYPE::HIDDEN_INTERFACE = Engine::Reflection::MetaObject<TYPE>::DefineInterface(#TYPE); \
+        Engine::Type TYPE::GetType() {static Engine::Type type = Engine::Reflection::Runtime::TypeOf(#TYPE); return type; }                                      \
 
 #define METHOD_INFO_HEADER(TYPE, METHOD_NAME) static const Engine::Reflection::MetaObject<TYPE> MEMBER_ ## TYPE ## _ ## METHOD_NAME;
 #define METHOD_INFO_CPP(TYPE,METHOD_NAME,METHOD_INFO) const Engine::Reflection::MetaObject<TYPE> TYPE:: ## MEMBER_ ## TYPE ## _ ## METHOD_NAME = Engine::Reflection::MetaObject<TYPE>::DefineMember(#TYPE, METHOD_INFO);          
 
 
-#define CLASS_ATTRIBUTE_INTERFACE_HEADER(TYPE,INTERFACE) static const Engine::Reflection::MetaObject<TYPE> ATTRIBUTE_ ## TYPE ## _ ## INTERFACE;
-#define CLASS_ATTRIBUTE_INTERFACE_CPP(TYPE,INTERFACE) const Engine::Reflection::MetaObject<TYPE> TYPE:: ## ATTRIBUTE_ ## TYPE ## _ ## INTERFACE = Engine::Reflection::MetaObject<TYPE>::DefineClassInterface(#TYPE,#INTERFACE);
+#define CLASS_ATTRIBUTE_INTERFACE_HEADER(TYPE,INTERFACE) static const Engine::Reflection::MetaObject<TYPE> HIDDEN_INTERFACE_ ## INTERFACE;
+#define CLASS_ATTRIBUTE_INTERFACE_CPP(TYPE,INTERFACE) const Engine::Reflection::MetaObject<TYPE> TYPE:: ## HIDDEN_INTERFACE_ ## INTERFACE = Engine::Reflection::MetaObject<TYPE>::DefineClassInterface(#TYPE,#INTERFACE);
 
-#define CLASS_PROPERTY_HEADER(TYPE,PROP_NAME) static const Engine::Reflection::MetaObject<TYPE> ATTRIBUTE_ ## TYPE ## _ ## PROP_NAME;
-#define CLASS_PROPERTY_CPP(TYPE,PROP_NAME,PROP_VALUE) const Engine::Reflection::MetaObject<TYPE> TYPE:: ## ATTRIBUTE_ ## TYPE ## _ ## PROP_NAME = Engine::Reflection::MetaObject<TYPE>::DefineProperty(#TYPE, #PROP_NAME, #PROP_VALUE);
+#define CLASS_PROPERTY_HEADER(TYPE,PROP_NAME) static const Engine::Reflection::MetaObject<TYPE> HIDDEN_ ## TYPE ## _ ## PROP_NAME;
+#define CLASS_PROPERTY_CPP(TYPE,PROP_NAME,PROP_VALUE) const Engine::Reflection::MetaObject<TYPE> TYPE:: ## HIDDEN_ ## TYPE ## _ ## PROP_NAME = Engine::Reflection::MetaObject<TYPE>::DefineProperty(#TYPE, #PROP_NAME, #PROP_VALUE);
+
+#define DECLARE_PUBLIC_MEMBER_HEADER(TYPE,MEMBER)                                                   \
+    private: static const Engine::Reflection::MetaObject<TYPE> HIDDEN_ ## MEMBER; public:           \
+
+#define DECLARE_PUBLIC_MEMBER_CPP(TYPE,MEMBER,MEMBER_TYPE)                                                                                                                                          \
+        const Engine::Reflection::MetaObject<TYPE> TYPE::HIDDEN_ ## MEMBER = Engine::Reflection::MetaObject<TYPE>::DeclareMemberType(#TYPE,#MEMBER, offsetof(TYPE,MEMBER), #MEMBER_TYPE, true);     \
+
+#define DECLARE_PROTECTED_MEMBER_HEADER(TYPE,MEMBER)                                                \
+    private: static const Engine::Reflection::MetaObject<TYPE> HIDDEN_ ## MEMBER; protected:        \
+
+#define DECLARE_PROTECTED_MEMBER_CPP(TYPE,MEMBER,MEMBER_TYPE)                                                                                                                                       \
+        const Engine::Reflection::MetaObject<TYPE> TYPE::HIDDEN_ ## MEMBER = Engine::Reflection::MetaObject<TYPE>::DeclareMemberType(#TYPE,#MEMBER, offsetof(TYPE,MEMBER), #MEMBER_TYPE, false);    \
+
+#define DECLARE_PRIVATE_MEMBER_HEADER(TYPE,MEMBER)                                                  \
+    private: static const Engine::Reflection::MetaObject<TYPE> HIDDEN_ ## MEMBER; private:          \
+
+#define DECLARE_PRIVATE_MEMBER_CPP(TYPE,MEMBER,MEMBER_TYPE)                                                                                                                                         \
+        const Engine::Reflection::MetaObject<TYPE> TYPE::HIDDEN_ ## MEMBER = Engine::Reflection::MetaObject<TYPE>::DeclareMemberType(#TYPE,#MEMBER, offsetof(TYPE,MEMBER), #MEMBER_TYPE, false);    \
 
         ///Define Primitive Types to allow for limited reflection info.
 

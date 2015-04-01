@@ -11,6 +11,7 @@
 #include "FunctionAttribute.h"
 #include "IntAttribute.h"
 #include "StringAttribute.h"
+#include "MemberAttribute.h"
 #include "ClassMember.h"
 #include <map>
 #include <vector>
@@ -24,18 +25,21 @@ namespace Engine
         typedef std::multimap<char *, FunctionAttribute> FuncAttribMap;
         typedef std::multimap<char *, IntAttribute> IntAttribMap;
         typedef std::multimap<char *, StringAttribute> StringAttribMap;
+        typedef std::multimap<char *, MemberAttribute> MemberAttribMap;
 
         typedef std::pair<char*, BoolAttribute> BoolAttribPair;
         typedef std::pair<char*, FloatAttribute> FloatAttribPair;
         typedef std::pair<char*, FunctionAttribute> FuncAttribPair;
         typedef std::pair<char*, IntAttribute> IntAttribPair;
         typedef std::pair<char*, StringAttribute> StringAttribPair;
+        typedef std::pair<char*, MemberAttribute> MemberAttribPair;
 
         typedef std::pair<BoolAttribMap::iterator, BoolAttribMap::iterator> BoolAttribIterator;
         typedef std::pair<FloatAttribMap::iterator, FloatAttribMap::iterator> FloatAttribIterator;
         typedef std::pair<FuncAttribMap::iterator, FuncAttribMap::iterator> FuncAttribIterator;
         typedef std::pair<IntAttribMap::iterator, IntAttribMap::iterator> IntAttribIterator;
         typedef std::pair<StringAttribMap::iterator, StringAttribMap::iterator> StringAttribIterator;
+        typedef std::pair<MemberAttribMap::iterator, MemberAttribMap::iterator> MemberAttribIterator;
 
         typedef std::multimap<char *, ClassMember*> MemberMap;
         typedef std::pair<char*, ClassMember*> MemberPair;
@@ -92,6 +96,12 @@ namespace Engine
                 return members;
             }
 
+            inline static MemberAttribMap & GetMemberAttributes()
+            {
+                static MemberAttribMap members;
+                return members;
+            }
+
             ///Get ID retrieves an integer ID. The ID starts at 0 and counts up.
             ///This number is guarenteed to be unique until highest int number (2,147,483,647)
             inline static int GetID()
@@ -115,6 +125,8 @@ namespace Engine
             static const char * ATTRIBUTE_TYPE_IS_CLASS;
             static const char * ATTRIBUTE_TYPE_IS_INTERFACE;
             static const char * ATTRIBUTE_TYPE_IS_ABSTRACT;
+
+            static const char * ATTRIBUTE_TYPE_MEMBER_INFO;
         };
 
     }

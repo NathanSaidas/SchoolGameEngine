@@ -46,7 +46,7 @@ namespace Engine
             void BindBoolAttributes(BoolAttribute & aAttribute, Type & aType);
             void BindStringAttributes(StringAttribute & aAttribute, Type & aType);
             void BindFunctionAttributes(FunctionAttribute & aAttribute, Type & aType);
-
+            void BindMemberInfoAttribute(MemberAttribute & aAttribute, Type & aType);
         };
     }
 	

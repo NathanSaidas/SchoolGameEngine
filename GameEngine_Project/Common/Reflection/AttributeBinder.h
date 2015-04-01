@@ -13,6 +13,7 @@
 #include "BoolAttribute.h"
 #include "StringAttribute.h"
 #include "FunctionAttribute.h"
+#include "MemberAttribute.h"
 //Included Type class to add type. 
 #include "../Type.h"
 
@@ -59,6 +60,13 @@ namespace Engine
 			* @param aType The type receiving information.
 			*/
             virtual void BindFunction(FunctionAttribute & aAttribute, Type & aType) = 0;
+            /**
+            * Gets called when binding a function attribute
+            * @param aAttribute The attribute getting bound.
+            * @param aType The type receiving information.
+            */
+            virtual void BindMember(MemberAttribute & aAttribute, Type & aType) = 0;
+
         };
 
 		TYPE_DEFINE(AttributeBinder)

@@ -29,7 +29,6 @@ namespace Engine
 		void OnPostRender();
 
 	private:
-
 		Renderer * m_Renderer = nullptr;
 		Camera * m_Camera = nullptr;
 

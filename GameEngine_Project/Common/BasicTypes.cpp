@@ -15,7 +15,7 @@ namespace Engine
 	}
 	string object::ToString()
 	{
-		return "object";
+        return GetType().GetName();
 	}
 
 	Object::Object() : object()
@@ -29,7 +29,7 @@ namespace Engine
 
 	string Object::ToString()
 	{
-		return string("Object: ").append(m_Name);
+        return GetType().GetName();
 	}
 
 	string Object::GetName()

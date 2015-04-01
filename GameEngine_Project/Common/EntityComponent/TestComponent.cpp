@@ -1,11 +1,12 @@
 #include "TestComponent.h"
 #include <glm\gtc\matrix_transform.hpp>
+#include <stddef.h>
 
 
 
 namespace Engine
 {
-	CLASS_CPP(TestComponent,"")
+    CLASS_CPP(TestComponent, "")
 
 	TestComponent::TestComponent() : Component()
 	{
@@ -53,6 +54,8 @@ namespace Engine
 
 		formatter.Serialize(value, stream);
 		formatter.Deserialize(result, stream);
+    
+        
 
 	}
 	void TestComponent::OnLateInitialize()
@@ -75,10 +78,30 @@ namespace Engine
 			m_Renderer->SetMaterial(m_Material);
 			m_Renderer->SetMesh(m_Mesh);
 			GameObject * gameObject = m_Renderer->GetGameObject();
+
+            Type type = m_Renderer->GetType();
+            Array<Reflection::MemberInfo> members = type.GetMembers();
+
+            Pointer<Material> * material = nullptr;
+            Pointer<Mesh> * mesh = nullptr;
+
+            for (int i = 0; i < members.GetCount(); i++)
+            {
+                Reflection::MemberInfo member = members[i];
+
+                if (member.GetMemberName() == "m_Mesh")
+                {
+                    mesh = (Pointer<Mesh>*)member.GetOffsetPointer(m_Renderer);
+                }
+                else if (member.GetMemberName() == "m_Material")
+                {
+                    material = (Pointer<Material>*)member.GetOffsetPointer(m_Renderer);
+                }
+            }
 		}
 
-        
 
+        
 
 	}
 	

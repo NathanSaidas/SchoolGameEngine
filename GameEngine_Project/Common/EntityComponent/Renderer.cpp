@@ -4,6 +4,8 @@
 namespace Engine
 {
 	CLASS_CPP(Renderer,Component)
+    DECLARE_PRIVATE_MEMBER_CPP(Renderer,m_Mesh,Pointer<Mesh>)
+    DECLARE_PRIVATE_MEMBER_CPP(Renderer,m_Material,Pointer<Material>)
 
 	Renderer::Renderer() : Component()
 	{

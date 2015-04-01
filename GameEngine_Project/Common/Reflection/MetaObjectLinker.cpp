@@ -15,6 +15,7 @@ namespace Engine
         const char * MetaObjectLinker::ATTRIBUTE_TYPE_IS_CLASS = "IsClass";
         const char * MetaObjectLinker::ATTRIBUTE_TYPE_IS_INTERFACE = "IsInterface";
         const char * MetaObjectLinker::ATTRIBUTE_TYPE_IS_ABSTRACT = "IsAbstract";
+        const char * MetaObjectLinker::ATTRIBUTE_TYPE_MEMBER_INFO = "MemberInfo";
     }
     
 }

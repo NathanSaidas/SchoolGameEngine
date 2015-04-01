@@ -6,7 +6,7 @@
 namespace Engine
 {
 	CLASS_CPP(GameObject,object)
-
+    CLASS_ATTRIBUTE_INTERFACE_CPP(GameObject,ISerializeable)
 
 	GameObject::GameObject()
 	{
@@ -499,13 +499,13 @@ namespace Engine
 			DEBUG_LOG("Failed to add a component. The type is invalid.");
 			return nullptr;
 		}
-		Property prop = aType.GetProperty("DisallowMultipleComponent");
+		//Property prop = aType.GetProperty("DisallowMultipleComponent");
 	
-		if (!prop.IsValid() && GetComponent(aType.GetName()) != nullptr)
-		{
-			DEBUG_LOG("Failed to add a component. %s contains the %s property and a component of the type already exists on the gameobject.", aType.GetName().c_str(), "DisallowMultipleComponent");
-			return nullptr;
-		}
+		//if (!prop.IsValid() && GetComponent(aType.GetName()) != nullptr)
+		//{
+		//	DEBUG_LOG("Failed to add a component. %s contains the %s property and a component of the type already exists on the gameobject.", aType.GetName().c_str(), "DisallowMultipleComponent");
+		//	return nullptr;
+		//}
 		//Initialize the component with the memory manager and invoke the constructor through reflection.
 		Component * component = (Component*)MEM_POOL_ALLOC(aType.GetSize(), aType.GetAlignment());
 		if (component != nullptr)
@@ -525,5 +525,14 @@ namespace Engine
 	{
 		Utilities::Remove<Component*>(m_Components, aComponent);
 	}
+
+    void GameObject::OnSerialize(IFormatter * aFormatter, Stream & aStream)
+    {
+
+    }
+    void GameObject::OnDeserialize(IFormatter * aFormatter, Stream & aStream)
+    {
+
+    }
 }
 	

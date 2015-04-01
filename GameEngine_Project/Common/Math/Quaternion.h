@@ -2,6 +2,10 @@
 #define GAME_ENGINE_QUATERNION_H
 
 #include "../BasicTypes.h"
+
+#ifndef GLM_FORCE_RADIANS
+#define GLM_FORCE_RADIANS
+#endif
 #include <glm\glm.hpp>
 #include <glm\gtc\quaternion.hpp>
 

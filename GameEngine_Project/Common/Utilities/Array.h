@@ -1,7 +1,8 @@
 #ifndef GAME_ENGINE_ARRAY_H
 #define GAME_ENGINE_ARRAY_H
 
-#include "../BasicTypes.h"
+//#include "../BasicTypes.h"
+#include "../ValueTypes.h"
 #include <vector>
 
 namespace Engine

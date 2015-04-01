@@ -13,7 +13,9 @@
 #include "IniVector4.h"
 #include "Stream.h"
 #include "IFormatter.h"
+#include "ISerializeable.h"
 #include "BinaryFormatter.h"
+
 
 
 namespace Engine
