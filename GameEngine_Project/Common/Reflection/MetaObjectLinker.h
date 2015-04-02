@@ -12,7 +12,6 @@
 #include "IntAttribute.h"
 #include "StringAttribute.h"
 #include "MemberAttribute.h"
-#include "ClassMember.h"
 #include <map>
 #include <vector>
 
@@ -41,9 +40,6 @@ namespace Engine
         typedef std::pair<StringAttribMap::iterator, StringAttribMap::iterator> StringAttribIterator;
         typedef std::pair<MemberAttribMap::iterator, MemberAttribMap::iterator> MemberAttribIterator;
 
-        typedef std::multimap<char *, ClassMember*> MemberMap;
-        typedef std::pair<char*, ClassMember*> MemberPair;
-        typedef std::pair<MemberMap::iterator, MemberMap::iterator> MemberIterator;
 
         ///MetaObjectLinker is a class which holds a set of attributes for the Runtime to Compile into useful MetaData Type objects.
         class MetaObjectLinker
@@ -90,11 +86,11 @@ namespace Engine
                 return attributes;
             }
 
-            inline static MemberMap & GetMembers()
-            {
-                static MemberMap members;
-                return members;
-            }
+            //inline static MemberMap & GetMembers()
+            //{
+            //    static MemberMap members;
+            //    return members;
+            //}
 
             inline static MemberAttribMap & GetMemberAttributes()
             {

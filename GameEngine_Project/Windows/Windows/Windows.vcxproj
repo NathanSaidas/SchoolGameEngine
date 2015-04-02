@@ -90,10 +90,6 @@
     <ClCompile Include="..\..\Common\EntityComponent\Renderer.cpp" />
     <ClCompile Include="..\..\Common\EntityComponent\Scene.cpp" />
     <ClCompile Include="..\..\Common\EntityComponent\TestComponent.cpp" />
-    <ClCompile Include="..\..\Common\Examples\ISerializeable.cpp" />
-    <ClCompile Include="..\..\Common\Examples\Line.cpp" />
-    <ClCompile Include="..\..\Common\Examples\Shape.cpp" />
-    <ClCompile Include="..\..\Common\Examples\Triangle.cpp" />
     <ClCompile Include="..\..\Common\Graphics\Color.cpp" />
     <ClCompile Include="..\..\Common\Graphics\DrawCall.cpp" />
     <ClCompile Include="..\..\Common\Graphics\Geometry.cpp" />
@@ -118,6 +114,7 @@
     <ClCompile Include="..\..\Common\Memory\MemoryManager.cpp" />
     <ClCompile Include="..\..\Common\Memory\PoolAllocator.cpp" />
     <ClCompile Include="..\..\Common\Memory\StackAllocator.cpp" />
+    <ClCompile Include="..\..\Common\Reflection\MemberInfo.cpp" />
     <ClCompile Include="..\..\Common\Reflection\MetaObjectLinker.cpp" />
     <ClCompile Include="..\..\Common\Reflection\Runtime.cpp" />
     <ClCompile Include="..\..\Common\Resource\Resource.cpp" />
@@ -129,6 +126,7 @@
     <ClCompile Include="..\..\Common\Utilities\IniFileStream.cpp" />
     <ClCompile Include="..\..\Common\Utilities\IniSection.cpp" />
     <ClCompile Include="..\..\Common\Utilities\IniVariables.cpp" />
+    <ClCompile Include="..\..\Common\Utilities\ISerializeable.cpp" />
     <ClCompile Include="..\..\Common\Utilities\Stream.cpp" />
     <ClCompile Include="..\..\Common\Utilities\StringExtensions.cpp" />
     <ClCompile Include="..\..\Common\Utilities\Utilities.cpp" />
@@ -147,12 +145,6 @@
     <ClInclude Include="..\..\Common\EntityComponent\Renderer.h" />
     <ClInclude Include="..\..\Common\EntityComponent\Scene.h" />
     <ClInclude Include="..\..\Common\EntityComponent\TestComponent.h" />
-    <ClInclude Include="..\..\Common\Examples\Examples.h" />
-    <ClInclude Include="..\..\Common\Examples\Property.h" />
-    <ClInclude Include="..\..\Common\Examples\ISerializeable.h" />
-    <ClInclude Include="..\..\Common\Examples\Line.h" />
-    <ClInclude Include="..\..\Common\Examples\Shape.h" />
-    <ClInclude Include="..\..\Common\Examples\Triangle.h" />
     <ClInclude Include="..\..\Common\Func.h" />
     <ClInclude Include="..\..\Common\Graphics\Color.h" />
     <ClInclude Include="..\..\Common\Graphics\DrawCall.h" />
@@ -197,6 +189,7 @@
     <ClInclude Include="..\..\Common\Reflection\FloatAttribute.h" />
     <ClInclude Include="..\..\Common\Reflection\FunctionAttribute.h" />
     <ClInclude Include="..\..\Common\Reflection\IntAttribute.h" />
+    <ClInclude Include="..\..\Common\Reflection\MemberInfo.h" />
     <ClInclude Include="..\..\Common\Reflection\MetaObject.h" />
     <ClInclude Include="..\..\Common\Reflection\MetaObjectLinker.h" />
     <ClInclude Include="..\..\Common\Reflection\MethodInfo.h" />
@@ -219,6 +212,7 @@
     <ClInclude Include="..\..\Common\Utilities\IniVariables.h" />
     <ClInclude Include="..\..\Common\Utilities\IniVector3.h" />
     <ClInclude Include="..\..\Common\Utilities\IniVector4.h" />
+    <ClInclude Include="..\..\Common\Utilities\ISerializeable.h" />
     <ClInclude Include="..\..\Common\Utilities\Stream.h" />
     <ClInclude Include="..\..\Common\Utilities\StringExtensions.h" />
     <ClInclude Include="..\..\Common\Utilities\Utilities.h" />

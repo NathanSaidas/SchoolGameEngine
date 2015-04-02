@@ -5,7 +5,6 @@
 /// -- January, 30, 2015 - Nathan Hanlan - Added MethodInfo file and MethodInfo / MethodActionInfo classes 
 #pragma region
 
-#include "ClassMember.h"
 #include "../Method.h"
 #include "Runtime.h"
 
@@ -14,7 +13,7 @@ namespace Engine
     namespace Reflection
     {
         template<class CLASS, class RETURN, class ARGUMENT1 = void, class ARGUMENT2 = void, class ARGUMENT3 = void, class ARGUMENT4 = void, class ARGUMENT5 = void, class ARGUMENT6 = void, class ARGUMENT7 = void, class ARGUMENT8 = void>
-        class MethodInfo : public ClassMember
+        class MethodInfo 
         {
         public:
             MethodInfo()
@@ -35,7 +34,7 @@ namespace Engine
         };
         //
         template<class CLASS, class RETURN, class ARGUMENT1, class ARGUMENT2, class ARGUMENT3, class ARGUMENT4, class ARGUMENT5, class ARGUMENT6, class ARGUMENT7>
-        class MethodInfo<CLASS, RETURN, ARGUMENT1, ARGUMENT2, ARGUMENT3, ARGUMENT4, ARGUMENT5, ARGUMENT6, ARGUMENT7> : public ClassMember
+        class MethodInfo<CLASS, RETURN, ARGUMENT1, ARGUMENT2, ARGUMENT3, ARGUMENT4, ARGUMENT5, ARGUMENT6, ARGUMENT7> 
         {
         public:
             MethodInfo()
@@ -57,7 +56,7 @@ namespace Engine
         //
         //
         template<class CLASS, class RETURN, class ARGUMENT1, class ARGUMENT2, class ARGUMENT3, class ARGUMENT4, class ARGUMENT5, class ARGUMENT6>
-        class MethodInfo<CLASS, RETURN, ARGUMENT1, ARGUMENT2, ARGUMENT3, ARGUMENT4, ARGUMENT5, ARGUMENT6> : public ClassMember
+        class MethodInfo<CLASS, RETURN, ARGUMENT1, ARGUMENT2, ARGUMENT3, ARGUMENT4, ARGUMENT5, ARGUMENT6> 
         {
         public:
             MethodInfo()
@@ -79,7 +78,7 @@ namespace Engine
         //
         //
         template<class CLASS, class RETURN, class ARGUMENT1, class ARGUMENT2, class ARGUMENT3, class ARGUMENT4, class ARGUMENT5>
-        class MethodInfo<CLASS, RETURN, ARGUMENT1, ARGUMENT2, ARGUMENT3, ARGUMENT4, ARGUMENT5> : public ClassMember
+        class MethodInfo<CLASS, RETURN, ARGUMENT1, ARGUMENT2, ARGUMENT3, ARGUMENT4, ARGUMENT5>
         {
         public:
             MethodInfo()
@@ -101,7 +100,7 @@ namespace Engine
         //
         //
         template<class CLASS, class RETURN, class ARGUMENT1, class ARGUMENT2, class ARGUMENT3, class ARGUMENT4>
-        class MethodInfo<CLASS, RETURN, ARGUMENT1, ARGUMENT2, ARGUMENT3, ARGUMENT4> : public ClassMember
+        class MethodInfo<CLASS, RETURN, ARGUMENT1, ARGUMENT2, ARGUMENT3, ARGUMENT4>
         {
         public:
             MethodInfo()
@@ -123,7 +122,7 @@ namespace Engine
         //
         //
         template<class CLASS, class RETURN, class ARGUMENT1, class ARGUMENT2, class ARGUMENT3>
-        class MethodInfo<CLASS, RETURN, ARGUMENT1, ARGUMENT2, ARGUMENT3> : public ClassMember
+        class MethodInfo<CLASS, RETURN, ARGUMENT1, ARGUMENT2, ARGUMENT3>
         {
         public:
             MethodInfo()
@@ -145,7 +144,7 @@ namespace Engine
         //
         //
         template<class CLASS, class RETURN, class ARGUMENT1, class ARGUMENT2>
-        class MethodInfo<CLASS, RETURN, ARGUMENT1, ARGUMENT2> : public ClassMember
+        class MethodInfo<CLASS, RETURN, ARGUMENT1, ARGUMENT2> 
         {
         public:
             MethodInfo()
@@ -167,7 +166,7 @@ namespace Engine
         //
         //
         template<class CLASS, class RETURN, class ARGUMENT1>
-        class MethodInfo<CLASS, RETURN, ARGUMENT1> : public ClassMember
+        class MethodInfo<CLASS, RETURN, ARGUMENT1>
         {
         public:
             MethodInfo()
@@ -189,7 +188,7 @@ namespace Engine
         //
         //
         template<class CLASS, class RETURN>
-        class MethodInfo<CLASS, RETURN> : public ClassMember
+        class MethodInfo<CLASS, RETURN>
         {
         public:
             MethodInfo() : ClassMember()
@@ -211,7 +210,7 @@ namespace Engine
         //
 
         template<class CLASS, class ARGUMENT1 = void, class ARGUMENT2 = void, class ARGUMENT3 = void, class ARGUMENT4 = void, class ARGUMENT5 = void>
-        class MethodActionInfo : public ClassMember
+        class MethodActionInfo 
         {
         public:
             MethodActionInfo()
@@ -235,7 +234,7 @@ namespace Engine
         };
 
         template<class CLASS, class ARGUMENT1, class ARGUMENT2, class ARGUMENT3, class ARGUMENT4>
-        class MethodActionInfo<CLASS, ARGUMENT1, ARGUMENT2, ARGUMENT3, ARGUMENT4> : public ClassMember
+        class MethodActionInfo<CLASS, ARGUMENT1, ARGUMENT2, ARGUMENT3, ARGUMENT4> 
         {
         public:
             MethodActionInfo()
@@ -259,7 +258,7 @@ namespace Engine
         };
 
         template<class CLASS, class ARGUMENT1, class ARGUMENT2, class ARGUMENT3>
-        class MethodActionInfo<CLASS, ARGUMENT1, ARGUMENT2, ARGUMENT3> : public ClassMember
+        class MethodActionInfo<CLASS, ARGUMENT1, ARGUMENT2, ARGUMENT3>
         {
         public:
             MethodActionInfo()
@@ -283,7 +282,7 @@ namespace Engine
         };
 
         template<class CLASS, class ARGUMENT1, class ARGUMENT2>
-        class MethodActionInfo<CLASS, ARGUMENT1, ARGUMENT2> : public ClassMember
+        class MethodActionInfo<CLASS, ARGUMENT1, ARGUMENT2>
         {
         public:
             MethodActionInfo()
@@ -307,7 +306,7 @@ namespace Engine
         };
 
         template<class CLASS, class ARGUMENT1>
-        class MethodActionInfo<CLASS, ARGUMENT1> : public ClassMember
+        class MethodActionInfo<CLASS, ARGUMENT1>
         {
         public:
             MethodActionInfo()
@@ -331,7 +330,7 @@ namespace Engine
         };
 
         template<class CLASS>
-        class MethodActionInfo<CLASS> : public ClassMember
+        class MethodActionInfo<CLASS>
         {
         public:
             MethodActionInfo()

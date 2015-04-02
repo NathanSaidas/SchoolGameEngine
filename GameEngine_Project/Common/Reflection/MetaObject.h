@@ -113,15 +113,15 @@ namespace Engine
                 return GetInstance();
             }
 
-            static MetaObject DefineMember(const char * aClassName, ClassMember * aMember)
-            {
-                if (aMember != nullptr)
-                {
-                    MemberMap & members = MetaObjectLinker::GetMembers();
-                    members.insert(MemberPair(const_cast<char*>(aClassName), aMember));
-                }
-                return GetInstance();
-            }
+            //static MetaObject DefineMember(const char * aClassName, ClassMember * aMember)
+            //{
+            //    if (aMember != nullptr)
+            //    {
+            //        MemberMap & members = MetaObjectLinker::GetMembers();
+            //        members.insert(MemberPair(const_cast<char*>(aClassName), aMember));
+            //    }
+            //    return GetInstance();
+            //}
 
             static MetaObject DefineClassInterface(const char * aClassName, const char * aInterfaceName)
             {

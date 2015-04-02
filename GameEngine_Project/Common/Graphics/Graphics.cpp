@@ -33,6 +33,8 @@ namespace Engine
 	{
 		InitializePrimitiveBuffers();
 
+#ifdef CONFIG_GRAPHICS_SHADOWMAPPING
+
         Array<Vector3> positions(4);
         positions[0] = Vector3(-1.0f,  1.0f, -0.5f);
         positions[1] = Vector3( 1.0f,  1.0f, -0.5f);
@@ -86,6 +88,9 @@ namespace Engine
         m_ScreenRenderTexture->Create(window->GetWidth(), window->GetHeight());
 
         CheckForGLErrors(__FILE__, __LINE__);
+#else
+        DEBUG_LOG("ShadowMapping is turned off. Check OpenGL version");
+#endif
 	}
 
 	Graphics::~Graphics()
@@ -530,8 +535,9 @@ namespace Engine
         glDepthFunc(GL_LESS);
         glEnable(GL_DEPTH_TEST);
 
+#ifdef CONFIG_GRAPHICS_SHADOWMAPPING
         glBindFramebuffer(GL_FRAMEBUFFER, m_ScreenRenderTexture->GetFBOHandle());
-
+#endif
         Clear();
 
 		aScene->PreRender();
@@ -539,16 +545,19 @@ namespace Engine
 		{
 			RenderCamera(aScene, *it);
 		}
+#ifdef CONFIG_GRAPHICS_SHADOWMAPPING
         glBindFramebuffer(GL_FRAMEBUFFER, 0); 
-
+#endif
        
 
 		aScene->Render();
 		m_RenderCameras.clear();
 		m_DrawCalls.clear();
 		
+#ifdef CONFIG_GRAPHICS_SHADOWMAPPING
         Clear();
         RenderScreen();
+#endif
         
         aScene->PostRender();
 

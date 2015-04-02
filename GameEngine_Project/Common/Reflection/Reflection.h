@@ -74,15 +74,15 @@ namespace Engine
 #define INTERFACE_CPP(TYPE) const Engine::Reflection::MetaObject<TYPE> TYPE::HIDDEN_INTERFACE = Engine::Reflection::MetaObject<TYPE>::DefineInterface(#TYPE); \
         Engine::Type TYPE::GetType() {static Engine::Type type = Engine::Reflection::Runtime::TypeOf(#TYPE); return type; }                                      \
 
-#define METHOD_INFO_HEADER(TYPE, METHOD_NAME) static const Engine::Reflection::MetaObject<TYPE> MEMBER_ ## TYPE ## _ ## METHOD_NAME;
-#define METHOD_INFO_CPP(TYPE,METHOD_NAME,METHOD_INFO) const Engine::Reflection::MetaObject<TYPE> TYPE:: ## MEMBER_ ## TYPE ## _ ## METHOD_NAME = Engine::Reflection::MetaObject<TYPE>::DefineMember(#TYPE, METHOD_INFO);          
+//#define METHOD_INFO_HEADER(TYPE, METHOD_NAME) static const Engine::Reflection::MetaObject<TYPE> MEMBER_ ## TYPE ## _ ## METHOD_NAME;
+//#define METHOD_INFO_CPP(TYPE,METHOD_NAME,METHOD_INFO) const Engine::Reflection::MetaObject<TYPE> TYPE:: ## MEMBER_ ## TYPE ## _ ## METHOD_NAME = Engine::Reflection::MetaObject<TYPE>::DefineMember(#TYPE, METHOD_INFO);          
 
 
 #define CLASS_ATTRIBUTE_INTERFACE_HEADER(TYPE,INTERFACE) static const Engine::Reflection::MetaObject<TYPE> HIDDEN_INTERFACE_ ## INTERFACE;
 #define CLASS_ATTRIBUTE_INTERFACE_CPP(TYPE,INTERFACE) const Engine::Reflection::MetaObject<TYPE> TYPE:: ## HIDDEN_INTERFACE_ ## INTERFACE = Engine::Reflection::MetaObject<TYPE>::DefineClassInterface(#TYPE,#INTERFACE);
 
-#define CLASS_PROPERTY_HEADER(TYPE,PROP_NAME) static const Engine::Reflection::MetaObject<TYPE> HIDDEN_ ## TYPE ## _ ## PROP_NAME;
-#define CLASS_PROPERTY_CPP(TYPE,PROP_NAME,PROP_VALUE) const Engine::Reflection::MetaObject<TYPE> TYPE:: ## HIDDEN_ ## TYPE ## _ ## PROP_NAME = Engine::Reflection::MetaObject<TYPE>::DefineProperty(#TYPE, #PROP_NAME, #PROP_VALUE);
+//#define CLASS_PROPERTY_HEADER(TYPE,PROP_NAME) static const Engine::Reflection::MetaObject<TYPE> HIDDEN_ ## TYPE ## _ ## PROP_NAME;
+//#define CLASS_PROPERTY_CPP(TYPE,PROP_NAME,PROP_VALUE) const Engine::Reflection::MetaObject<TYPE> TYPE:: ## HIDDEN_ ## TYPE ## _ ## PROP_NAME = Engine::Reflection::MetaObject<TYPE>::DefineProperty(#TYPE, #PROP_NAME, #PROP_VALUE);
 
 #define DECLARE_PUBLIC_MEMBER_HEADER(TYPE,MEMBER)                                                   \
     private: static const Engine::Reflection::MetaObject<TYPE> HIDDEN_ ## MEMBER; public:           \

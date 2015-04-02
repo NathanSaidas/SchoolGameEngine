@@ -148,6 +148,7 @@ namespace Engine
         if (!Graphics::LinkShaderProgram(m_ShaderHandle, shaders, shadersLoaded))
         {
             ReleaseProgram();
+            DEBUG_LOG("Error loading shader %s.", GetName().c_str());
         }
 		else
 		{
