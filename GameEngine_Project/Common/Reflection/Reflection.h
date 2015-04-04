@@ -6,7 +6,8 @@
 /// -- January, 30, 2015 - Nathan Hanlan - Added MetaObject / Runtime includes as well as macros for defining Types.
 /// -- March,   15, 2015 - Nathan Hanlan - Added type traits for std::string
 /// -- April,   1, 2015 - Nathan Hanlan - Added in MemberAttribute and MemberInfo to replace ClassMember class. 
-/// -- 
+/// -- April    3, 2015 - Nathan Hanlan - Cleaned up the comments for the available macros. 
+/// -- -----    -, ---- - Nathan Hanlan - Deprecated some macros. Replaced with macros following a naming convention.
 #pragma endregion
 
 #include "Attribute.h"
@@ -29,80 +30,186 @@
 ///AVAILABLE MACROS///
 //////////////////////
 
-//Note: No macros require any type to have their data held within parentheses. Any string conversion is handled automatically.
+// -- Naming
+//	• R = Reflection
+//	• DECLARE = Header (.h)
+//	• DEFINE = Source (.cpp)
 
-// -- OUT SIDE OF CLASS MACROS - These macros should be used outside of the class. (Note: This applies to headers)
+//	Note(Nathan): No macros require any type to have their data held within parentheses. Any string conversion is handled automatically.
+//	Note(Nathan): All RDECLARE macros must have a RDEFINE accompanying them.
 
-//TYPEDEFINE (TYPE) - Defines a TypeTrait for the given TYPE
-//TYPEDEFINE_PTR(TYPE,NAME) - Defines a TypeTrait for a givens TYPE's pointer version. The NAME is used to give a different name for pointer types.
+// -- INSIDE CLASS MACROS (Quick Reference)
+//	These macros are intended to be used within the class definition. (Note(Nathan): This applies to headers.)
+//	See the actual declaration for information
 
-// -- INSIDE CLASS MACROS - These macros are intended to be used within the class definition. (Note: This applies to headers.)
+// -- Class Reflection
+//	RDECLARE_CLASS(TYPE)
+//	RDEFINE_CLASS(TYPE,BASECLASS)
 
-//CLASS_ (HEADER/CPP) - Defines a non abstract class for the reflection system.
-//ABSTRACT_CLASS_ (HEADER/CPP) - Defines a abstract class for the reflection system.
+// -- Abstract Class Reflection
+//	RDECLARE_ABSTRACT_CLASS(TYPE)
+//  RDEFINE_ABSTRACT_CLASS(TYPE,BASECLASS)
 
-//METHOD_INFO_HEADER(TYPE,METHOD_NAME) - Defines the method info inside the class file.
-//METHOD_INFO_CPP(TYPE,METHOD_NAME, METHOD_INFO) - METHOD_INFO is any class that inherits from ClassMember. Usually a MethodInfo template class.
+// -- Interface Reflection
+//	RDECLARE_INTERFACE(TYPE)
+//	RDEFINE_INTERFACE(TYPE)
 
-//CLASS_ATTRIBUTE_INTERFACE_ (HEADER/CPP) - Defines a interface that a class inherits from.
+// -- Class Attributes 
+//	RDECLARE_ATTRIBUTE_INTERFACE(TYPE,INTERFACE)
+//	RDEFINE_ATTRIBUTE_INTERFACE(TYPE,INTERFACE)
+
+// -- Member Reflection.
+//	RDECLARE_PUBLIC_MEMBER(TYPE,MEMBER)
+//	RDEFINE_PUBLIC_MEMBER(TYPE,MEMBER,MEMBER_TYPE)
+//	RDECLARE_PROTECTED_MEMBER(TYPE,MEMBER)
+//	RDEFINE_PROTECTED_MEMBER(TYPE,MEMBER,MEMBER_TYPE)
+//	RDECLARE_PRIVATE_MEMBER(TYPE,MEMBER)
+//	RDEFINE_PRIVATE_MEMBER(TYPE,MEMBER,MEMBER_TYPE)
+
+
+
+// -- Deprecated Macros.
+//CLASS_ (HEADER/CPP) - Replaced with RDECLARE_CLASS / RDEFINE_CLASS rev 16
+//ABSTRACT_CLASS_ (HEADER/CPP) - Replaced with RDECLARE_CLASS / RDEFINE_CLASS rev 16
+
+//METHOD_INFO_HEADER(TYPE,METHOD_NAME) - Removed rev 16.
+//METHOD_INFO_CPP(TYPE,METHOD_NAME, METHOD_INFO) - Removed rev 16.
+
+//CLASS_ATTRIBUTE_INTERFACE_ (HEADER/CPP) - Replaced with RDECLARE_ATTRIBUTE_INTERFACE / RDEFINE_ATTRIBUTE_INTERFACE
 
 namespace Engine
 {
     namespace Reflection
     {
 
+		/**
+		* Declares the meta data object for class information. Uses the name HIDDEN_CLASS
+		* @param TYPE The name of the class being reflected.
+		*/
+#define RDECLARE_CLASS(TYPE)														\
+	private:																		\
+		static const Engine::Reflection::MetaObject<TYPE> HIDDEN_CLASS;             \
+	public:                                                                         \
+		virtual Engine::Type GetType();                                             \
+	private:                                                                        \
 
+		/**
+		* Defines the meta data object info for the class.
+		* @param TYPE The name of the class being reflected.
+		* @param BASECLASS The name of the baseclass. If there is no baseclass a empty string can be used in substitution.
+		*/
+#define RDEFINE_CLASS(TYPE,BASECLASS)																										\
+	const Engine::Reflection::MetaObject<TYPE> TYPE::HIDDEN_CLASS = Engine::Reflection::MetaObject<TYPE>::DefineClass(#TYPE, #BASECLASS);   \
+	Engine::Type TYPE::GetType() { static Engine::Type type = Engine::Reflection::Runtime::TypeOf(#TYPE); return type; }					\
 
+		/**
+		* Declares the meta data object for an abstract class. Uses the name HIDDEN_ABSTRACT_CLASS
+		* @param TYPE The name of the class being reflected.
+		*/
+#define RDECLARE_ABSTRACT_CLASS(TYPE) private: static const Engine::Reflection::MetaObject<TYPE> HIDDEN_ABSTRACT_CLASS;
+		
+		/**
+		* Defines the meta data object info for an abstract class.
+		* @param TYPE The name of the class being reflected.
+		* @param BASECLASS The name of the baseclass. If there is no baseclass a empty string can be used in substitution.
+		*/
+#define RDEFINE_ABSTRACT_CLASS(TYPE,BASECLASS) const Engine::Reflection::MetaObject<TYPE> TYPE::HIDDEN_ABSTRACT_CLASS = Engine::Reflection::MetaObject<TYPE>::DefineAbstractClass(#TYPE, #BASECLASS);
 
+		/**
+		* Declares the meta object for an interface.
+		* @param TYPE The name of the interface being reflected.
+		*/
+#define RDECLARE_INTERFACE(TYPE) private: static const Engine::Reflection::MetaObject<TYPE> HIDDEN_INTERFACE; public: virtual Engine::Type GetType(); private:
 
-#define TYPE_NAME(TYPE) Engine::Reflection::TypeTrait<TYPE>::Name()
+		/**
+		* Defines the meta data object info for an interface.
+		* @param TYPE The name of the class being reflected.
+		*/
+#define RDEFINE_INTERFACE(TYPE)																												\
+		const Engine::Reflection::MetaObject<TYPE> TYPE::HIDDEN_INTERFACE = Engine::Reflection::MetaObject<TYPE>::DefineInterface(#TYPE);	\
+		Engine::Type TYPE::GetType() { static Engine::Type type = Engine::Reflection::Runtime::TypeOf(#TYPE); return type; }                \
 
-#define CLASS_HEADER(TYPE)                                                          \
-    static const Engine::Reflection::MetaObject<TYPE> HIDDEN_CLASS;              \
-    public:                                                                         \
-    virtual Engine::Type GetType();                                                 \
-    private:                                                                        \
+		/**
+		* Declares the meta data object info for an inherited interface.
+		* @param TYPE The name of the class being reflected.
+		* @param INTERFACE The an interface of the class.
+		*/
+#define RDECLARE_ATTRIBUTE_INTERFACE(TYPE,INTERFACE) private: static const Engine::Reflection::MetaObject<TYPE> HIDDEN_INTERFACE_ ## INTERFACE;
 
-#define CLASS_CPP(TYPE,BASECLASS)                                                                                                                               \
-    const Engine::Reflection::MetaObject<TYPE> TYPE::HIDDEN_CLASS = Engine::Reflection::MetaObject<TYPE>::DefineClass(#TYPE, #BASECLASS);    \
-    Engine::Type TYPE::GetType() { static Engine::Type type = Engine::Reflection::Runtime::TypeOf(#TYPE); return type; }                \
+		/**
+		* Define the meta data object info for an inherited interface.
+		* @param TYPE The name of the class being reflected.
+		* @param INTERFACE The an interface of the class.
+		*/
+#define RDEFINE_ATTRIBUTE_INTERFACE(TYPE,INTERFACE) const Engine::Reflection::MetaObject<TYPE> TYPE:: ## HIDDEN_INTERFACE_ ## INTERFACE = Engine::Reflection::MetaObject<TYPE>::DefineClassInterface(#TYPE,#INTERFACE);
 
-#define ABSTRACT_CLASS_HEADER(TYPE) static const Engine::Reflection::MetaObject<TYPE> HIDDEN_ABSTRACT_CLASS;
-#define ABSTRACT_CLASS_CPP(TYPE,BASECLASS) const Engine::Reflection::MetaObject<TYPE> TYPE::HIDDEN_ABSTRACT_CLASS = Engine::Reflection::MetaObject<TYPE>::DefineAbstractClass(#TYPE, #BASECLASS);
+		/**
+		* Declare a meta object for a public reflected member.
+		* @param TYPE The name of the class being reflected
+		* @param MEMBER The name of the member being reflected.
+		*/
+#define DECLARE_PUBLIC_MEMBER(TYPE,MEMBER)														\
+    private: static const Engine::Reflection::MetaObject<TYPE> HIDDEN_ ## MEMBER; public:       \
 
-#define INTERFACE_HEADER(TYPE) static const Engine::Reflection::MetaObject<TYPE> HIDDEN_INTERFACE; public: virtual Engine::Type GetType(); private:
-#define INTERFACE_CPP(TYPE) const Engine::Reflection::MetaObject<TYPE> TYPE::HIDDEN_INTERFACE = Engine::Reflection::MetaObject<TYPE>::DefineInterface(#TYPE); \
-        Engine::Type TYPE::GetType() {static Engine::Type type = Engine::Reflection::Runtime::TypeOf(#TYPE); return type; }                                      \
-
-//#define METHOD_INFO_HEADER(TYPE, METHOD_NAME) static const Engine::Reflection::MetaObject<TYPE> MEMBER_ ## TYPE ## _ ## METHOD_NAME;
-//#define METHOD_INFO_CPP(TYPE,METHOD_NAME,METHOD_INFO) const Engine::Reflection::MetaObject<TYPE> TYPE:: ## MEMBER_ ## TYPE ## _ ## METHOD_NAME = Engine::Reflection::MetaObject<TYPE>::DefineMember(#TYPE, METHOD_INFO);          
-
-
-#define CLASS_ATTRIBUTE_INTERFACE_HEADER(TYPE,INTERFACE) static const Engine::Reflection::MetaObject<TYPE> HIDDEN_INTERFACE_ ## INTERFACE;
-#define CLASS_ATTRIBUTE_INTERFACE_CPP(TYPE,INTERFACE) const Engine::Reflection::MetaObject<TYPE> TYPE:: ## HIDDEN_INTERFACE_ ## INTERFACE = Engine::Reflection::MetaObject<TYPE>::DefineClassInterface(#TYPE,#INTERFACE);
-
-//#define CLASS_PROPERTY_HEADER(TYPE,PROP_NAME) static const Engine::Reflection::MetaObject<TYPE> HIDDEN_ ## TYPE ## _ ## PROP_NAME;
-//#define CLASS_PROPERTY_CPP(TYPE,PROP_NAME,PROP_VALUE) const Engine::Reflection::MetaObject<TYPE> TYPE:: ## HIDDEN_ ## TYPE ## _ ## PROP_NAME = Engine::Reflection::MetaObject<TYPE>::DefineProperty(#TYPE, #PROP_NAME, #PROP_VALUE);
-
-#define DECLARE_PUBLIC_MEMBER_HEADER(TYPE,MEMBER)                                                   \
-    private: static const Engine::Reflection::MetaObject<TYPE> HIDDEN_ ## MEMBER; public:           \
-
-#define DECLARE_PUBLIC_MEMBER_CPP(TYPE,MEMBER,MEMBER_TYPE)                                                                                                                                          \
+		/**
+		* Define a meta object for a public reflected member.
+		* @param TYPE The name of the class being reflected
+		* @param MEMBER The name of the member being reflected.
+		* @param MEMBER_TYPE The type name of the member being reflected.
+		*/
+#define RDEFINE_PUBLIC_MEMBER(TYPE,MEMBER,MEMBER_TYPE)																																				\
         const Engine::Reflection::MetaObject<TYPE> TYPE::HIDDEN_ ## MEMBER = Engine::Reflection::MetaObject<TYPE>::DeclareMemberType(#TYPE,#MEMBER, offsetof(TYPE,MEMBER), #MEMBER_TYPE, true);     \
 
-#define DECLARE_PROTECTED_MEMBER_HEADER(TYPE,MEMBER)                                                \
-    private: static const Engine::Reflection::MetaObject<TYPE> HIDDEN_ ## MEMBER; protected:        \
 
-#define DECLARE_PROTECTED_MEMBER_CPP(TYPE,MEMBER,MEMBER_TYPE)                                                                                                                                       \
+		/**
+		* Declare a meta object for a protected reflected member.
+		* @param TYPE The name of the class being reflected
+		* @param MEMBER The name of the member being reflected.
+		*/
+#define RDECLARE_PROTECTED_MEMBER(TYPE,MEMBER)													\
+    private: static const Engine::Reflection::MetaObject<TYPE> HIDDEN_ ## MEMBER; protected:    \
+
+		/**
+		* Define a meta object for a protected reflected member.
+		* @param TYPE The name of the class being reflected
+		* @param MEMBER The name of the member being reflected.
+		* @param MEMBER_TYPE The type name of the member being reflected.
+		*/
+#define RDEFINE_PROTECTED_MEMBER(TYPE,MEMBER,MEMBER_TYPE)																																			\
         const Engine::Reflection::MetaObject<TYPE> TYPE::HIDDEN_ ## MEMBER = Engine::Reflection::MetaObject<TYPE>::DeclareMemberType(#TYPE,#MEMBER, offsetof(TYPE,MEMBER), #MEMBER_TYPE, false);    \
 
-#define DECLARE_PRIVATE_MEMBER_HEADER(TYPE,MEMBER)                                                  \
-    private: static const Engine::Reflection::MetaObject<TYPE> HIDDEN_ ## MEMBER; private:          \
+		/**
+		* Declare a meta object for a private reflected member.
+		* @param TYPE The name of the class being reflected
+		* @param MEMBER The name of the member being reflected.
+		*/
+#define RDECLARE_PRIVATE_MEMBER(TYPE,MEMBER)													\
+    private: static const Engine::Reflection::MetaObject<TYPE> HIDDEN_ ## MEMBER; private:      \
 
-#define DECLARE_PRIVATE_MEMBER_CPP(TYPE,MEMBER,MEMBER_TYPE)                                                                                                                                         \
+		/**
+		* Define a meta object for a private reflected member.
+		* @param TYPE The name of the class being reflected
+		* @param MEMBER The name of the member being reflected.
+		* @param MEMBER_TYPE The type name of the member being reflected.
+		*/
+#define RDEFINE_PRIVATE_MEMBER(TYPE,MEMBER,MEMBER_TYPE)                                                                                                                                             \
         const Engine::Reflection::MetaObject<TYPE> TYPE::HIDDEN_ ## MEMBER = Engine::Reflection::MetaObject<TYPE>::DeclareMemberType(#TYPE,#MEMBER, offsetof(TYPE,MEMBER), #MEMBER_TYPE, false);    \
 
         ///Define Primitive Types to allow for limited reflection info.
+
+#define TYPE_NAME(TYPE) Engine::Reflection::TypeTrait<TYPE>::Name()
+
+#define CLASS_HEADER(TYPE) RDECLARE_CLASS(TYPE) //private: static const Engine::Reflection::MetaObject<TYPE> HIDDEN_INTERFACE; public: virtual Engine::Type GetType(); private:
+#define CLASS_CPP(TYPE,BASECLASS) RDEFINE_CLASS(TYPE,BASECLASS)
+
+#define ABSTRACT_CLASS_HEADER(TYPE) RDECLARE_ABSTRACT_CLASS
+#define ABSTRACT_CLASS_CPP(TYPE,BASECLASS) RDEFINE_ABSTRACT_CLASS(TYPE,BASECLASS)
+
+#define INTERFACE_HEADER(TYPE) RDECLARE_INTERFACE(TYPE)
+#define INTERFACE_CPP(TYPE) RDEFINE_INTERFACE(TYPE)
+
+#define CLASS_ATTRIBUTE_INTERFACE_HEADER(TYPE,INTERFACE) RDECLARE_ATTRIBUTE_INTERFACE(TYPE,INTERFACE)
+#define CLASS_ATTRIBUTE_INTERFACE_CPP(TYPE,INTERFACE) RDEFINE_ATTRIBUTE_INTERFACE(TYPE,INTERFACE)
 
 		TYPE_DEFINE(char)
 		TYPE_DEFINE(bool)

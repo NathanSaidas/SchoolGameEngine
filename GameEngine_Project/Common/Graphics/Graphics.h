@@ -15,7 +15,7 @@
 #include "Texture.h"
 #include "Material.h"
 
-//#define CONFIG_GRAPHICS_SHADOWMAPPING
+#define CONFIG_GRAPHICS_SHADOWMAPPING
 
 
 

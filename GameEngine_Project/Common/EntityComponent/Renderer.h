@@ -26,9 +26,9 @@ namespace Engine
 		virtual void OnPostRender();
 
 	private:
-        DECLARE_PRIVATE_MEMBER_HEADER(Renderer, m_Mesh);
+		RDECLARE_PRIVATE_MEMBER(Renderer, m_Mesh);
 		Pointer<Mesh> m_Mesh;
-        DECLARE_PRIVATE_MEMBER_HEADER(Renderer, m_Material);
+        RDECLARE_PRIVATE_MEMBER(Renderer, m_Material);
 		Pointer<Material> m_Material;
 	};
 

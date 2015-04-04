@@ -1,5 +1,5 @@
 #implement vertex
-//#version 440
+#version 440
 
 // -- Position Uniforms
 uniform mat4 u_MVP;
@@ -35,7 +35,7 @@ void main()
 }
 #end
 #implement fragment
-//#version 440
+#version 440
 
 // -- Position Uniforms
 uniform mat4 u_MVP;
