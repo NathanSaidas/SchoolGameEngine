@@ -2,7 +2,8 @@
 #define GAME_ENGINE_RUNTIME_H
 
 #pragma region CHANGE LOG
-// -- January, 30, 2015 - Nathan Hanlan - Added Runtime class/file
+/// -- January 30, 2015 - Nathan Hanlan - Added Runtime class/file
+/// -- April    3, 2015 - Nathan Hanlan - Added attribute binding support for MetaObjectLinker::ATTRIBUTE_TYPE_IS_ENUM
 #pragma endregion
 
 #include <string>

@@ -90,6 +90,7 @@
     <ClCompile Include="..\..\Common\EntityComponent\Renderer.cpp" />
     <ClCompile Include="..\..\Common\EntityComponent\Scene.cpp" />
     <ClCompile Include="..\..\Common\EntityComponent\TestComponent.cpp" />
+    <ClCompile Include="..\..\Common\Enum.cpp" />
     <ClCompile Include="..\..\Common\Graphics\Color.cpp" />
     <ClCompile Include="..\..\Common\Graphics\DrawCall.cpp" />
     <ClCompile Include="..\..\Common\Graphics\Geometry.cpp" />
@@ -131,6 +132,7 @@
     <ClCompile Include="..\..\Common\Utilities\StringExtensions.cpp" />
     <ClCompile Include="..\..\Common\Utilities\Utilities.cpp" />
     <ClCompile Include="..\..\Common\Windows\Application.cpp" />
+    <ClCompile Include="..\..\Common\Windows\OpenGLProfile.cpp" />
     <ClCompile Include="..\..\Common\Windows\Time.cpp" />
     <ClCompile Include="..\..\Common\Windows\Window.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -145,6 +147,7 @@
     <ClInclude Include="..\..\Common\EntityComponent\Renderer.h" />
     <ClInclude Include="..\..\Common\EntityComponent\Scene.h" />
     <ClInclude Include="..\..\Common\EntityComponent\TestComponent.h" />
+    <ClInclude Include="..\..\Common\Enum.h" />
     <ClInclude Include="..\..\Common\Func.h" />
     <ClInclude Include="..\..\Common\Graphics\Color.h" />
     <ClInclude Include="..\..\Common\Graphics\DrawCall.h" />
@@ -216,6 +219,7 @@
     <ClInclude Include="..\..\Common\Utilities\Stream.h" />
     <ClInclude Include="..\..\Common\Utilities\StringExtensions.h" />
     <ClInclude Include="..\..\Common\Utilities\Utilities.h" />
+    <ClInclude Include="..\..\Common\ValueTypes.h" />
     <ClInclude Include="..\..\Common\Windows\Application.h" />
     <ClInclude Include="..\..\Common\Windows\OpenGLProfile.h" />
     <ClInclude Include="..\..\Common\Windows\Time.h" />

@@ -2,9 +2,7 @@
 #define GAME_ENGINE_GAME_OBJECT_H
 
 #pragma region CHANGE LOG
-/*	April	3, 2015 - Nathan Hanlan - Removed IFormatter from GameObject class.
-*
-*/
+///	-- April	3, 2015 - Nathan Hanlan - Removed IFormatter from GameObject class.
 #pragma endregion
 
 #include "../BasicTypes.h"

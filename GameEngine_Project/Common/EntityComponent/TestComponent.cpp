@@ -37,6 +37,8 @@ namespace Engine
 
 		m_Material->SetName("Default Diffuse");
 
+
+
 	}
 	
 	void TestComponent::OnInitialize()
@@ -79,28 +81,45 @@ namespace Engine
 			m_Renderer->SetMesh(m_Mesh);
 			GameObject * gameObject = m_Renderer->GetGameObject();
 
+			//Get the renderer type information.
             Type type = m_Renderer->GetType();
+			//Get the members from the type.
             Array<Reflection::MemberInfo> members = type.GetMembers();
 
+			//Create two pointer objects.
             Pointer<Material> * material = nullptr;
             Pointer<Mesh> * mesh = nullptr;
 
+			//Iterate through all of the members and 
             for (int i = 0; i < members.GetCount(); i++)
             {
                 Reflection::MemberInfo member = members[i];
 
+				DEBUG_LOG("==Member==\nName: %s\nType Name: %s\nOffset %u", member.GetMemberName(), member.GetMemberTypename(), member.GetOffset());
+
                 if (member.GetMemberName() == "m_Mesh")
                 {
                     mesh = (Pointer<Mesh>*)member.GetOffsetPointer(m_Renderer);
+
+					if (mesh != nullptr)
+					{
+						DEBUG_LOG("Changing Mesh Values.\nPrevious Name: %s",m_Renderer->GetMesh()->GetName().c_str());
+						(*mesh)->SetName("New Mesh Name");
+						DEBUG_LOG("After Name: %s", m_Renderer->GetMesh()->GetName().c_str());
+					}
                 }
                 else if (member.GetMemberName() == "m_Material")
                 {
                     material = (Pointer<Material>*)member.GetOffsetPointer(m_Renderer);
+					if (material != nullptr)
+					{
+						DEBUG_LOG("Changing Material Values.\nPrevious Name: %s", m_Renderer->GetMaterial()->GetName().c_str());
+						(*material)->SetName("New Material Name");
+						DEBUG_LOG("After Name: %s", m_Renderer->GetMaterial()->GetName().c_str());
+					}
                 }
             }
 		}
-
-
         
 
 	}

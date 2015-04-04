@@ -37,6 +37,7 @@ namespace Engine
             m_IsClass = false;
             m_IsAbstract = false;
             m_IsInterface = false;
+			m_IsEnum = false;
             m_Constructor = nullptr;
             m_Destructor = nullptr;
         }
@@ -73,6 +74,11 @@ namespace Engine
         {
             return m_IsAbstract;
         }
+		inline bool IsEnum() const
+		{
+			return m_IsEnum;
+		}
+
        Array<std::string> GetInterfaces() const
         {
             Array<std::string> info;
@@ -134,6 +140,7 @@ namespace Engine
         bool m_IsClass;
         bool m_IsInterface;
         bool m_IsAbstract;
+		bool m_IsEnum;
         std::vector<std::string> m_Interfaces;
         std::vector<Reflection::MemberInfo> m_Members;
         //std::vector<Property> m_Properties;

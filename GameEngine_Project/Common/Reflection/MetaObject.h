@@ -42,6 +42,7 @@ namespace Engine
                 boolAttributes.insert(BoolAttribPair(const_cast<char*>(aClassName), BoolAttribute(aClassName, MetaObjectLinker::ATTRIBUTE_TYPE_IS_CLASS, true)));
                 boolAttributes.insert(BoolAttribPair(const_cast<char*>(aClassName), BoolAttribute(aClassName, MetaObjectLinker::ATTRIBUTE_TYPE_IS_INTERFACE, false)));
                 boolAttributes.insert(BoolAttribPair(const_cast<char*>(aClassName), BoolAttribute(aClassName, MetaObjectLinker::ATTRIBUTE_TYPE_IS_ABSTRACT, false)));
+				boolAttributes.insert(BoolAttribPair(const_cast<char*>(aClassName), BoolAttribute(aClassName, MetaObjectLinker::ATTRIBUTE_TYPE_IS_ENUM, false)));
                 ///Create an ID and assign it into the registry as well.
                 intAttributes.insert(IntAttribPair(const_cast<char*>(aClassName), IntAttribute(aClassName, MetaObjectLinker::ATTRIBUTE_TYPE_TYPE_ID, MetaObjectLinker::GetID())));
 
@@ -73,6 +74,7 @@ namespace Engine
                 boolAttributes.insert(BoolAttribPair(const_cast<char*>(aClassName), BoolAttribute(aClassName, MetaObjectLinker::ATTRIBUTE_TYPE_IS_CLASS, true)));
                 boolAttributes.insert(BoolAttribPair(const_cast<char*>(aClassName), BoolAttribute(aClassName, MetaObjectLinker::ATTRIBUTE_TYPE_IS_INTERFACE, false)));
                 boolAttributes.insert(BoolAttribPair(const_cast<char*>(aClassName), BoolAttribute(aClassName, MetaObjectLinker::ATTRIBUTE_TYPE_IS_ABSTRACT, true)));
+				boolAttributes.insert(BoolAttribPair(const_cast<char*>(aClassName), BoolAttribute(aClassName, MetaObjectLinker::ATTRIBUTE_TYPE_IS_ENUM, false)));
                 ///Create an ID and assign it into the registry as well.
                 intAttributes.insert(IntAttribPair(const_cast<char*>(aClassName), IntAttribute(aClassName, MetaObjectLinker::ATTRIBUTE_TYPE_TYPE_ID, MetaObjectLinker::GetID())));
 
@@ -102,6 +104,7 @@ namespace Engine
                 boolAttributes.insert(BoolAttribPair(const_cast<char*>(aInterfaceName), BoolAttribute(aInterfaceName, MetaObjectLinker::ATTRIBUTE_TYPE_IS_CLASS, false)));
                 boolAttributes.insert(BoolAttribPair(const_cast<char*>(aInterfaceName), BoolAttribute(aInterfaceName, MetaObjectLinker::ATTRIBUTE_TYPE_IS_INTERFACE, true)));
                 boolAttributes.insert(BoolAttribPair(const_cast<char*>(aInterfaceName), BoolAttribute(aInterfaceName, MetaObjectLinker::ATTRIBUTE_TYPE_IS_ABSTRACT, true)));
+				boolAttributes.insert(BoolAttribPair(const_cast<char*>(aInterfaceName), BoolAttribute(aInterfaceName, MetaObjectLinker::ATTRIBUTE_TYPE_IS_ENUM, false)));
 
                 intAttributes.insert(IntAttribPair(const_cast<char*>(aInterfaceName), IntAttribute(aInterfaceName, MetaObjectLinker::ATTRIBUTE_TYPE_TYPE_ID, MetaObjectLinker::GetID())));
 
@@ -112,6 +115,38 @@ namespace Engine
 
                 return GetInstance();
             }
+
+			static MetaObject DefineEnum(const char * aEnum)
+			{
+				std::vector<char *> & types = MetaObjectLinker::GetTypes();
+				BoolAttribMap & boolAttributes = MetaObjectLinker::GetBooleanAttributes();
+				FloatAttribMap & floatAttributes = MetaObjectLinker::GetFloatAttributes();
+				FuncAttribMap & funcAttributes = MetaObjectLinker::GetFuncAttributes();
+				IntAttribMap & intAttributes = MetaObjectLinker::GetIntAttributes();
+				StringAttribMap & stringAttributes = MetaObjectLinker::GetStringAttributes();
+
+				types.push_back(const_cast<char*>(aEnum));
+
+
+				///Insert class name and base class attributes into the registry
+				stringAttributes.insert(StringAttribPair(const_cast<char*>(aEnum), StringAttribute(aEnum, MetaObjectLinker::ATTRIBUTE_TYPE_NAME, aEnum)));
+				stringAttributes.insert(StringAttribPair(const_cast<char*>(aEnum), StringAttribute(aEnum, MetaObjectLinker::ATTRIBUTE_TYPE_BASE_CLASS_NAME, "")));
+				///Insert compile time class information such as size and alignment into the registry
+				intAttributes.insert(IntAttribPair(const_cast<char*>(aEnum), IntAttribute(aEnum, MetaObjectLinker::ATTRIBUTE_TYPE_SIZE, sizeof(T))));
+				intAttributes.insert(IntAttribPair(const_cast<char*>(aEnum), IntAttribute(aEnum, MetaObjectLinker::ATTRIBUTE_TYPE_ALIGNMENT, __alignof(T))));
+				boolAttributes.insert(BoolAttribPair(const_cast<char*>(aEnum), BoolAttribute(aEnum, MetaObjectLinker::ATTRIBUTE_TYPE_IS_CLASS, false)));
+				boolAttributes.insert(BoolAttribPair(const_cast<char*>(aEnum), BoolAttribute(aEnum, MetaObjectLinker::ATTRIBUTE_TYPE_IS_INTERFACE, false)));
+				boolAttributes.insert(BoolAttribPair(const_cast<char*>(aEnum), BoolAttribute(aEnum, MetaObjectLinker::ATTRIBUTE_TYPE_IS_ABSTRACT, false)));
+				boolAttributes.insert(BoolAttribPair(const_cast<char*>(aEnum), BoolAttribute(aEnum, MetaObjectLinker::ATTRIBUTE_TYPE_IS_ENUM, true)));
+				///Create an ID and assign it into the registry as well.
+				intAttributes.insert(IntAttribPair(const_cast<char*>(aEnum), IntAttribute(aEnum, MetaObjectLinker::ATTRIBUTE_TYPE_TYPE_ID, MetaObjectLinker::GetID())));
+
+				///Constructor / Destructor callbacks
+				funcAttributes.insert(FuncAttribPair(const_cast<char*>(aEnum), FunctionAttribute(aEnum, MetaObjectLinker::ATTRIBUTE_TYPE_CREATE_FUNC, CreateObject)));
+				funcAttributes.insert(FuncAttribPair(const_cast<char*>(aEnum), FunctionAttribute(aEnum, MetaObjectLinker::ATTRIBUTE_TYPE_DESTROY_FUNC, DestroyObject)));
+
+				return GetInstance();
+			}
 
             //static MetaObject DefineMember(const char * aClassName, ClassMember * aMember)
             //{

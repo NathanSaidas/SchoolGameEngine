@@ -13,6 +13,7 @@
 #include "SystemAssert.h"
 #include "SystemError.h"
 #include "Type.h"
+#include "Enum.h"
 #include "Reflection\Reflection.h"
 #include "Memory\Memory.h"
 #include "Math\Math.h"

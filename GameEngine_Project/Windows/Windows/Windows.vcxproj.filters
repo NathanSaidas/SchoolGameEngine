@@ -192,6 +192,12 @@
     <ClCompile Include="..\..\Common\Utilities\ISerializeable.cpp">
       <Filter>Core\Utilities</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Common\Enum.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Windows\OpenGLProfile.cpp">
+      <Filter>Core\Windows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Common\Memory\AllocationInfo.h">
@@ -445,6 +451,12 @@
     </ClInclude>
     <ClInclude Include="..\..\Common\Utilities\ISerializeable.h">
       <Filter>Core\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\ValueTypes.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Enum.h">
+      <Filter>Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

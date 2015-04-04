@@ -51,6 +51,10 @@ namespace Engine
 		info.minorVersion = 4;
 		info.profile = OpenGLProfile::ForwardCore;
 
+		OpenProfile profile = 4;
+		profile = 5;
+		SInt32 intProfile = Enum::GetValue(&profile);
+
 		///Read from initialization file.
 		IniFileStream * initializationFile = MEM_POOL_ALLOC_T(IniFileStream);
 		if (initializationFile != nullptr)

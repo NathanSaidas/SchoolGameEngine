@@ -3,7 +3,8 @@
 
 
 #pragma region CHANGE LOG
-/// -- January, 29, 2015 - Nathan Hanlan - Added class/file MetaObjectLinker
+/// -- January 29, 2015 - Nathan Hanlan - Added class/file MetaObjectLinker
+/// -- April    3, 2015 - Nathan Hanlan - Added MetaObjectLinker::ATTRIBUTE_TYPE_IS_ENUM attribute type
 #pragma endregion
 
 #include "BoolAttribute.h"
@@ -121,6 +122,7 @@ namespace Engine
             static const char * ATTRIBUTE_TYPE_IS_CLASS;
             static const char * ATTRIBUTE_TYPE_IS_INTERFACE;
             static const char * ATTRIBUTE_TYPE_IS_ABSTRACT;
+			static const char * ATTRIBUTE_TYPE_IS_ENUM;
 
             static const char * ATTRIBUTE_TYPE_MEMBER_INFO;
         };

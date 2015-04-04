@@ -214,6 +214,10 @@ namespace Engine
             {
                 aType.m_IsInterface = aAttribute.GetValue();
             }
+			else if (aAttribute.Is(Attribute("", MetaObjectLinker::ATTRIBUTE_TYPE_IS_ENUM)))
+			{
+				aType.m_IsEnum = aAttribute.GetValue();
+			}
         }
         void Runtime::BindStringAttributes(StringAttribute & aAttribute, Type & aType)
         {
@@ -229,6 +233,7 @@ namespace Engine
             {
                 aType.m_Interfaces.push_back(aAttribute.GetValue());
             }
+
         }
         void Runtime::BindFunctionAttributes(FunctionAttribute & aAttribute, Type & aType)
         {

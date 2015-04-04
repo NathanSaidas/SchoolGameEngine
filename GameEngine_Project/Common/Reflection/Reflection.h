@@ -195,6 +195,18 @@ namespace Engine
 #define RDEFINE_PRIVATE_MEMBER(TYPE,MEMBER,MEMBER_TYPE)                                                                                                                                             \
         const Engine::Reflection::MetaObject<TYPE> TYPE::HIDDEN_ ## MEMBER = Engine::Reflection::MetaObject<TYPE>::DeclareMemberType(#TYPE,#MEMBER, offsetof(TYPE,MEMBER), #MEMBER_TYPE, false);    \
 
+		/**
+		* Declare a meta object for a reflected enum
+		* @param TYPE The name of the enum being reflected.
+		*/
+#define RDECLARE_ENUM(TYPE) private: static const Engine::Reflection::MetaObject<TYPE> HIDDEN_ENUM;
+
+		/**
+		* Define the meta object into for the reflected enum.
+		* @param TYPE The name of the enum being reflected.
+		*/
+#define RDEFINE_ENUM(TYPE) const Engine::Reflection::MetaObject<TYPE> TYPE::HIDDEN_ENUM = Engine::Reflection::MetaObject<TYPE>::DefineEnum(#TYPE);
+
         ///Define Primitive Types to allow for limited reflection info.
 
 #define TYPE_NAME(TYPE) Engine::Reflection::TypeTrait<TYPE>::Name()
