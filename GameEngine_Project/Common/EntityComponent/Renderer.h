@@ -8,7 +8,7 @@ namespace Engine
 {
 	class Renderer : public Component
 	{
-		CLASS_HEADER(Renderer)
+		RDECLARE_CLASS(Renderer)
 	public:
 		Renderer();
 		~Renderer();

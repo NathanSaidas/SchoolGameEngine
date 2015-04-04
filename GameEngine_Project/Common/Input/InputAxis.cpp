@@ -8,7 +8,7 @@ namespace Engine
 {
     using namespace Reflection;
 
-	CLASS_CPP(InputAxis,Object)
+	RDEFINE_CLASS(InputAxis, Object)
     const float InputAxis::AXIS_INCREMENT_SPEED = 5.0f;
 
     InputAxis::InputAxis() : Object()

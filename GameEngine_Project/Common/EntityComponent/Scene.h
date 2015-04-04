@@ -14,7 +14,7 @@ namespace Engine
 
 	class Scene : public Object
 	{
-		CLASS_HEADER(Scene)
+		RDECLARE_CLASS(Scene)
 	public:
 		Scene();
 		~Scene();

@@ -2,8 +2,8 @@
 
 namespace Engine
 {
-	CLASS_CPP(BinaryFormatter,object)
-    CLASS_ATTRIBUTE_INTERFACE_CPP(BinaryFormatter,IFormatter)
+	RDEFINE_CLASS(BinaryFormatter, object)
+    RDEFINE_ATTRIBUTE_INTERFACE(BinaryFormatter,IFormatter)
 
 	void BinaryFormatter::Serialize(SInt32 aValue, Stream & aStream)
 	{

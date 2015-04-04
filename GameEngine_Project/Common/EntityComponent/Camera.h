@@ -16,7 +16,7 @@ namespace Engine
 	///This component will invoke render calls.
 	class Camera : public Component
 	{
-		CLASS_HEADER(Camera)
+		RDECLARE_CLASS(Camera)
 	public:
 		Camera();
 		~Camera(); 

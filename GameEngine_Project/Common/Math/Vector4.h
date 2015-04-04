@@ -8,7 +8,7 @@ namespace Engine
 {
     class Vector4 : public object, public glm::vec4
     {
-        CLASS_HEADER(Vector4)
+		RDECLARE_CLASS(Vector4)
     public:
         Vector4();
         Vector4(Float32 x, Float32 y, Float32 z, Float32 w);

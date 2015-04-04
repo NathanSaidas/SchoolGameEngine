@@ -8,7 +8,7 @@ namespace Engine
 {
 	class RenderTexture : public Object
 	{
-		CLASS_HEADER(RenderTexture)
+		RDECLARE_CLASS(RenderTexture)
 	public:
 		RenderTexture();
 		~RenderTexture();

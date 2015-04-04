@@ -27,7 +27,7 @@ namespace Engine
     ///This is the manager of graphics operations.
     class Graphics : public object
     {
-        CLASS_HEADER(Graphics)
+		RDECLARE_CLASS(Graphics)
     public:
         // -- Creates / Gets the instance of Graphics
         static Graphics * GetInstance();

@@ -7,7 +7,7 @@ namespace Engine
 {
 	class Time : public object
 	{
-		CLASS_HEADER(Time)
+		RDECLARE_CLASS(Time)
 	public:
 		static Float32 GetTime();
 		static Float32 GetDeltaTime();

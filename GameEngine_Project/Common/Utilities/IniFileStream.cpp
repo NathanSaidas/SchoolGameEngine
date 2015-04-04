@@ -3,6 +3,8 @@
 
 namespace Engine
 {
+	RDEFINE_CLASS(IniFileStream,object)
+
 	IniFileStream::IniFileStream()
 	{
 

@@ -8,7 +8,7 @@ namespace Engine
 {
 	class OpenGLWindow : public Object
 	{
-		CLASS_HEADER(OpenGLWindow)
+		RDECLARE_CLASS(OpenGLWindow)
 	public:
 		OpenGLWindow();
 		~OpenGLWindow();

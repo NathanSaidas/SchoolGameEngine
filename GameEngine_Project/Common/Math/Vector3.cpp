@@ -10,7 +10,7 @@
 
 namespace Engine
 {
-    CLASS_CPP(Vector3,object)
+	RDEFINE_CLASS(Vector3, object)
 
 
     Vector3::Vector3() : object(), glm::vec3()

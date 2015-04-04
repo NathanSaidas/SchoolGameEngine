@@ -6,7 +6,7 @@
 
 namespace Engine
 {
-	CLASS_CPP(Scene, Object)
+	RDEFINE_CLASS(Scene, Object)
 
 		Scene::Scene()
 		{

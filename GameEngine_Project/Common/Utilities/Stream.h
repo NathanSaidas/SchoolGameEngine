@@ -14,7 +14,7 @@ namespace Engine
 	*/
 	class Stream : public object
 	{
-		CLASS_HEADER(Stream)
+		RDECLARE_CLASS(Stream)
 	public:
 
 		Stream();

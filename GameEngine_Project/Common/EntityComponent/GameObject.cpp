@@ -5,8 +5,7 @@
 
 namespace Engine
 {
-	CLASS_CPP(GameObject,object)
-    CLASS_ATTRIBUTE_INTERFACE_CPP(GameObject,ISerializeable)
+	RDEFINE_CLASS(GameObject, object)
 
 	GameObject::GameObject()
 	{
@@ -526,13 +525,5 @@ namespace Engine
 		Utilities::Remove<Component*>(m_Components, aComponent);
 	}
 
-    void GameObject::OnSerialize(IFormatter * aFormatter, Stream & aStream)
-    {
-
-    }
-    void GameObject::OnDeserialize(IFormatter * aFormatter, Stream & aStream)
-    {
-
-    }
 }
 	

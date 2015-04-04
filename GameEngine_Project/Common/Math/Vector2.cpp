@@ -8,7 +8,7 @@
 
 namespace Engine
 {
-	CLASS_CPP(Vector2, object)
+	RDEFINE_CLASS(Vector2, object)
 	Vector2::Vector2() : object(), glm::vec2()
 	{
 		

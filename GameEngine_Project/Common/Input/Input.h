@@ -12,7 +12,7 @@ namespace Engine
     class InputAxis;
     class Input : public Object
     {
-		CLASS_HEADER(Input)
+		RDECLARE_CLASS(Input)
     public:
 		static void Initialize();
         static Input * Instance();

@@ -7,7 +7,7 @@ namespace Engine
 {
 	class Texture : public Object
 	{
-		CLASS_HEADER(Texture)
+		RDECLARE_CLASS(Texture)
 	public:
 		Texture();
 		~Texture();

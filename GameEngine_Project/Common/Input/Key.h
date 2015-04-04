@@ -8,7 +8,7 @@ namespace Engine
 {
     class Key : public Object
     {
-		CLASS_HEADER(Key)
+		RDECLARE_CLASS(Key)
     public:
         Key();
         virtual ~Key();

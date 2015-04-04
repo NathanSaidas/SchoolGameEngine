@@ -2,6 +2,6 @@
 
 namespace Engine
 {
-    INTERFACE_CPP(ISerializeable)
+    RDEFINE_INTERFACE(ISerializeable)
 
 }

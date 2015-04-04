@@ -13,7 +13,7 @@ namespace Engine
 
     class Matrix4x4 : public object, public glm::mat4
     {
-        CLASS_HEADER(Matrix4x4)
+		RDECLARE_CLASS(Matrix4x4)
     public:
         Matrix4x4();
         Matrix4x4(const glm::mat4x4 & aMatrix);

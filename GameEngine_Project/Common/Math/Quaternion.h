@@ -16,7 +16,7 @@ namespace Engine
 
     class Quaternion : public object, public glm::quat
     {
-        CLASS_HEADER(Quaternion)
+		RDECLARE_CLASS(Quaternion)
     public:
         Quaternion();
         Quaternion(glm::quat & aQuat);

@@ -10,7 +10,7 @@ namespace Engine
     //Use Mesh for increased performance.
     class PrimitiveShapeBuffer : public object
     {
-        CLASS_HEADER(PrimitiveShapeBuffer)
+		RDECLARE_CLASS(PrimitiveShapeBuffer)
     public:
         // -- Initializes the PrimitiveShapeBuffer to default values
         PrimitiveShapeBuffer();

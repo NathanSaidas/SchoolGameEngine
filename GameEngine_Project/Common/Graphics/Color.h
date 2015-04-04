@@ -9,7 +9,7 @@ namespace Engine
     //TODO: Implement functions such as mixing / lerping and static constant color values
     class Color : public object
     {
-        CLASS_HEADER(Color)
+		RDECLARE_CLASS(Color)
     public:
 		Color();
 		Color(Float32 r, Float32 g, Float32 b, Float32 a);

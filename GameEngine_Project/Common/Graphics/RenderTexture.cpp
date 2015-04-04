@@ -3,7 +3,7 @@
 
 namespace Engine
 {
-	CLASS_CPP(RenderTexture,Object)
+	RDEFINE_CLASS(RenderTexture, Object)
 
 	RenderTexture::RenderTexture()
 	{

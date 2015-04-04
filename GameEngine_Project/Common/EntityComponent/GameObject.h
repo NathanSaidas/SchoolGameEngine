@@ -1,6 +1,12 @@
 #ifndef GAME_ENGINE_GAME_OBJECT_H
 #define GAME_ENGINE_GAME_OBJECT_H
 
+#pragma region CHANGE LOG
+/*	April	3, 2015 - Nathan Hanlan - Removed IFormatter from GameObject class.
+*
+*/
+#pragma endregion
+
 #include "../BasicTypes.h"
 #include "../Utilities/Utilities.h"
 #include "../Math/Math.h"
@@ -12,10 +18,9 @@ namespace Engine
 
 
 
-	class GameObject : public object, public ISerializeable
+	class GameObject : public object
 	{
-        CLASS_HEADER(GameObject)
-        CLASS_ATTRIBUTE_INTERFACE_HEADER(GameObject, ISerializeable)
+		RDECLARE_CLASS(GameObject)
 	public:
 		GameObject();
 		GameObject(const std::string & aName);
@@ -154,8 +159,8 @@ namespace Engine
 
 
 		//TODO: Implement when Serialization has been designed / implemented.
-        void OnSerialize(IFormatter * aFormatter, Stream & aStream);
-        void OnDeserialize(IFormatter * aFormatter, Stream & aStream);
+        //void OnSerialize(IFormatter * aFormatter, Stream & aStream);
+        //void OnDeserialize(IFormatter * aFormatter, Stream & aStream);
 
 	private:
 		std::string m_Name;

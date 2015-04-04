@@ -2,5 +2,5 @@
 
 namespace Engine
 {
-	INTERFACE_CPP(IFormatter);
+	RDEFINE_INTERFACE(IFormatter);
 }

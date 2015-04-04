@@ -9,7 +9,7 @@ namespace Engine
 {
     class ISerializeable
     {
-        INTERFACE_HEADER(ISerializeable)
+        RDECLARE_INTERFACE(ISerializeable)
     public:
         virtual void OnSerialize(IFormatter * aFormatter, Stream & aStream) = 0;
         virtual void OnDeserialize(IFormatter * aFormatter, Stream & aStream) = 0;

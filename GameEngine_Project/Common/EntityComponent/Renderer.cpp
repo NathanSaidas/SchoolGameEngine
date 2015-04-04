@@ -3,7 +3,7 @@
 
 namespace Engine
 {
-	CLASS_CPP(Renderer,Component)
+	RDEFINE_CLASS(Renderer, Component)
     RDEFINE_PRIVATE_MEMBER(Renderer,m_Mesh,Pointer<Mesh>)
 	RDEFINE_PRIVATE_MEMBER(Renderer, m_Material, Pointer<Material>)
 

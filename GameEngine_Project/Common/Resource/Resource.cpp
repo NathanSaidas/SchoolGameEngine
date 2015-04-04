@@ -2,7 +2,7 @@
 
 namespace Engine
 {
-	CLASS_CPP(Resource,Object)
+	RDEFINE_CLASS(Resource, Object)
 
 
 }

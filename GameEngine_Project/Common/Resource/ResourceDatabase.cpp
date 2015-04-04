@@ -2,5 +2,5 @@
 
 namespace Engine
 {
-	CLASS_CPP(ResourceDatabase,object)
+	RDEFINE_CLASS(ResourceDatabase, object)
 }

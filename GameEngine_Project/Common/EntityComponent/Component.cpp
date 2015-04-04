@@ -3,7 +3,7 @@
 
 namespace Engine
 {
-	CLASS_CPP(Component, object)
+	RDEFINE_CLASS(Component, object)
 
 	Component::Component() : object()
 	{

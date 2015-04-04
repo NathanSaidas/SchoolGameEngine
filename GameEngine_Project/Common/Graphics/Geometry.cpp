@@ -6,7 +6,7 @@
 
 namespace Engine
 {
-	CLASS_CPP(Geometry, object)
+	RDEFINE_CLASS(Geometry, object)
 
 	Geometry::Geometry()
 	{

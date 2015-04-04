@@ -2,7 +2,7 @@
 
 namespace Engine
 {
-	CLASS_CPP(IniSection, Object);
+	RDEFINE_CLASS(IniSection, Object);
 	
 
 	IniSection::IniSection() : Object()

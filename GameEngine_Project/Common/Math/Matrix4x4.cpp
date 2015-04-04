@@ -11,7 +11,7 @@
 
 namespace Engine
 {
-    CLASS_CPP(Matrix4x4, object)
+	RDEFINE_CLASS(Matrix4x4, object)
     Matrix4x4::Matrix4x4() : object(), glm::mat4x4()
     {
 

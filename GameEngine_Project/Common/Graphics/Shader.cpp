@@ -5,7 +5,7 @@
 
 namespace Engine
 {
-    CLASS_CPP(Shader,Object)
+	RDEFINE_CLASS(Shader, Object)
     Shader::Shader()
     {
         m_FragmentShader = 0;

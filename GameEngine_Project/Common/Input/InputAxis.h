@@ -10,7 +10,7 @@ namespace Engine
 
     class InputAxis : public Object
     {
-		CLASS_HEADER(InputAxis)
+		RDECLARE_CLASS(InputAxis)
     public:
         InputAxis();
         ~InputAxis();

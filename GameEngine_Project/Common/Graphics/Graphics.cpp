@@ -26,7 +26,7 @@ namespace Engine
 
 
 
-	CLASS_CPP(Graphics, object)
+	RDEFINE_CLASS(Graphics, object)
 
 	Graphics * Graphics::s_Instance = nullptr;
 	Graphics::Graphics()

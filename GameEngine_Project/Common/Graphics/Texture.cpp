@@ -9,7 +9,7 @@
 
 namespace Engine
 {
-	CLASS_CPP(Texture,Object)
+	RDEFINE_CLASS(Texture, Object)
 	Texture::Texture()
 	{
 		m_IsUploaded = false;

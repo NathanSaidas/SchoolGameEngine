@@ -16,7 +16,7 @@ namespace Engine
     //Contains VertexAttributes (Position, Normal, Color, TexCoords)
     class Mesh : public Object
     {
-        CLASS_HEADER(Mesh)
+		RDECLARE_CLASS(Mesh)
     public:
         //Initializes the mesh values to 0.
         Mesh();

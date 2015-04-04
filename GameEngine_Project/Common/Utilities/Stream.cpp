@@ -5,7 +5,7 @@
 
 namespace Engine
 {
-	CLASS_CPP(Stream,object)
+	RDEFINE_CLASS(Stream, object)
 
 	Stream::Stream()
 	{

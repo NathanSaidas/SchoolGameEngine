@@ -12,7 +12,7 @@
 
 namespace Engine
 {
-    CLASS_CPP(Vector4, object)
+	RDEFINE_CLASS(Vector4, object)
     Vector4::Vector4() : object(), glm::vec4()
     {
         

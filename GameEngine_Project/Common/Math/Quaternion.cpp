@@ -8,7 +8,7 @@
 
 namespace Engine
 {
-    CLASS_CPP(Quaternion,object)
+	RDEFINE_CLASS(Quaternion, object)
 
 
     Quaternion::Quaternion() : object(), glm::quat()

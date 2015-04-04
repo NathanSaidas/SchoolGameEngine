@@ -11,7 +11,7 @@ namespace Engine
 
 	class Geometry : public object
 	{
-		CLASS_HEADER(Geometry)
+		RDECLARE_CLASS(Geometry)
 	public:
 		Geometry();
 		~Geometry();

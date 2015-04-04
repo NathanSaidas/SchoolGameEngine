@@ -13,7 +13,7 @@ namespace Engine
 {
 	class IniSection : public Object
 	{
-		CLASS_HEADER(IniSection);
+		RDECLARE_CLASS(IniSection);
 	public:
 		IniSection();
 		~IniSection();

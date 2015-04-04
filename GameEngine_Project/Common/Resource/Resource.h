@@ -13,7 +13,7 @@ namespace Engine
 	*/
 	class Resource : public Object
 	{
-		CLASS_HEADER(Resource)
+		RDECLARE_CLASS(Resource)
 	public:
 
 	private:

@@ -10,8 +10,8 @@ namespace Engine
 	*/
 	class BinaryFormatter : public object , public IFormatter
 	{
-		CLASS_HEADER(BinaryFormatter)
-        CLASS_ATTRIBUTE_INTERFACE_HEADER(BinaryFormatter,IFormatter)
+		RDECLARE_CLASS(BinaryFormatter)
+        RDECLARE_ATTRIBUTE_INTERFACE(BinaryFormatter,IFormatter)
 	public:
 
 		void Serialize(SInt32 aValue, Stream & aStream);

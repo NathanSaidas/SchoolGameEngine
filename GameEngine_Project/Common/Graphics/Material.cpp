@@ -2,7 +2,7 @@
 
 namespace Engine
 {
-	CLASS_CPP(Material,Object)
+	RDEFINE_CLASS(Material, Object)
 	Material::Material() : Object()
 	{
 

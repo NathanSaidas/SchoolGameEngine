@@ -15,7 +15,7 @@ namespace Engine
 	*/
 	class ResourceDatabase : public object
 	{
-		CLASS_HEADER(ResourceDatabase)
+		RDECLARE_CLASS(ResourceDatabase)
 	public:
 
 

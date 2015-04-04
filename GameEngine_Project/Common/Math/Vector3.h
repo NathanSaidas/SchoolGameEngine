@@ -10,7 +10,7 @@ namespace Engine
 
     class Vector3 : public object, public glm::vec3
     {
-        CLASS_HEADER(Vector3)
+		RDECLARE_CLASS(Vector3)
     public:
         Vector3();
         Vector3(Float32 x, Float32 y, Float32 z);

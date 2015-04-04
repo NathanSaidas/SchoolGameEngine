@@ -13,7 +13,7 @@ namespace Engine
 
 	class Material : public Object
 	{
-		CLASS_HEADER(Material)
+		RDECLARE_CLASS(Material)
 	public:
 		Material();
 		~Material();

@@ -9,7 +9,7 @@ namespace Engine
 {
     using namespace Reflection;
 
-	CLASS_CPP(Input,Object)
+	RDEFINE_CLASS(Input, Object)
 
     Input * Input::s_Instance = nullptr;
 	void Input::Initialize()

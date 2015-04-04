@@ -4,7 +4,7 @@
 
 namespace Engine
 {
-    CLASS_CPP(PrimitiveShapeBuffer,object)
+	RDEFINE_CLASS(PrimitiveShapeBuffer, object)
 
     PrimitiveShapeBuffer::PrimitiveShapeBuffer()
     {

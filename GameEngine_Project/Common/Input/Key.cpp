@@ -6,7 +6,7 @@ namespace Engine
 {
     using namespace Reflection;
 
-	CLASS_CPP(Key,Object)
+	RDEFINE_CLASS(Key, Object)
     Key::Key()
     {
         m_CurrentState = ButtonState::UP;

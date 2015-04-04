@@ -10,6 +10,7 @@ namespace Engine
 {
 	class IniFileStream : object
 	{
+		RDECLARE_CLASS(IniFileStream)
 	public:
 		IniFileStream();
 		~IniFileStream();

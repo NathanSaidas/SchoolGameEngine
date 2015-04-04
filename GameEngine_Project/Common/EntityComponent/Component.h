@@ -10,7 +10,7 @@ namespace Engine
 
 	class Component : public object
 	{
-		CLASS_HEADER(Component)
+		RDECLARE_CLASS(Component)
 	public:
 		Component();
 		~Component();

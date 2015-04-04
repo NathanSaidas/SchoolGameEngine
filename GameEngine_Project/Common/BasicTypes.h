@@ -14,7 +14,7 @@ namespace Engine
 	/// </summary>
 	class object
 	{
-		CLASS_HEADER(object);
+		RDECLARE_CLASS(object);
 	public:
 		object();
 		~object();
@@ -28,7 +28,7 @@ namespace Engine
 	/// </summary>
 	class Object : public object
 	{ 
-		CLASS_HEADER(Object)
+		RDECLARE_CLASS(Object)
 	public:
 		Object();
 		~Object();

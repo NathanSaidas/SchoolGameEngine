@@ -4,7 +4,7 @@
 
 namespace Engine
 {
-    CLASS_CPP(Mesh, Object)
+	RDEFINE_CLASS(Mesh, Object)
 
 
     Mesh::Mesh() : Object()

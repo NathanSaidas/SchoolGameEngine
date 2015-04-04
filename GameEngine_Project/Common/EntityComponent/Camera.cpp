@@ -7,7 +7,7 @@ namespace Engine
 {
 	std::vector<Camera*> Camera::s_Cameras = std::vector<Camera*>();
 
-	CLASS_CPP(Camera,Component)
+	RDEFINE_CLASS(Camera,Component)
 	Camera::Camera() : Component()
 	{
 		AddCamera(this);

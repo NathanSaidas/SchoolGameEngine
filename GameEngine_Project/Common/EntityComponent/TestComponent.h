@@ -8,7 +8,7 @@ namespace Engine
 {
 	class TestComponent : public Component
 	{
-		CLASS_HEADER(TestComponent)
+		RDECLARE_CLASS(TestComponent)
 	public:
 		TestComponent();
 		~TestComponent();

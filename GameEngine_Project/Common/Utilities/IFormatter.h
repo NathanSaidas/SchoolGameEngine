@@ -14,7 +14,7 @@ namespace Engine
 	*/
 	class IFormatter
 	{
-		INTERFACE_HEADER(IFormatter);
+		RDECLARE_INTERFACE(IFormatter);
 	public:
 		/**
 		* Serialize methods format the data from an object into raw data then adding that data to the stream.

@@ -31,7 +31,7 @@ namespace Engine
 
 	class Application : public object
 	{
-		CLASS_HEADER(Application)
+		RDECLARE_CLASS(Application)
 	public:
 		static Application * GetInstance();
 		static void Terminate();

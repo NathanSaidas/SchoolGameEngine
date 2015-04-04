@@ -2,7 +2,7 @@
 
 namespace Engine
 {
-    CLASS_CPP(Color,object)
+	RDEFINE_CLASS(Color, object)
 	Color::Color()
 	{
 		r = 0.0f;

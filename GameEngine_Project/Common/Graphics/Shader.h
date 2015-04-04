@@ -9,7 +9,7 @@ namespace Engine
 {
     class Shader : public Object
     {
-        CLASS_HEADER(Shader)
+		RDECLARE_CLASS(Shader)
     public:
         ///Sets the shader to default values.
         Shader();

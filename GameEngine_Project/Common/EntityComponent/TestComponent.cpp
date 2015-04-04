@@ -6,7 +6,7 @@
 
 namespace Engine
 {
-    CLASS_CPP(TestComponent, "")
+	RDEFINE_CLASS(TestComponent, "")
 
 	TestComponent::TestComponent() : Component()
 	{
