@@ -6,7 +6,7 @@
 #pragma endregion
 
 #include <string>
-#include "../BasicTypes.h"
+#include "../ValueTypes.h"
 #include "AllocatorType.h"
 
 

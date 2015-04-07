@@ -15,7 +15,7 @@
 #include <map> //For Memory Tracking=
 
 // -- Include basic types for UInt and SInt and IntPtr
-#include "../BasicTypes.h"
+#include "../ValueTypes.h"
 
 // -- Memory Standard Includes
 #include "MemoryConfig.h"

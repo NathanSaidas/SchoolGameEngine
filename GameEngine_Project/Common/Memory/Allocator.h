@@ -5,7 +5,7 @@
 /// -- January, 31, 2015 - Nathan Hanlan - Added Allocator class/file
 #pragma endregion
 
-#include "../BasicTypes.h"
+#include "../ValueTypes.h"
 #include "AllocatorType.h"
 #include "MemoryInfo.h"
 

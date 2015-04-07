@@ -15,6 +15,15 @@
 #include "MemoryManager.h"
 #include "Pointer.h"
 
+// -- Dependencies
+// -- stl <string>
+// -- stl <map>
+// -- <new>
+
+// -- ValueTypes.h
+// -- Utilities.h
+// -- SystemAssert.h
+// -- SystemError.h
 
 namespace Engine
 {

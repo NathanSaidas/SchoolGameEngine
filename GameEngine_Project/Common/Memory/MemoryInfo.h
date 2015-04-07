@@ -5,7 +5,7 @@
 /// -- January, 31, 2015 - Nathan Hanlan - Added MemoryInfo struct/file
 #pragma endregion
 
-#include "../BasicTypes.h"
+#include "../ValueTypes.h"
 
 namespace Engine
 {
