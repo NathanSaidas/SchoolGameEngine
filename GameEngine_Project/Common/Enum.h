@@ -74,9 +74,7 @@ namespace Engine
 	};
 }
 
-#define RDECLARE_ENUM_IMPLEMENTATION(TYPE,VALUES) private: VALUES m_Value;  \
-	private:																\
-		RDECLARE_ENUM(TYPE)													\
+#define RENUM_H(TYPE,VALUES) private: VALUES m_Value;  \
 	protected:																\
 		std::string GetName();												\
 		Engine::Array<std::string> GetNames();								\
@@ -115,7 +113,7 @@ namespace Engine
 		}																	\
 
 
-#define RDEFINE_ENUM_IMPLEMENTATION(TYPE,VALUES,COUNT,VALUE_NAMES)	TYPE::TYPE()	\
+#define RENUM_CPP(TYPE,VALUES,COUNT,VALUE_NAMES)	TYPE::TYPE()	\
 	{																				\
 		m_Value = (VALUES)0;														\
 	}																				\

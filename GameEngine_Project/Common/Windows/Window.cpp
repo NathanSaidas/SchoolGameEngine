@@ -245,7 +245,7 @@ namespace Engine
 		{
 			if (m_Profile != OpenGLProfile::Any)
 			{
-				DEBUG_LOG("Invalid profile value %u. Profile should be set to Any for context versions 3.2 and previous", (UInt32)m_Profile);
+				DEBUG_LOG("Invalid profile value %s. Profile should be set to Any for context versions 3.2 and previous", Enum::GetName(&m_Profile).c_str());
 			}
 			
 			m_Profile = OpenGLProfile::Any;
