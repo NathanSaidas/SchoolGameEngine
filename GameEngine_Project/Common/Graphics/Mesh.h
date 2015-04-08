@@ -6,6 +6,7 @@
 #include "../Math/Math.h"
 #include "../Utilities/Utilities.h"
 #include "Color.h"
+#include "../Resource/Resource.h"
 
 
 
@@ -14,7 +15,7 @@ namespace Engine
 {
     ///A class used to represent mesh data for rendering. 
     //Contains VertexAttributes (Position, Normal, Color, TexCoords)
-    class Mesh : public Object
+    class Mesh : public Resource
     {
 		RDECLARE_CLASS(Mesh)
     public:

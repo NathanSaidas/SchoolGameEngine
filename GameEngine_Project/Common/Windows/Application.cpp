@@ -398,7 +398,7 @@ namespace Engine
 	void Application::Update()
 	{
 		Float32 lastTime = Time::s_Time;
-		Float32 currentTime = glfwGetTime();
+		Float32 currentTime = (Float32)glfwGetTime();
 
 		Float32 deltaTime = currentTime - lastTime;
 		Time::s_DeltaTime = deltaTime;

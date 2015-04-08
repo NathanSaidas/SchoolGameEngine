@@ -4,10 +4,10 @@
 
 namespace Engine
 {
-	RDEFINE_CLASS(Mesh, Object)
+	RDEFINE_CLASS(Mesh, Resource)
 
 
-    Mesh::Mesh() : Object()
+    Mesh::Mesh() : Resource()
     {
         m_VBO = 0;
         m_IBO = 0;

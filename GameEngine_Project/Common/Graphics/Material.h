@@ -11,7 +11,7 @@ namespace Engine
 	class Shader;
 	class Texture;
 
-	class Material : public Object
+	class Material : public Resource
 	{
 		RDECLARE_CLASS(Material)
 	public:

@@ -5,8 +5,8 @@
 
 namespace Engine
 {
-	RDEFINE_CLASS(Shader, Object)
-    Shader::Shader()
+	RDEFINE_CLASS(Shader, Resource)
+	Shader::Shader() : Resource()
     {
         m_FragmentShader = 0;
         m_FragmentShaderLoaded = false;

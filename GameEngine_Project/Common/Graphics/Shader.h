@@ -3,11 +3,12 @@
 
 #include <GL\glew.h>
 #include "../BasicTypes.h"
+#include "../Resource/Resource.h"
 
 
 namespace Engine
 {
-    class Shader : public Object
+    class Shader : public Resource
     {
 		RDECLARE_CLASS(Shader)
     public:

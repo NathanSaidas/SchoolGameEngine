@@ -2,8 +2,8 @@
 
 namespace Engine
 {
-	RDEFINE_CLASS(Material, Object)
-	Material::Material() : Object()
+	RDEFINE_CLASS(Material, Resource)
+	Material::Material() : Resource()
 	{
 
 	}
