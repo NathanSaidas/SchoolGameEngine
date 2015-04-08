@@ -39,7 +39,6 @@ namespace Engine
 	{
 		Memory::MemoryManager::Initialize();
 		Reflection::Runtime::Compile(nullptr);
-		
 
 		//Setup Defaults
 		ApplicationInfo info;

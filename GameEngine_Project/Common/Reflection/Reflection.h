@@ -26,6 +26,17 @@
 #include "MemberInfo.h"
 #include "../Type.h"
 
+// -- Dependencies
+// -- <cstring>
+// -- <string>
+// -- <limits>
+// -- <map>
+// -- <vector>
+// --
+// -- Type.h
+// -- Func.h
+// -- Method.h
+
 //////////////////////
 ///AVAILABLE MACROS///
 //////////////////////

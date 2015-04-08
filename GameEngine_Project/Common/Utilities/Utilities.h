@@ -15,6 +15,7 @@
 #include "IFormatter.h"
 #include "ISerializeable.h"
 #include "BinaryFormatter.h"
+#include "Guid.h"
 
 
 

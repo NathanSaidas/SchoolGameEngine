@@ -38,6 +38,16 @@ namespace Engine
 		m_Material->SetName("Default Diffuse");
 
 
+		Guid guidA = Guid::NewGuid();
+		DEBUG_LOG("Generated a Guid: %s", guidA.ToString().c_str());
+		Guid guidB = Guid::NewGuid();
+		DEBUG_LOG("Generated a Guid: %s", guidB.ToString().c_str());
+		Guid guidC = Guid::NewGuid();
+		DEBUG_LOG("Generated a Guid: %s", guidC.ToString().c_str());
+		Guid guidD = Guid::NewGuid();
+		DEBUG_LOG("Generated a Guid: %s", guidD.ToString().c_str());
+		Guid guidE = Guid::NewGuid();
+		DEBUG_LOG("Generated a Guid: %s", guidE.ToString().c_str());
 
 	}
 	

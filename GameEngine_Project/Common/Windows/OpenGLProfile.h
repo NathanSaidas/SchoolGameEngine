@@ -3,14 +3,6 @@
 
 #include "../Enum.h"
 
-//enum class OpenGLProfile
-//{
-//	Core,
-//	Compatibility,
-//	ForwardCore,
-//	ForwardCompatibility,
-//	Any
-//};
 
 namespace Engine
 {

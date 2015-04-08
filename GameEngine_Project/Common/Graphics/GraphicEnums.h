@@ -72,6 +72,28 @@ namespace Engine
 
 #endif
     };
+
+	enum class FilterMode
+	{
+		Nearest = 0x2600, // GL_NEAREST
+		Linear = 0x2601, // GL_LINEAR
+		MipmapNearest = 0x2700, //GL_NEAREST_MIPMAP_NEAREST
+		MipmapLinear = 0x2703, //GL_LINEAR_MIPMAP_LINEAR
+		MipmapLinearNearest = 0x2702 // GL_NEAREST_MIPMAP_LINEAR
+	};
+
+	enum class ClampMode
+	{
+		Clamp = 0x812F,			//GL_CLAMP_TO_EDGE,
+		Repeat = 0x2901,		// GL_REPEAT,
+		MirroredRepeat = 0x8370 // GL_MIRRORED_REPEAT
+	};
+
+	enum class ImageFormat
+	{
+		RGB = 0x1907, //GL_RGB
+		RGBA = 0x1908 //GL_RGBA
+	};
 }
 
 #endif

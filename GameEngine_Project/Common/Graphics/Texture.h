@@ -5,6 +5,24 @@
 
 namespace Engine
 {
+	/*
+	* Texture
+	*	- ImageTexture (Load Data From File)
+	*	- RenderTexture (Handles to data on GPU)
+	*
+	* Shared Parameters
+	*	- Filter Mode
+	*	- Clamp Mode
+	*	- Size Width/Height
+	*	- Handle
+	*
+	*
+	* Image Texture Parameters
+	* - Image Format
+
+
+	*/
+
 	class Texture : public Object
 	{
 		RDECLARE_CLASS(Texture)

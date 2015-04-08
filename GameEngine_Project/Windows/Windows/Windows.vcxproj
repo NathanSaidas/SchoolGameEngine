@@ -60,7 +60,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>$(ProjectDir)..\..\Common\Libraries\GLFW_3.1.0\lib\glfw3.lib;$(ProjectDir)..\..\Common\Libraries\glew-1.10.0\lib\glew32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(ProjectDir)..\..\Common\Libraries\GLFW_3.1.0\lib\glfw3.lib;$(ProjectDir)..\..\Common\Libraries\glew-1.10.0\lib\glew32.lib;opengl32.lib;Rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y /d "$(SolutionDir)..\Common\Libraries\glew-1.10.0\bin\*.dll"  "$(TargetDir)"</Command>
@@ -123,6 +123,7 @@
     <ClCompile Include="..\..\Common\SystemError.cpp" />
     <ClCompile Include="..\..\Common\Testing\MemoryTest.cpp" />
     <ClCompile Include="..\..\Common\Utilities\BinaryFormatter.cpp" />
+    <ClCompile Include="..\..\Common\Utilities\Guid.cpp" />
     <ClCompile Include="..\..\Common\Utilities\IFormatter.cpp" />
     <ClCompile Include="..\..\Common\Utilities\IniFileStream.cpp" />
     <ClCompile Include="..\..\Common\Utilities\IniSection.cpp" />
@@ -188,7 +189,6 @@
     <ClInclude Include="..\..\Common\Reflection\Attribute.h" />
     <ClInclude Include="..\..\Common\Reflection\AttributeBinder.h" />
     <ClInclude Include="..\..\Common\Reflection\BoolAttribute.h" />
-    <ClInclude Include="..\..\Common\Reflection\ClassMember.h" />
     <ClInclude Include="..\..\Common\Reflection\FloatAttribute.h" />
     <ClInclude Include="..\..\Common\Reflection\FunctionAttribute.h" />
     <ClInclude Include="..\..\Common\Reflection\IntAttribute.h" />
@@ -209,6 +209,7 @@
     <ClInclude Include="..\..\Common\Utilities\Array.h" />
     <ClInclude Include="..\..\Common\Utilities\BinaryFormatter.h" />
     <ClInclude Include="..\..\Common\Utilities\Debug.h" />
+    <ClInclude Include="..\..\Common\Utilities\Guid.h" />
     <ClInclude Include="..\..\Common\Utilities\IFormatter.h" />
     <ClInclude Include="..\..\Common\Utilities\IniFileStream.h" />
     <ClInclude Include="..\..\Common\Utilities\IniSection.h" />

@@ -198,6 +198,9 @@
     <ClCompile Include="..\..\Common\Windows\OpenGLProfile.cpp">
       <Filter>Core\Windows</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Common\Utilities\Guid.cpp">
+      <Filter>Core\Utilities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Common\Memory\AllocationInfo.h">
@@ -246,9 +249,6 @@
       <Filter>Core\Reflection</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Common\Reflection\BoolAttribute.h">
-      <Filter>Core\Reflection</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Common\Reflection\ClassMember.h">
       <Filter>Core\Reflection</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Common\Reflection\FloatAttribute.h">
@@ -457,6 +457,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Common\Enum.h">
       <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Utilities\Guid.h">
+      <Filter>Core\Utilities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

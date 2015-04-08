@@ -17,7 +17,7 @@ namespace Engine
 	{
 		RDECLARE_CLASS(ResourceDatabase)
 	public:
-
+		static const std::string META_ID_TOKEN;
 
 		
 	};
