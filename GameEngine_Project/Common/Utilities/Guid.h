@@ -89,7 +89,8 @@ namespace Engine
 		/**
 		* The array of bytes allocated for the GUID. (Size == 16).
 		*/
-		UInt8 * m_Data;
+		//std::string m_Data;
+		UInt8 m_Data[37];
 	};
 
 	TYPE_DEFINE(Guid)

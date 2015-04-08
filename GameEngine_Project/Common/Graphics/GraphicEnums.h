@@ -82,7 +82,7 @@ namespace Engine
 		MipmapLinearNearest = 0x2702 // GL_NEAREST_MIPMAP_LINEAR
 	};
 
-	enum class ClampMode
+	enum class WrapMode
 	{
 		Clamp = 0x812F,			//GL_CLAMP_TO_EDGE,
 		Repeat = 0x2901,		// GL_REPEAT,
@@ -91,8 +91,10 @@ namespace Engine
 
 	enum class ImageFormat
 	{
-		RGB = 0x1907, //GL_RGB
-		RGBA = 0x1908 //GL_RGBA
+		RGB = 0x1907,		//GL_RGB
+		RGBA = 0x1908,		//GL_RGBA
+		Greyscale = 0x2002,	//GL_R	
+		GreyAlpha = 0x8227	//GL_RG
 	};
 }
 

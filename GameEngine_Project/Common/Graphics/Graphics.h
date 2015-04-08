@@ -13,6 +13,7 @@
 #include "DrawCall.h"
 #include "RenderTexture.h"
 #include "Texture.h"
+#include "ImageTexture.h"
 #include "Material.h"
 
 #define CONFIG_GRAPHICS_SHADOWMAPPING

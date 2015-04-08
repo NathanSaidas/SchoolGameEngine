@@ -1,158 +1,159 @@
 #include "Texture.h"
 #include "Graphics.h"
 
-#define STB_IMAGE_IMPLEMENTATION
-#include <stbimage\stb_image.h>
 
 
 
 
 namespace Engine
 {
-	RDEFINE_CLASS(Texture, Object)
-	Texture::Texture()
+	RDEFINE_CLASS(Texture, Resource)
+	Texture::Texture() : Resource()
 	{
 		m_IsUploaded = false;
-		m_Handle = 0;
-		m_WrapMode = GL_REPEAT;
-		m_FilterMode = GL_LINEAR;
-		m_ImageFormat = GL_RGB;
+		m_TextureHandle = 0;
+		m_WrapMode = WrapMode::Repeat;
+		m_FilterMode = FilterMode::Linear;
 		m_Width = 0;
 		m_Height = 0;
-		m_Data = nullptr;
 
 	}
 	Texture::~Texture()
 	{
-		Free();
+		Release();
 	}
 
+	/**
+	* Gets the filter mode last set.
+	* @return The filter mode being used.
+	*/
+	FilterMode Texture::GetFilterMode()
+	{
+		return m_FilterMode;
+	}
+	/**
+	* Sets the filter mode. Note that this has no effect if the texture is uploaded
+	* @param aMode The filter mode to use.
+	*/
+	void Texture::SetFilterMode(FilterMode aMode)
+	{
+		if (!IsUploaded())
+		{
+			m_FilterMode = aMode;
+		}
+	}
+
+	/**
+	* Gets the wrap mode last set.
+	* @return Returns the wrap mode being used.
+	*/
+	WrapMode Texture::GetWrapMode()
+	{
+		return m_WrapMode;
+	}
+	/**
+	* Sets the wrap mode. Note that this has no effect if the texture is uploaded.
+	* @param aMode The wrap mode to use.
+	*/
+	void Texture::SetWrapMode(WrapMode aMode)
+	{
+		if (!IsUploaded())
+		{
+			m_WrapMode = aMode;
+		}
+	}
+
+	/**
+	* Gets the width of the texture
+	* @return Returns the height of the texture.
+	*/
+	UInt32 Texture::GetWidth()
+	{
+		return m_Width;
+	}
+	/**
+	* Gets the height of the texture
+	* @return Returns the height of the texture.
+	*/
+	UInt32 Texture::GetHeight()
+	{
+		return m_Height;
+	}
+	/**
+	* Gets a raw handle to the texture from OpenGL
+	* Use this wil caution. Do not deallocate the handle as its handled internally.
+	* @return Returns a raw handle to the texture from OpenGL
+	*/
 	unsigned int Texture::GetHandle()
 	{
-		return m_Handle;
+		return m_TextureHandle;
 	}
+	/**
+	* Releases resources allocated on both the CPU and the GPU
+	*/
+	void Texture::Release()
+	{
+		ReleaseCPU();
+		ReleaseGPU();
+	}
+	/**
+	* Releases resources allocated on the CPU
+	*/
+	void Texture::ReleaseCPU()
+	{
+
+	}
+	/**
+	* Releases resources allocated on the GPU
+	*/
+	void Texture::ReleaseGPU()
+	{
+
+	}
+	/**
+	* Determines if the texture is uploaded or not and can be used with rendering.
+	* @return Returns true if the texture is uploaded to the GPU. Returns false otherwise.
+	*/
 	bool Texture::IsUploaded()
 	{
 		return m_IsUploaded;
 	}
-	unsigned int Texture::WrapMode()
-	{
-		return m_WrapMode;
-	}
-	unsigned int Texture::WrapMode(unsigned int & aWrapMode)
-	{
-		if (aWrapMode != GL_CLAMP_TO_EDGE
-			|| aWrapMode != GL_REPEAT
-			|| aWrapMode != GL_MIRRORED_REPEAT
-			|| aWrapMode != GL_CLAMP)
-		{
-			return m_WrapMode;
-		}
-		return m_WrapMode = aWrapMode;
-	}
-	unsigned int Texture::FilterMode()
-	{
-		return m_FilterMode;
-	}
-	unsigned int Texture::FilterMode(unsigned int & aFilterMode)
-	{
-		if (aFilterMode != GL_NEAREST
-			|| aFilterMode != GL_LINEAR)
-		{
-			return m_FilterMode;
-		}
-		return m_FilterMode = aFilterMode;
-	}
-	int Texture::GetImageFormat()
-	{
-		return m_ImageFormat;
-	}
-	void Texture::Upload(bool aFree)
-	{
-		FreeGPU();
-		if (m_Data == nullptr)
-		{
-			return;
-		}
 
-		glGenTextures(1, &m_Handle);
-		glBindTexture(GL_TEXTURE_2D, m_Handle);
-		glTexImage2D(GL_TEXTURE_2D,
-			0,
-			m_ImageFormat,
-			m_Width,
-			m_Height,
-			0,
-			m_ImageFormat,
-			GL_UNSIGNED_BYTE,
-			m_Data);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, m_WrapMode);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, m_WrapMode);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, m_FilterMode);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, m_FilterMode);
-
-		glBindTexture(GL_TEXTURE_2D, 0);
-
-		if (aFree == true)
-		{
-			FreeCPU();
-		}
-		m_IsUploaded = true;
-	}
-	void Texture::FreeCPU()
+	/**
+	* Sets whether or not the texture is uploaded.
+	* @param aValue Whether or not the texture is uploaded or not.
+	*/
+	void Texture::SetIsUploaded(bool aValue)
 	{
-		if (m_Data != nullptr)
-		{
-			free(m_Data);
-			m_ImageFormat = GL_RGB;
-			m_Width = 0;
-			m_Height = 0;
-			m_Data = nullptr;
-		}
+		m_IsUploaded = aValue;
 	}
-	void Texture::FreeGPU()
-	{
-		if (!m_IsUploaded || m_Handle == 0)
-		{
-			return;
-		}
-		glDeleteTextures(1, &m_Handle);
-	}
-	void Texture::Free()
-	{
-		FreeGPU();
-		FreeCPU();
-	}
-	void Texture::Load(const std::string & aFilename, int aImageFormat)
-	{
-		FreeCPU();
 
-		int width, height;
-		m_Data = stbi_load(aFilename.c_str(), &width, &height, &m_ImageFormat, aImageFormat);
-		m_Width = width;
-		m_Height = height;
-		switch (m_ImageFormat)
-		{
-		case STBI_grey:
-			m_ImageFormat = GL_R;
-			break;
-		case STBI_grey_alpha:
-			m_ImageFormat = GL_RG;
-			break;
-		case STBI_rgb:
-			m_ImageFormat = GL_RGB;
-			break;
-		case STBI_rgb_alpha:
-			m_ImageFormat = GL_RGBA;
-			break;
-		default:
-			FreeCPU();
-			break;
-		}
+	void Texture::SetSize(UInt32 aWidth, UInt32 aHeight)
+	{
+		m_Width = aWidth;
+		m_Height = aHeight;
+	}
 
-		
+	/**
+	* Generates a texture handle.
+	*/
+	void Texture::GenerateTextureHandle()
+	{
+		if (IsUploaded())
+		{
+			ReleaseGPU();
+		}
+		glGenTextures(1, &m_TextureHandle);
+	}
+	/**
+	* Deletes a texture handle;
+	*/
+	void Texture::DeleteTextureHandle()
+	{
+		if (m_TextureHandle != 0)
+		{
+			glDeleteTextures(1, &m_TextureHandle);
+		}
 	}
 
 }

@@ -12,7 +12,7 @@ namespace Engine
 
 	}
 
-	void Material::SetShader(Pointer<Shader> aShader)
+	void Material::SetShader(Pointer<Shader> & aShader)
 	{
 		m_Shader = aShader;
 	}
@@ -21,7 +21,7 @@ namespace Engine
 		return m_Shader;
 	}
 
-	void Material::SetTexture(Pointer<Texture> aTexture)
+	void Material::SetTexture(Pointer<Texture> & aTexture)
 	{
 		m_Texture = aTexture;
 	}

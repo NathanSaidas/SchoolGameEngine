@@ -201,6 +201,9 @@
     <ClCompile Include="..\..\Common\Utilities\Guid.cpp">
       <Filter>Core\Utilities</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Common\Graphics\ImageTexture.cpp">
+      <Filter>Core\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Common\Memory\AllocationInfo.h">
@@ -460,6 +463,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Common\Utilities\Guid.h">
       <Filter>Core\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Graphics\ImageTexture.h">
+      <Filter>Core\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

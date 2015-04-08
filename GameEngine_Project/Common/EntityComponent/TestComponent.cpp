@@ -26,10 +26,12 @@ namespace Engine
 		shader->SetName("Default Shader");
 		shader->Load("DefaultShader.glsl");
 
-		Pointer<Texture> texture = m_Material->GetTexture();
+		Pointer<ImageTexture> texture;
 		texture->SetName("Wall");
 		texture->Load("Wall.png");
 		texture->Upload();
+
+		m_Material->SetTexture(texture.Cast<Texture>());
 
 		//m_Mesh.MakeUnique(Geometry::CreateCube(2.0f, 2.0f, 2.0f, Color::Crimson(), Memory::AllocatorType::Pool));
 		m_Mesh.MakeUnique(Geometry::CreatePlane(1.0f, 1.0f, Color::Crimson(), Memory::AllocatorType::Pool));
@@ -37,17 +39,6 @@ namespace Engine
 
 		m_Material->SetName("Default Diffuse");
 
-
-		Guid guidA = Guid::NewGuid();
-		DEBUG_LOG("Generated a Guid: %s", guidA.ToString().c_str());
-		Guid guidB = Guid::NewGuid();
-		DEBUG_LOG("Generated a Guid: %s", guidB.ToString().c_str());
-		Guid guidC = Guid::NewGuid();
-		DEBUG_LOG("Generated a Guid: %s", guidC.ToString().c_str());
-		Guid guidD = Guid::NewGuid();
-		DEBUG_LOG("Generated a Guid: %s", guidD.ToString().c_str());
-		Guid guidE = Guid::NewGuid();
-		DEBUG_LOG("Generated a Guid: %s", guidE.ToString().c_str());
 
 	}
 	

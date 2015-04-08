@@ -18,10 +18,10 @@ namespace Engine
 		Material();
 		~Material();
 
-		void SetShader(Pointer<Shader> aShader);
+		void SetShader(Pointer<Shader> & aShader);
 		Pointer<Shader> GetShader();
 
-		void SetTexture(Pointer<Texture> aTexture);
+		void SetTexture(Pointer<Texture> & aTexture);
 		Pointer<Texture> GetTexture();
 	private:
 		Pointer<Shader> m_Shader;

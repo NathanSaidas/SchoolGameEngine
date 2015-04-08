@@ -9,6 +9,7 @@ using namespace Engine::Memory;
 
 namespace Engine
 {
+
 	//Describes the attributes of a vertex.
 	struct VertexAttribute
 	{
@@ -31,6 +32,7 @@ namespace Engine
 	Graphics * Graphics::s_Instance = nullptr;
 	Graphics::Graphics()
 	{
+
 		InitializePrimitiveBuffers();
 
 #ifdef CONFIG_GRAPHICS_SHADOWMAPPING
@@ -70,16 +72,17 @@ namespace Engine
         m_Screen->SetIndices(indicies);
         m_Screen->Upload();
 
-        Pointer<Texture> texture;
+        //Pointer<ImageTexture> texture;
         Pointer<Shader> shader;
 
         shader->Load("DefaultTextureShader.glsl");
 
-        texture->Load("Wall3.png");
-        texture->Upload();
+        //texture->Load("Wall3.png");
+        //texture->Upload();
+
 
         m_ScreenMaterial->SetShader(shader);
-        m_ScreenMaterial->SetTexture(texture);
+        //m_ScreenMaterial->SetTexture(texture.Cast<Texture>());
 
         OpenGLWindow * window = Application::GetDefaultWindow();
 

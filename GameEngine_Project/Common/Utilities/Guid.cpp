@@ -13,13 +13,13 @@ namespace Engine
 
 	Guid::Guid() : object()
 	{
-		m_Data = new UInt8[GUID_STRING_LENGTH + 1];
+		//m_Data = new UInt8[GUID_STRING_LENGTH + 1];
 		memset(m_Data, 0, sizeof(UInt8)* GUID_STRING_LENGTH);
 		m_Data[GUID_STRING_LENGTH] = '\0';
 	}
 	Guid::Guid(const std::string & aString) : object()
 	{
-		m_Data = new UInt8[GUID_STRING_LENGTH + 1];
+		//m_Data = new UInt8[GUID_STRING_LENGTH + 1];
 		memset(m_Data, 0, sizeof(UInt8)* GUID_STRING_LENGTH);
 		m_Data[GUID_STRING_LENGTH] = '\0';
 		for (int i = 0; i < aString.length() && i < GUID_STRING_LENGTH; i++)
@@ -29,7 +29,7 @@ namespace Engine
 	}
 	Guid::Guid(const Array<UInt8> & aBytes) : object()
 	{
-		m_Data = new UInt8[GUID_STRING_LENGTH + 1];
+		//m_Data = new UInt8[GUID_STRING_LENGTH + 1];
 		memset(m_Data, 0, sizeof(UInt8)* GUID_STRING_LENGTH);
 		m_Data[GUID_STRING_LENGTH] = '\0';
 		for (int i = 0; i < aBytes.GetCount() && i < GUID_STRING_LENGTH; i++)
@@ -39,8 +39,8 @@ namespace Engine
 	}
 	Guid::~Guid()
 	{
-		delete m_Data;
-		m_Data = nullptr;
+		//delete m_Data;
+		//m_Data = nullptr;
 	}
 
 	std::string Guid::ToString()

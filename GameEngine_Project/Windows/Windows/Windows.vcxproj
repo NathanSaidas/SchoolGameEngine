@@ -95,6 +95,7 @@
     <ClCompile Include="..\..\Common\Graphics\DrawCall.cpp" />
     <ClCompile Include="..\..\Common\Graphics\Geometry.cpp" />
     <ClCompile Include="..\..\Common\Graphics\Graphics.cpp" />
+    <ClCompile Include="..\..\Common\Graphics\ImageTexture.cpp" />
     <ClCompile Include="..\..\Common\Graphics\Material.cpp" />
     <ClCompile Include="..\..\Common\Graphics\Mesh.cpp" />
     <ClCompile Include="..\..\Common\Graphics\PrimitiveShapeBuffer.cpp" />
@@ -155,6 +156,7 @@
     <ClInclude Include="..\..\Common\Graphics\Geometry.h" />
     <ClInclude Include="..\..\Common\Graphics\GraphicEnums.h" />
     <ClInclude Include="..\..\Common\Graphics\Graphics.h" />
+    <ClInclude Include="..\..\Common\Graphics\ImageTexture.h" />
     <ClInclude Include="..\..\Common\Graphics\Material.h" />
     <ClInclude Include="..\..\Common\Graphics\Mesh.h" />
     <ClInclude Include="..\..\Common\Graphics\PrimitiveShapeBuffer.h" />

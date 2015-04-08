@@ -3,6 +3,7 @@
 
 #pragma region CHANGE LOG
 /// --	March	30	2015 - Nathan Hanlan - Added class/file Pointer.h.
+/// --  April	 8  2015 - Nathan Hanlan - Added Cast function to cast one pointer to another.
 #pragma endregion
 
 #include "MemoryManager.h"
@@ -152,7 +153,45 @@ namespace Engine
 			*m_Count = 1;
 		}
 
+		/**
+		* This method will convert a managed pointer of a given TYPE into a a managed pointer of the CAST_TYPE specified
+		* @type CAST_TYPE The type to cast to.
+		*/
+		template<typename CAST_TYPE>
+		Pointer<CAST_TYPE> Cast() const
+		{
+			//Create a pointer and release resources allocated.
+			Pointer<CAST_TYPE> pointer;
+			pointer.Release();
+			//Get the raw address
+			CAST_TYPE * address = (CAST_TYPE*)(m_Pointer);
+			//Use the hidden cast method to cast the data.
+			pointer.HiddenCast(address, m_Count);
+
+			return pointer;
+		}
+
+		/**
+		* This will set information from one pointer to another and add a reference.
+		* IMPORTANT: Do not call this method directly. Use Cast instead.
+		* @param aAddress The address of the pointer making a casted instance
+		* @param aCount The count pointer of the pointer making a casted instance.
+		*/
+		void HiddenCast(TYPE * aAddress, int * aCount)
+		{
+			Release();
+			if (aAddress != nullptr)
+			{
+				m_Pointer = aAddress;
+				m_Count = aCount;
+				AddReference();
+			}
+
+		}
+
 	private:
+		
+		
 		///Adds a reference to the pointer.
 		void AddReference()
 		{
