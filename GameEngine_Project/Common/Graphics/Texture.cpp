@@ -95,6 +95,7 @@ namespace Engine
 	{
 		ReleaseCPU();
 		ReleaseGPU();
+		SetSize(0, 0);
 	}
 	/**
 	* Releases resources allocated on the CPU
@@ -153,6 +154,7 @@ namespace Engine
 		if (m_TextureHandle != 0)
 		{
 			glDeleteTextures(1, &m_TextureHandle);
+			m_TextureHandle = 0;
 		}
 	}
 

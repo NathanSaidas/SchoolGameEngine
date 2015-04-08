@@ -129,7 +129,7 @@ namespace Engine
 		}
 		if (Graphics::CheckForGLErrors(__FILE__, __LINE__))
 		{
-			DEBUG_LOG("Graphics errors exist before uploading texture %s", GetName().c_str());
+			DEBUG_LOG("Graphics errors exist before uploading ImageTexture %s", GetName().c_str());
 		}
 
 		GenerateTextureHandle();
@@ -155,7 +155,7 @@ namespace Engine
 
 		if (Graphics::CheckForGLErrors(__FILE__, __LINE__))
 		{
-			DEBUG_LOG("Graphics errors present after uploading texture %s", GetName().c_str());
+			DEBUG_LOG("Graphics errors present after uploading ImageTexture %s", GetName().c_str());
 		}
 
 		SetIsUploaded(true);

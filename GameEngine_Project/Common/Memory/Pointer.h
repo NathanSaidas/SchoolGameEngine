@@ -155,7 +155,6 @@ namespace Engine
 
 		/**
 		* This method will convert a managed pointer of a given TYPE into a a managed pointer of the CAST_TYPE specified
-		* @type CAST_TYPE The type to cast to.
 		*/
 		template<typename CAST_TYPE>
 		Pointer<CAST_TYPE> Cast() const

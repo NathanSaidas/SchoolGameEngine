@@ -1,35 +1,29 @@
 #ifndef GAME_ENGINE_RENDER_TEXTURE_H
 #define GAME_ENGINE_RENDER_TEXTURE_H
 
-#include <GL\glew.h>
 #include "../BasicTypes.h"
+#include "Texture.h"
 
 namespace Engine
 {
-	class RenderTexture : public Object
+	class RenderTexture : public Texture
 	{
 		RDECLARE_CLASS(RenderTexture)
 	public:
 		RenderTexture();
 		~RenderTexture();
-		void Create(UInt32 aWidth, UInt32 aHeight);
-		void Release();
+		
 
-		bool IsAllocated();
-		UInt32 GetWidth();
-		UInt32 GetHeight();
-		GLuint GetFBOHandle();
-		GLuint GetDepthHandle();
-		GLuint GetTextureHandle();
+		unsigned int GetFBOHandle();
+		unsigned int GetDepthHandle();
+
+		void Create(UInt32 aWidth, UInt32 aHeight);
+		void ReleaseGPU();
 
 	private:
-		bool m_IsAllocated;
-		UInt32 m_Width;
-		UInt32 m_Height;
 
-		GLuint m_FBOHandle;
-		GLuint m_DepthTextureHandle;
-		GLuint m_TextureHandle;
+		unsigned int m_FBOHandle;
+		unsigned int m_DepthTextureHandle;
 	};
 
 	TYPE_DEFINE(RenderTexture)

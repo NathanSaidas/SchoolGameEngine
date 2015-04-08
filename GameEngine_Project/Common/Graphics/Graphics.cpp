@@ -88,6 +88,9 @@ namespace Engine
 
         CheckForGLErrors(__FILE__, __LINE__);
 
+		m_ScreenRenderTexture->SetName("Shadow Map");
+		m_ScreenRenderTexture->SetFilterMode(FilterMode::Nearest);
+		m_ScreenRenderTexture->SetWrapMode(WrapMode::Clamp);
         m_ScreenRenderTexture->Create(window->GetWidth(), window->GetHeight());
 
         CheckForGLErrors(__FILE__, __LINE__);
@@ -634,7 +637,7 @@ namespace Engine
     {
         if (aLocation != -1)
         {
-            if (aTexture.IsAlive() && aTexture->IsAllocated())
+            if (aTexture.IsAlive() && aTexture->IsUploaded())
             {
                 glActiveTexture(GL_TEXTURE0 + aUnit);
                 glBindTexture(GL_TEXTURE_2D, aTexture->GetDepthHandle());
