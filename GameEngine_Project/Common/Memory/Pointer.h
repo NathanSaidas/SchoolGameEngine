@@ -4,6 +4,8 @@
 #pragma region CHANGE LOG
 /// --	March	30	2015 - Nathan Hanlan - Added class/file Pointer.h.
 /// --  April	 8  2015 - Nathan Hanlan - Added Cast function to cast one pointer to another.
+/// --  April    8  2015 - Nathan Hanlan - Added in Terminate function which will deallocate the pointer resource and invert the reference count.
+/// --  April    8  2015 - Nathan Hanlan - Added in Null static function which will return a null managed pointer.
 #pragma endregion
 
 #include "MemoryManager.h"
@@ -63,7 +65,7 @@ namespace Engine
 		///Access to the data.
 		TYPE * operator->()
 		{
-			if (m_Count == nullptr || *m_Count == 0)
+			if (m_Count == nullptr || *m_Count <= 0)
 			{
 				m_Pointer = nullptr;
 			}
@@ -73,7 +75,7 @@ namespace Engine
 		///Access to the data.
 		TYPE * operator->() const
 		{
-			if (m_Count == nullptr || *m_Count == 0)
+			if (m_Count == nullptr || *m_Count <= 0)
 			{
 				return nullptr;
 			}
@@ -83,7 +85,7 @@ namespace Engine
 		///Returns true if the 
 		bool IsAlive()
 		{
-			if (m_Count == nullptr || *m_Count == 0)
+			if (m_Count == nullptr || *m_Count <= 0)
 			{
 				m_Pointer = nullptr;
 			}
@@ -93,7 +95,7 @@ namespace Engine
 		///Returns true if the 
 		bool IsAlive() const
 		{
-			return m_Pointer != nullptr && m_Count != nullptr && *m_Count != 0;
+			return m_Pointer != nullptr && m_Count != nullptr && *m_Count > 0;
 		}
 
 		///Returns the reference count
@@ -108,6 +110,33 @@ namespace Engine
 			RemoveReference();
 			m_Pointer = nullptr;
 			m_Count = nullptr;
+		}
+
+		/**
+		* Releases the resource of the pointer. 
+		* This function will only work on pointers allocated through a pool allocator.
+		* Other managed pointers will have their count inverted signalling that the pointer is dead.
+		*/
+		void Terminate()
+		{
+			if (m_Pointer != nullptr)
+			{
+				Memory::MemoryHeader * header = (Memory::MemoryHeader*)Memory::MemoryUtils::SubtractPtr(m_Pointer, sizeof(Memory::MemoryHeader));
+				UInt8 flags;
+				UInt8 id;
+				UInt16 size;
+				header->Read(flags, id, size);
+				if (!((flags & Memory::MemoryFlags::POOL) == Memory::MemoryFlags::POOL))
+				{
+					DEBUG_LOG("Managed pointers can only terminate memory allocated through a pool allocator.");
+					return;
+				}
+				Dealloc();
+			}
+			if (m_Count != nullptr)
+			{
+				*m_Count = -(*m_Count);
+			}
 		}
 
 		///Makes this pointer a unique instance and uses the assignment operator.
@@ -188,6 +217,17 @@ namespace Engine
 
 		}
 
+		/**
+		* Creates a pointer with no count or reference to memory.
+		* @return Returns a pointer with no count or reference to memory.
+		*/
+		static Pointer Null()
+		{
+			Pointer pointer;
+			pointer.Release();
+			return pointer;
+		}
+
 	private:
 		
 		
@@ -205,12 +245,27 @@ namespace Engine
 		{
 			if (m_Count != nullptr)
 			{
-				(*m_Count)--;
+				
+				//Decrement reference count for alive pointers.
+				if (*m_Count > 0)
+				{
+					(*m_Count)--;
+				}
+				//Increment reference count for dead pointers that were killed with the Terminate function.
+				else if (*m_Count < 0)
+				{
+					(*m_Count)++;
+				}
+
+				//(*m_Count)--;
 				if ((*m_Count) == 0)
 				{
 					delete m_Count;
 					m_Count = nullptr;
-					Dealloc();
+					if (m_Pointer != nullptr)
+					{
+						Dealloc();
+					}
 				}
 			}
 		}

@@ -5,4 +5,358 @@ namespace Engine
 	RDEFINE_CLASS(ResourceDatabase, object)
 
 	const std::string ResourceDatabase::META_ID_TOKEN = "Meta-ID";
+
+	ResourceDatabase * ResourceDatabase::s_Instance = nullptr;
+	ResourceDatabase::ResourceDatabase()
+	{
+		m_ImageTextureType = Reflection::Runtime::TypeOf<ImageTexture>();
+		m_MeshType = Reflection::Runtime::TypeOf<Mesh>();
+		m_ShaderType = Reflection::Runtime::TypeOf<Shader>();
+		m_MaterialType = Reflection::Runtime::TypeOf<Material>();
+	}
+	ResourceDatabase::~ResourceDatabase()
+	{
+		//TODO(Nathan): Release resources.
+	}
+
+	/**
+	* Initializes the database.
+	*/
+	void ResourceDatabase::Initialize()
+	{
+		if (s_Instance == nullptr)
+		{
+			s_Instance = new ResourceDatabase();
+		}
+	}
+
+	/**
+	* Unloads all loaded resources.
+	*/
+	void ResourceDatabase::Terminate()
+	{
+		if (s_Instance != nullptr)
+		{
+			delete s_Instance;
+			s_Instance = nullptr;
+		}
+	}
+
+	/**
+	* Loads a texture. This function will call GetTexture to see if its already loaded.
+	* @param aName The name of the texture resource to load
+	* @return Returns a managed pointer to the image texture resource.
+	*/
+	Pointer<ImageTexture> ResourceDatabase::LoadTexture(const std::string & aName)
+	{
+		Pointer<ImageTexture> imageTexture = GetTexture(aName);
+		if (imageTexture.IsAlive())
+		{
+			return imageTexture;
+		}
+		//TODO(Nathan): With file io. parse working directory to find the texture resource.
+		return Pointer<ImageTexture>::Null();
+	}
+	/**
+	* Searches for a loaded texture resource by name.
+	* @param aName The name of the texture resource to find.
+	* @return Returns a managed pointer to the image texture resource. A nullptr is returned if there is no texture.
+	*/
+	Pointer<ImageTexture> ResourceDatabase::GetTexture(const std::string & aName)
+	{
+		if (s_Instance == nullptr)
+		{
+			//Return a nullptr because the database is not loaded.
+			return Pointer<ImageTexture>::Null();
+		}
+		//Get access to the cache
+		ResourceCache & cache = s_Instance->m_ResourceCache;
+		//Find elements with the key equal to aName.
+		ResourcePair iterator = cache.equal_range(aName);
+		//If it exists
+		if (iterator.first != iterator.second)
+		{
+			//Check its type then return the casted pointer.
+			Pointer<Resource> resource = iterator.first->second;
+			Type type = resource->GetType();
+			if (type == Reflection::Runtime::TypeOf<ImageTexture>())
+			{
+				return resource.Cast<ImageTexture>();
+			}
+			//TODO(Nathan): Debug Log out what type of resource this is an report the type mismatch. Make this a config option.
+		}
+		//Return a nullptr because the resource didn't exist or if it did it was the incorrect type.
+		return Pointer<ImageTexture>::Null();
+	}
+
+	/**
+	* Loads a mesh resource. This function will call GetMesh first to see if its already loaded.
+	* @param aName The name of the mesh resource to load.
+	* @return Returns a managed pointer to the mesh resource.
+	*/
+	Pointer<Mesh> ResourceDatabase::LoadMesh(const std::string & aName)
+	{
+		Pointer<Mesh> mesh = GetMesh(aName);
+		if (mesh.IsAlive())
+		{
+			return mesh;
+		}
+		//TODO(Nathan): With file io, parse the working directory to find the mesh resource.
+		return Pointer<Mesh>::Null();
+	}
+
+	/**
+	* Searches for a loaded mesh resource by name.
+	* @param aName The name of the mesh resource to find.
+	* @return Returns a managed pointer to the mesh resource. A nullptr is returned if the mesh is not loaded.
+	*/
+	Pointer<Mesh> ResourceDatabase::GetMesh(const std::string & aName)
+	{
+		if (s_Instance == nullptr)
+		{
+			//Return a nullptr because the database is not loaded.
+			return Pointer<Mesh>::Null();
+		}
+		//Get access to the cache
+		ResourceCache & cache = s_Instance->m_ResourceCache;
+		//Find elements with the key equal to aName.
+		ResourcePair iterator = cache.equal_range(aName);
+		//If it exists
+		if (iterator.first != iterator.second)
+		{
+			//Check its type then return the casted pointer.
+			Pointer<Resource> resource = iterator.first->second;
+			Type type = resource->GetType();
+			if (type == Reflection::Runtime::TypeOf<Mesh>())
+			{
+				return resource.Cast<Mesh>();
+			}
+			//TODO(Nathan): Debug Log out what type of resource this is an report the type mismatch. Make this a config option.
+		}
+		//Return a nullptr because the resource didn't exist or if it did it was the incorrect type.
+		return Pointer<Mesh>::Null();
+	}
+
+	/**
+	* Loads a shader. This function will call GetShader to see if its already loaded.
+	* @param aName The name of the shader resource to load.
+	* @return Returns a managed pointer to the shader resource.
+	*/
+	Pointer<Shader> ResourceDatabase::LoadShader(const std::string & aName)
+	{
+		Pointer<Shader> shader = GetShader(aName);
+		if (shader.IsAlive())
+		{
+			return shader;
+		}
+		//TODO(Nathan): With file io, parse the working directory for the shader resource and load it.
+		return Pointer<Shader>::Null();
+	}
+
+	/**
+	* Searches for a loaded shader resource by name.
+	* @param aName The name of the shader resource to find.
+	* @return Returns a managed pointer to the shader resource. A nullptr is returned if the mesh is not loaded.
+	*/
+	Pointer<Shader> ResourceDatabase::GetShader(const std::string & aName)
+	{
+		if (s_Instance == nullptr)
+		{
+			//Return a nullptr because the database is not loaded.
+			return Pointer<Shader>::Null();
+		}
+		//Get access to the cache
+		ResourceCache & cache = s_Instance->m_ResourceCache;
+		//Find elements with the key equal to aName.
+		ResourcePair iterator = cache.equal_range(aName);
+		//If it exists
+		if (iterator.first != iterator.second)
+		{
+			//Check its type then return the casted pointer.
+			Pointer<Resource> resource = iterator.first->second;
+			if (resource.IsAlive())
+			{
+				Type type = resource->GetType();
+				if (type == Reflection::Runtime::TypeOf<Shader>())
+				{
+					return resource.Cast<Shader>();
+				}
+			}
+			//TODO(Nathan): Debug Log out what type of resource this is an report the type mismatch. Make this a config option.
+		}
+		//Return a nullptr because the resource didn't exist or if it did it was the incorrect type.
+		return Pointer<Shader>::Null();
+	}
+
+	/**
+	* Loads a material. This function will call GetMaterial to see if its already loaded.
+	* @param aName The name of the material resource to load.
+	* @return Returns a managed pointer to the material resource.
+	*/
+	Pointer<Material> ResourceDatabase::LoadMaterial(const std::string & aName)
+	{
+		Pointer<Material> material = GetMaterial(aName);
+		if (material.IsAlive())
+		{
+			return material;
+		}
+		//TODO(Nathan): Use file io to parse the working directory and load in the material.
+
+		return Pointer<Material>::Null();
+	}
+
+	/**
+	* Searches for a loaded material resource by name.
+	* @param aName The name of the material to find.
+	* @return Returns a managed pointer to the material resource. A nullptr is returned if the mesh is not loaded.
+	*/
+	Pointer<Material> ResourceDatabase::GetMaterial(const std::string & aName)
+	{
+		if (s_Instance == nullptr)
+		{
+			return Pointer<Material>::Null();
+		}
+
+		//Get access to the cache
+		ResourceCache & cache = s_Instance->m_ResourceCache;
+		//Find elements with the key equal to aName.
+		ResourcePair iterator = cache.equal_range(aName);
+		//If it exists
+		if (iterator.first != iterator.second)
+		{
+			//Check its type then return the casted pointer.
+			Pointer<Resource> resource = iterator.first->second;
+			if (resource.IsAlive())
+			{
+				Type type = resource->GetType();
+				if (type == Reflection::Runtime::TypeOf<Material>())
+				{
+					return resource.Cast<Material>();
+				}
+			}
+			//TODO(Nathan): Debug Log out what type of resource this is an report the type mismatch. Make this a config option.
+		}
+		//Return a nullptr because the resource didn't exist or if it did it was the incorrect type.
+		return Pointer<Material>::Null();
+	}
+
+	/**
+	* Loads a resource by typename. If the typename is not a valid resource typename this will return a nullptr.
+	* @param aName The name of the resource to load.
+	* @param aTypename The name of the type to load.
+	* @return A managed pointer to the resource.
+	*/
+	Pointer<Resource> ResourceDatabase::LoadResource(const std::string & aName, const std::string & aTypename)
+	{
+		Type type = Reflection::Runtime::TypeOf(aTypename);
+		return LoadResource(aName, type);
+	}
+
+	/**
+	* Loads a resource by type. If the type is not a valid resourec type this will return a nullptr.
+	* @param aName The name of the resource to load.
+	* @param aType The type of resource to load.
+	* @return A managed pointer to the resource.
+	*/
+	Pointer<Resource> ResourceDatabase::LoadResource(const std::string & aName, const Type & aType)
+	{
+		if (s_Instance == nullptr)
+		{
+			return Pointer<Resource>::Null();
+		}
+
+		Pointer<Resource> resource = GetResource(aName);
+		if (resource.IsAlive())
+		{
+			return resource;
+		}
+
+		if (aType == s_Instance->m_ImageTextureType)
+		{
+			Pointer<ImageTexture> imageTexture = LoadTexture(aName);
+			if (imageTexture.IsAlive())
+			{
+				return imageTexture.Cast<Resource>();
+			}
+		}
+		else if (aType == s_Instance->m_MeshType)
+		{
+			Pointer<Mesh> mesh = LoadMesh(aName);
+			if (mesh.IsAlive())
+			{
+				return mesh.Cast<Resource>();
+			}
+		}
+		else if (aType == s_Instance->m_ShaderType)
+		{
+			Pointer<Shader> shader = LoadShader(aName);
+			if (shader.IsAlive())
+			{
+				return shader.Cast<Resource>();
+			}
+		}
+		else if (aType == s_Instance->m_MaterialType)
+		{
+			Pointer<Material> material = LoadMaterial(aName);
+			if (material.IsAlive())
+			{
+				return material.Cast<Resource>();
+			}
+		}
+		return Pointer<Resource>::Null();
+	}
+
+	/**
+	* Searches for a loaded resource by name.
+	* @param aName The name of the shader resource to find.
+	*@return Returns a managed pointer to the resource. A nullptr is returned if the resource is not loaded.
+	*/
+	Pointer<Resource> ResourceDatabase::GetResource(const std::string & aName)
+	{
+		if (s_Instance == nullptr)
+		{
+			//Return a nullptr because the database is not loaded.
+			return Pointer<Resource>::Null();
+		}
+		//Get the cache from the singleton and search for the pair. 
+		ResourceCache & cache = s_Instance->m_ResourceCache;
+		ResourcePair iterator = cache.equal_range(aName);
+		//Do a comparison to see if it exists.
+		if (iterator.first != iterator.second)
+		{
+			//Return the resource pointer.
+			return iterator.first->second;
+		}
+		return Pointer<Resource>::Null();
+	}
+
+	/**
+	* Unloads a resource by name. Any existing managed pointers will have their count set to 0 indicating the memory is no longer valid.
+	*/
+	void ResourceDatabase::UnloadResource(const std::string & aName)
+	{
+		if (s_Instance == nullptr)
+		{
+			//Cannot unload resource. Resource database has not been loaded yet.
+			return;
+		}
+		//Get the resource cache from the singleton instance.
+		ResourceCache & cache = s_Instance->m_ResourceCache;
+		//Find the resource within the map.
+		ResourcePair iterator = cache.equal_range(aName);
+
+		//Make sure the iterator exists.
+		if (iterator.first != iterator.second)
+		{
+			//Get the managed pointer and make sure its alive (not null)
+			Pointer<Resource> resource = iterator.first->second;
+			if (resource.IsAlive())
+			{
+				//Remove from cache and terminate.
+				cache.erase(iterator.first);
+				resource.Terminate();
+			}
+		}
+	}
+
 }
