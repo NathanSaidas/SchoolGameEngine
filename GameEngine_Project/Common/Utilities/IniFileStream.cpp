@@ -87,7 +87,7 @@ namespace Engine
                         bool value = variableValue == "true";
                         AddBool(variableName, value);
                     }
-                    else if (typeName == "string")
+                    else if (typeName == "string" || typeName == "std::string")
                     {
                         AddString(variableName, variableValue);
                     }

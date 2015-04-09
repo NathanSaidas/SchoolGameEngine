@@ -4,6 +4,7 @@
 #pragma region CHANGE LOG
 /// --	April	8, 2015 - Nathan Hanlan - Implemented methods for resource database. Load methods still require file io and actual loading implementation.
 /// --  April   9, 2015 - Nathan Hanlan - Implemented Unload resource method and LoadTexture method.
+/// --  April   9, 2015 - Nathan Hanlan - Implemented LoadMesh method.
 #pragma endregion
 
 #include <map>

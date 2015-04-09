@@ -1,6 +1,10 @@
 #ifndef GAME_ENGINE_MESH_H
 #define GAME_ENGINE_MESH_H
 
+#pragma region CHANGE LOG
+/// -- April	9, 2015 - Nathan Hanlan - Fixed LoadFile method. This will now load in all attributes correctly.
+#pragma endregion
+
 #include <GL\glew.h>
 #include "../BasicTypes.h"
 #include "../Math/Math.h"

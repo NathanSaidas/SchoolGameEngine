@@ -64,7 +64,8 @@ namespace Engine
 		{
 			return imageTexture;
 		}
-		//TODO(Nathan): With file io. parse working directory to find the texture resource.
+		
+		//Create the filepath and verify that it exists.
 		std::string filepath = s_Instance->m_WorkingDirectory.GetPath();
 		filepath.append(aName);
 		if (!Directory::FileExists(filepath))
@@ -72,10 +73,12 @@ namespace Engine
 			return Pointer<ImageTexture>::Null();
 		}
 		
+		//Create the image texture pointer & the resource casted pointer.
 		imageTexture = Pointer<ImageTexture>();
 		Pointer<Resource> resource = imageTexture.Cast<Resource>();
 		if (imageTexture.IsAlive() && resource.IsAlive())
 		{
+			//Read in meta data.
 			std::string metaFilename = filepath;
 			metaFilename.append(".meta");
 			IniFileStream filestream;
@@ -146,12 +149,61 @@ namespace Engine
 	*/
 	Pointer<Mesh> ResourceDatabase::LoadMesh(const std::string & aName)
 	{
-		Pointer<Mesh> mesh = GetMesh(aName);
+		if (s_Instance == nullptr)
+		{
+			return Pointer<Mesh>::Null();
+		}
+		//Isolate filename.
+		std::string resourceName = FilenameToResourceName(aName);
+		Pointer<Mesh> mesh = GetMesh(resourceName);
 		if (mesh.IsAlive())
 		{
 			return mesh;
 		}
-		//TODO(Nathan): With file io, parse the working directory to find the mesh resource.
+
+		//Create the filepath and verify that it exists.
+		std::string filepath = s_Instance->m_WorkingDirectory.GetPath();
+		filepath.append(aName);
+		if (!Directory::FileExists(filepath))
+		{
+			return Pointer<Mesh>::Null();
+		}
+
+		//Create the mesh pointer & the resource casted pointer.
+		mesh = Pointer<Mesh>();
+		Pointer<Resource> resource = mesh.Cast<Resource>();
+		if (mesh.IsAlive() && resource.IsAlive())
+		{
+			//Read in meta data.
+			std::string metaFilename = filepath;
+			metaFilename.append(".meta");
+			IniFileStream filestream;
+			filestream.SetPath(metaFilename);
+			filestream.Read();
+			//Set the resource name
+			mesh->SetName(resourceName);
+			//Load Meta Data. (If there is any)
+			resource->LoadMeta(filestream);
+			//Load Mesh & Upload to GPU and free CPU resources.
+			mesh->LoadFile(filepath);
+			mesh->Upload();
+			if (!mesh->IsUploaded())
+			{
+				DEBUG_LOG("Failed to load resource (%s)\nFilepath: %s", resourceName.c_str(), filepath.c_str());
+			}
+			else
+			{
+				resource->SaveMeta(filestream);
+				filestream.Save();
+				s_Instance->m_ResourceCache.insert(std::pair<std::string, Pointer<Resource>>(resource->GetName(), resource));
+				return mesh;
+			}
+		}
+		else
+		{
+			DEBUG_LOG("Error creating resource ImageTexture");
+		}
+
 		return Pointer<Mesh>::Null();
 	}
 

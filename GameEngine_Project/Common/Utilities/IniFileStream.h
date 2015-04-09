@@ -1,6 +1,11 @@
 #ifndef GAME_ENGINE_INI_FILE_STREAM_H
 #define GAME_ENGINE_INI_FILE_STREAM_H
 
+#pragma region CHANGE LOG
+/// -- April	9, 2015 - Nathan Hanlan - Added in SetMethods.
+/// -- April	9, 2015 - Nathan Hanlan - Added std::string as an acceptable typename for strings.
+#pragma endregion
+
 #include <vector>
 #include "IniSection.h"
 #include "IniVariables.h"

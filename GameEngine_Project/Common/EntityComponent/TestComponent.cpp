@@ -16,7 +16,7 @@ namespace Engine
 	}
 	TestComponent::~TestComponent()
 	{
-
+		ResourceDatabase::UnloadResource("TestMesh");
 	}
 
 	void TestComponent::OnRegister()
@@ -54,8 +54,8 @@ namespace Engine
 		//	DEBUG_LOG("Failed to set resource directory.\nCurrent Directory: %s", dir.GetPath().c_str());
 		//}
 
-		m_TestTexture = ResourceDatabase::LoadTexture("Wall3.png");
-
+		//m_TestTexture = ResourceDatabase::LoadTexture("Wall3.png");
+		m_TestMesh = ResourceDatabase::LoadMesh("TestMesh.obj");
 		
 	}
 	
@@ -76,15 +76,15 @@ namespace Engine
 		formatter.Deserialize(result, stream);
     
         
-		ResourceDatabase::UnloadResource("Wall3");
-		bool isAlive = m_TestTexture.IsAlive();
+		
+		bool isAlive = m_TestMesh.IsAlive();
 		if (isAlive)
 		{
-			DEBUG_LOG("Test Texture is alive");
+			DEBUG_LOG("Test Mesh is alive");
 		}
 		else
 		{
-			DEBUG_LOG("Test Texture is dead");
+			DEBUG_LOG("Test Mesh is dead");
 		}
 	}
 	void TestComponent::OnLateInitialize()
@@ -107,45 +107,8 @@ namespace Engine
 			m_Renderer->SetMaterial(m_Material);
 			m_Renderer->SetMesh(m_Mesh);
 			GameObject * gameObject = m_Renderer->GetGameObject();
-
-			//Get the renderer type information.
-            Type type = m_Renderer->GetType();
-			//Get the members from the type.
-            Array<Reflection::MemberInfo> members = type.GetMembers();
-
-			//Create two pointer objects.
-            Pointer<Material> * material = nullptr;
-            Pointer<Mesh> * mesh = nullptr;
-
-			//Iterate through all of the members and 
-            for (int i = 0; i < members.GetCount(); i++)
-            {
-                Reflection::MemberInfo member = members[i];
-
-				DEBUG_LOG("==Member==\nName: %s\nType Name: %s\nOffset %u", member.GetMemberName(), member.GetMemberTypename(), member.GetOffset());
-
-                if (member.GetMemberName() == "m_Mesh")
-                {
-                    mesh = (Pointer<Mesh>*)member.GetOffsetPointer(m_Renderer);
-
-					if (mesh != nullptr)
-					{
-						DEBUG_LOG("Changing Mesh Values.\nPrevious Name: %s",m_Renderer->GetMesh()->GetName().c_str());
-						(*mesh)->SetName("New Mesh Name");
-						DEBUG_LOG("After Name: %s", m_Renderer->GetMesh()->GetName().c_str());
-					}
-                }
-                else if (member.GetMemberName() == "m_Material")
-                {
-                    material = (Pointer<Material>*)member.GetOffsetPointer(m_Renderer);
-					if (material != nullptr)
-					{
-						DEBUG_LOG("Changing Material Values.\nPrevious Name: %s", m_Renderer->GetMaterial()->GetName().c_str());
-						(*material)->SetName("New Material Name");
-						DEBUG_LOG("After Name: %s", m_Renderer->GetMaterial()->GetName().c_str());
-					}
-                }
-            }
+			float scale = 1.0f / 10.0f;
+			gameObject->SetScale(Vector3(scale, scale, scale));
 		}
         
 
@@ -153,7 +116,7 @@ namespace Engine
 	
 	void TestComponent::OnDestroy()
 	{
-	
+		
 	}
 	void TestComponent::OnLateDestroy()
 	{
@@ -167,7 +130,7 @@ namespace Engine
 		float v = input->GetAxis("Vertical");
 		float h = input->GetAxis("Horizontal");
 
-		if (m_Camera != nullptr)
+		if (m_Renderer != nullptr)
 		{
 			GameObject * renderer = m_Renderer->GetGameObject();
 			Vector3 rendererPosition = renderer->GetPosition();
@@ -176,7 +139,13 @@ namespace Engine
 			rendererPosition.z += v * Time::GetDeltaTime();
 
 			renderer->SetPosition(rendererPosition);
+
+			//Quaternion rotation = renderer->GetRotation();
+			//rotation *= Quaternion::Euler(Vector3(0.0f, 35.0f * Time::GetDeltaTime(), 0.0f));
+			//renderer->SetRotation(rotation);
 		}
+
+
 
 	}
 	void TestComponent::LateUpdate()

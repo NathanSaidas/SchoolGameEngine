@@ -35,7 +35,7 @@ namespace Engine
 		Pointer<Mesh> m_Mesh;
 		Pointer<Material> m_Material;
 
-		Pointer<ImageTexture> m_TestTexture;
+		Pointer<Mesh> m_TestMesh;
 
 	};
 

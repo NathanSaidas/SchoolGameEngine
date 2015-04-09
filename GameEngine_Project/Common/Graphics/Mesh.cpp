@@ -84,9 +84,9 @@ namespace Engine
                 vertexIndices.push_back(vertexIndex[0]);
                 vertexIndices.push_back(vertexIndex[1]);
                 vertexIndices.push_back(vertexIndex[2]);
-                vertexIndices.push_back(uvIndex[0]);
-                vertexIndices.push_back(uvIndex[1]);
-                vertexIndices.push_back(uvIndex[2]);
+                texCoordIndices.push_back(uvIndex[0]);
+				texCoordIndices.push_back(uvIndex[1]);
+				texCoordIndices.push_back(uvIndex[2]);
                 normalIndices.push_back(normalIndex[0]);
                 normalIndices.push_back(normalIndex[1]);
                 normalIndices.push_back(normalIndex[2]);
@@ -100,13 +100,13 @@ namespace Engine
         m_Normals.Release();
         m_Indices.Release();
 
-        m_Positions.Allocate(tempPositions.size());
-        m_Colors.Allocate(tempPositions.size());
-        m_TexCoords.Allocate(tempPositions.size());
-        m_Normals.Allocate(tempPositions.size());
-        m_Indices.Allocate(tempPositions.size());
+        m_Positions.Allocate(vertexIndices.size());
+		m_Colors.Allocate(vertexIndices.size());
+		m_TexCoords.Allocate(vertexIndices.size());
+		m_Normals.Allocate(vertexIndices.size());
+		m_Indices.Allocate(vertexIndices.size());
 
-        for (unsigned int i = 0; i < vertexIndices.size(); i++)
+		for (unsigned int i = 0; i < vertexIndices.size(); i++)
         {
             unsigned int vertexIndex = vertexIndices[i];
             unsigned int uvIndex = vertexIndices[i];
