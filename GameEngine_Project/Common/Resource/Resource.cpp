@@ -19,49 +19,7 @@ namespace Engine
 	{
 
 	}
-	/**
-	* Saves the changes made to a resource
-	* @param The path to the directory of the resource. Save uses ../Directory/GetName for the full path.
-	*/
-	void Resource::Save(const std::string & aDirectory)
-	{
-		string filename = aDirectory;
-		filename.append(GetName());
-		IniFileStream file;
-		file.SetPath(filename);
-		file.AddSection("Resource");
-		file.BindSection("Resource");
-		file.AddString(ResourceDatabase::META_ID_TOKEN, m_UniqueID.ToString());
-		file.Save();
-	}
-	/**
-	* Loads changes made from a resource
-	@param The path to the directory of the resource. Load uses ../Directory/GetName for the full path.
-	*/
-	void Resource::Load(const std::string & aDirectory)
-	{
-		string filename = aDirectory;
-		filename.append(GetName());
-		IniFileStream file;
-		file.SetPath(filename);
-		file.Read();
-		if (!file.BindSection("Resource"))
-		{
-			DEBUG_LOG("Invalid resource file %s", filename.c_str());
-		}
-		else
-		{
-			IniString metaID = file.GetString(ResourceDatabase::META_ID_TOKEN);
-			if (IniString::IsBadValue(metaID))
-			{
-				DEBUG_LOG("Missing meta-id-token variable {%s}", ResourceDatabase::META_ID_TOKEN.c_str());
-			}
-			else
-			{
-				m_UniqueID = Guid(metaID.GetValue());
-			}
-		}
-	}
+	
 	/**
 	* Generates the Unique ID
 	*/
@@ -76,5 +34,41 @@ namespace Engine
 	Guid Resource::GetID()
 	{
 		return m_UniqueID;
+	}
+	/**
+	* Saves the changes made to a resource
+	* @param The path to the directory of the resource. Save uses ../Directory/GetName for the full path.
+	*/
+	void Resource::SaveMeta(IniFileStream & aFileStream)
+	{
+		if (!aFileStream.BindSection("Resource"))
+		{
+			aFileStream.AddSection("Resource");
+			aFileStream.BindSection("Resource");
+		}
+
+		if (IniString::IsBadValue(aFileStream.GetString(ResourceDatabase::META_ID_TOKEN)))
+		{
+			aFileStream.AddString(ResourceDatabase::META_ID_TOKEN, m_UniqueID.ToString());
+		}
+		else
+		{
+			aFileStream.SetString(ResourceDatabase::META_ID_TOKEN, m_UniqueID.ToString());
+		}
+	}
+	/**
+	* Loads changes made from a resource
+	@param The path to the directory of the resource. Load uses ../Directory/GetName for the full path.
+	*/
+	void Resource::LoadMeta(IniFileStream & aFileStream)
+	{
+		if (aFileStream.BindSection("Resource"))
+		{
+			IniString metaID = aFileStream.GetString(ResourceDatabase::META_ID_TOKEN);
+			if (!IniString::IsBadValue(metaID))
+			{
+				m_UniqueID = Guid(metaID.GetValue());
+			}
+		}
 	}
 }

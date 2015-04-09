@@ -279,4 +279,52 @@ namespace Engine
 			DeleteTextureHandle();
 		}
 	}
+
+	void ImageTexture::SaveMeta(IniFileStream & aFileStream)
+	{
+		Resource::SaveMeta(aFileStream);
+
+		if (!aFileStream.BindSection("ImageTexture"))
+		{
+			aFileStream.AddSection("ImageTexture");
+			aFileStream.BindSection("ImageTexture");
+		}
+
+		if (IniInt::IsBadValue(aFileStream.GetInt("FilterMode")))
+		{
+			aFileStream.AddInt("FilterMode", (int)GetFilterMode());
+		}
+		else
+		{
+			aFileStream.SetInt("FilterMode", (int)GetFilterMode());
+		}
+
+		if (IniInt::IsBadValue(aFileStream.GetInt("WrapMode")))
+		{
+			aFileStream.AddInt("WrapMode", (int)GetWrapMode());
+		}
+		else
+		{
+			aFileStream.SetInt("WrapMode", (int)GetWrapMode());
+		}
+	}
+	void ImageTexture::LoadMeta(IniFileStream & aFileStream)
+	{
+		Resource::LoadMeta(aFileStream);
+		if (aFileStream.BindSection("ImageTexture"))
+		{
+			IniInt filterMode = aFileStream.GetInt("FilterMode");
+			IniInt wrapMode = aFileStream.GetInt("WrapMode");
+			if (!IniInt::IsBadValue(filterMode))
+			{
+				SetFilterMode((FilterMode)filterMode.GetValue());
+			}
+			if (!IniInt::IsBadValue(wrapMode))
+			{
+				SetWrapMode((WrapMode)wrapMode.GetValue());
+			}
+
+
+		}
+	}
 }

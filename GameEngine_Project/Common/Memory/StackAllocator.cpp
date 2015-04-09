@@ -124,7 +124,7 @@ namespace Engine
             //Write to header
             StackHeader * header = (StackHeader*)(MemoryUtils::SubtractPtr(alignedAddress, sizeof(StackHeader)));
             UInt8 flags = MemoryFlags::VALID | (m_ID == 0 ? MemoryFlags::STATIC : MemoryFlags::DYNAMIC) | MemoryFlags::STACK;
-            UInt16 size = aSize;
+            UInt16 size = (UInt16)aSize;
             header->Write(flags, adjustment, size, m_PreviousPosition);
 
             

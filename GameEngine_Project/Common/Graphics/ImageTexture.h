@@ -67,6 +67,11 @@ namespace Engine
 		*/
 		virtual void ReleaseGPU();
 
+	protected:
+
+		void SaveMeta(IniFileStream & aFilename);
+		void LoadMeta(IniFileStream & aFilename);
+
 	private:
 		/**
 		* The image format of the texture.

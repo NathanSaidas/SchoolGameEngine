@@ -22,6 +22,7 @@
 #include "Windows\Application.h"
 #include "EntityComponent\EntityComponent.h"
 #include "Input\Input.h"
+#include "Resource\ResourceDatabase.h"
 
 namespace Engine
 {

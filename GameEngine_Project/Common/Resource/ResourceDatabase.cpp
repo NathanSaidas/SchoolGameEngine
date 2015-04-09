@@ -13,6 +13,10 @@ namespace Engine
 		m_MeshType = Reflection::Runtime::TypeOf<Mesh>();
 		m_ShaderType = Reflection::Runtime::TypeOf<Shader>();
 		m_MaterialType = Reflection::Runtime::TypeOf<Material>();
+
+		m_WorkingDirectory = Directory::GetCurrent();
+		m_WorkingDirectory.Back(2);
+		m_WorkingDirectory.Change("Resources\\");
 	}
 	ResourceDatabase::~ResourceDatabase()
 	{
@@ -49,12 +53,58 @@ namespace Engine
 	*/
 	Pointer<ImageTexture> ResourceDatabase::LoadTexture(const std::string & aName)
 	{
-		Pointer<ImageTexture> imageTexture = GetTexture(aName);
+		if (s_Instance == nullptr)
+		{
+			return Pointer<ImageTexture>::Null();
+		}
+		//Isolate filename.
+		std::string resourceName = FilenameToResourceName(aName);
+		Pointer<ImageTexture> imageTexture = GetTexture(resourceName);
 		if (imageTexture.IsAlive())
 		{
 			return imageTexture;
 		}
 		//TODO(Nathan): With file io. parse working directory to find the texture resource.
+		std::string filepath = s_Instance->m_WorkingDirectory.GetPath();
+		filepath.append(aName);
+		if (!Directory::FileExists(filepath))
+		{
+			return Pointer<ImageTexture>::Null();
+		}
+		
+		imageTexture = Pointer<ImageTexture>();
+		Pointer<Resource> resource = imageTexture.Cast<Resource>();
+		if (imageTexture.IsAlive() && resource.IsAlive())
+		{
+			std::string metaFilename = filepath;
+			metaFilename.append(".meta");
+			IniFileStream filestream;
+			filestream.SetPath(metaFilename);
+			filestream.Read();
+			//Set the resource name
+			imageTexture->SetName(resourceName);
+			//Load Meta Data. (If there is any)
+			resource->LoadMeta(filestream);
+			//Load Texture & Upload to GPU and free CPU resources.
+			imageTexture->Load(filepath);
+			imageTexture->Upload();
+			if (!imageTexture->IsUploaded())
+			{
+				DEBUG_LOG("Failed to load resource (%s)\nFilepath: %s",resourceName.c_str(), filepath.c_str());
+			}
+			else
+			{
+				resource->SaveMeta(filestream);
+				filestream.Save();
+				s_Instance->m_ResourceCache.insert(std::pair<std::string, Pointer<Resource>>(resource->GetName(),resource));
+				return imageTexture;
+			}
+		}
+		else
+		{
+			DEBUG_LOG("Error creating resource ImageTexture");
+		}
+		
 		return Pointer<ImageTexture>::Null();
 	}
 	/**
@@ -359,4 +409,41 @@ namespace Engine
 		}
 	}
 
+
+	std::string ResourceDatabase::FilenameToResourceName(const std::string & aFilename)
+	{
+		//Isolate the resource name.
+		bool hasExtension = false;
+		std::string resourceName = aFilename;
+		int extensionIndex = 0;
+
+		for (int i = resourceName.length(); i >= 0; i--)
+		{
+			//Find extension begin index.
+			if (resourceName[i] == '.')
+			{
+				extensionIndex = i;
+				hasExtension = true;
+			}
+			//Find directory begin index.
+			else if (resourceName[i] == '\\' || resourceName[i] == '/')
+			{
+				if (hasExtension)
+				{
+					return resourceName.substr(i + 1, extensionIndex - i - 1);
+				}
+				else
+				{
+					return resourceName.substr(i + 1, resourceName.length() - i);
+				}
+			}
+		}
+		//No directory but extension return a substring
+		if (hasExtension)
+		{
+			return resourceName.substr(0, extensionIndex);
+		}
+		//Return the original.
+		return resourceName;
+	}
 }

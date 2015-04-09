@@ -98,8 +98,10 @@ namespace Engine
 		}
 		Graphics::Initialize();
 		Input::Initialize();
+		ResourceDatabase::Initialize();
 
 		Application * application = GetInstance();
+
 		application->m_IsRunning = true;
 
 		application->Start();
@@ -110,7 +112,7 @@ namespace Engine
 		}
 
 		application->CleanUp();
-
+		ResourceDatabase::Terminate();
 		Input::Terminate();
 		Graphics::Terminate();
 		Terminate();

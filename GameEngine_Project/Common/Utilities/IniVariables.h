@@ -103,7 +103,7 @@ namespace Engine
 		/// <returns> Returns true if the variable is a bad variable. </returns>
         static bool IsBadValue(IniVariable<TYPE> & aType)
         {
-            return aType.GetName() == INI_BAD_VARIABLE_NAME;
+            return aType.GetVariableName() == INI_BAD_VARIABLE_NAME;
         }
 		
 

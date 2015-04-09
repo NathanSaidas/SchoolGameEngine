@@ -43,6 +43,14 @@ namespace Engine
 		IniVector3 GetVector3(const std::string & aVariableName);
 		IniVector4 GetVector4(const std::string & aVariableName);
 
+		// -- Creates a new variable with the name and value. 
+		void SetBool(const std::string & aVariableName, bool aValue);
+		void SetInt(const std::string & aVariableName, int aValue);
+		void SetFloat(const std::string & aVariableName, float aValue);
+		void SetString(const std::string & aVariableName, std::string aValue);
+		void SetVector3(const std::string & aVariableName, Vector3 aValue);
+		void SetVector4(const std::string & aVariableName, Vector4 aValue);
+
 
 		// -- Removes a variable by name
 		bool RemoveVariable(const std::string & aVariableName);
@@ -51,10 +59,6 @@ namespace Engine
 		std::string GetPath();
 		void SetPath(const std::string & aPath);
 		void SetPath(const char * aPath);
-
-		//TODO: Add in sections.
-		//Eg. IniSection.. foreach(IniSection ->  IniSection->Write(stream &))
-		// IniSection could have their own variable lists.
 
 	private:
 		std::string m_Path;

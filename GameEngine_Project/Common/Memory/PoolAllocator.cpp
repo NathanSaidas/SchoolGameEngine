@@ -127,7 +127,7 @@ namespace Engine
             //Construct the header and write to it
             MemoryHeader * header = (MemoryHeader*)current;
             UInt8 flags = MemoryFlags::VALID | (m_ID == 0 ? MemoryFlags::STATIC : MemoryFlags::DYNAMIC) | MemoryFlags::POOL;
-            UInt16 objectSize = m_ObjectSize;
+            UInt16 objectSize = (UInt16)m_ObjectSize;
             header->Write(flags, m_ID, objectSize);
 
             current = MemoryUtils::AddPtr(current, sizeof(MemoryHeader));

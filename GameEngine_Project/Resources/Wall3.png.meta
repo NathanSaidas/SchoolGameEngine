@@ -1,0 +1,5 @@
+[Resource]
+std::string Meta-ID = 05c65975-921e-4ac1-aa67-a224ce4769fa
+[ImageTexture]
+int FilterMode = 9729
+int WrapMode = 10497

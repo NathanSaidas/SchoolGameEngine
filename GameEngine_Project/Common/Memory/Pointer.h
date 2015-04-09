@@ -6,9 +6,12 @@
 /// --  April	 8  2015 - Nathan Hanlan - Added Cast function to cast one pointer to another.
 /// --  April    8  2015 - Nathan Hanlan - Added in Terminate function which will deallocate the pointer resource and invert the reference count.
 /// --  April    8  2015 - Nathan Hanlan - Added in Null static function which will return a null managed pointer.
+/// --  April    9  2015 - Nathan Hanlan - Pointers only accept objects with a GetType function that returns a Type. 
+/// --  -----    -  ---- - ------ ------ - (This includes anything with RDECLARE_ / RDEFINE reflection types for classes and interfaces)
 #pragma endregion
 
 #include "MemoryManager.h"
+#include "../Reflection/Reflection.h"
 #include "../Utilities/Utilities.h"
 #include "../SystemAssert.h"
 #include "../SystemError.h"
@@ -37,9 +40,9 @@ namespace Engine
 		///Copy Constructor will take the pointer from the incoming pointer and increment the reference count.
 		Pointer(const Pointer & aPointer)
 		{
-#ifdef CONFIG_MEMORY_DEBUG
-			Assert(aPointer.m_Pointer != nullptr, Error::BAD_POINTER_COPY);
-#endif
+//#ifdef CONFIG_MEMORY_DEBUG
+//			Assert(aPointer.m_Pointer != nullptr, Error::BAD_POINTER_COPY);
+//#endif
 			//Take pointer / count and increment reference.
 			m_Pointer = aPointer.m_Pointer;
 			m_Count = aPointer.m_Count;
@@ -284,7 +287,9 @@ namespace Engine
 		///Deallocates the memory associated with the pointer.
 		void Dealloc()
 		{
-			MEM_POOL_DEALLOC_T(m_Pointer,TYPE);
+			Type type = m_Pointer->GetType();
+			type.GetDestructor()(m_Pointer);
+			MEM_POOL_DEALLOC(m_Pointer,type.GetSize());
 		}
 
 	

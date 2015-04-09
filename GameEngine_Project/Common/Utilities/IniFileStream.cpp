@@ -79,7 +79,7 @@ namespace Engine
                     }
                     else if (typeName == "float")
                     {
-                        float value = atof(variableValue.c_str());
+                        float value = (float)atof(variableValue.c_str());
                         AddFloat(variableName, value);
                     }
                     else if (typeName == "bool")
@@ -311,6 +311,50 @@ namespace Engine
 	IniVector4 IniFileStream::GetVector4(const std::string & aVariableName)
 	{
 		return m_BoundSection != nullptr ? m_BoundSection->GetVector4(aVariableName) : IniVector4(INI_BAD_VARIABLE_NAME);
+	}
+
+	// -- Creates a new variable with the name and value. 
+	void IniFileStream::SetBool(const std::string & aVariableName, bool aValue)
+	{
+		if (m_BoundSection != nullptr)
+		{
+			m_BoundSection->SetBool(aVariableName, aValue);
+		}
+	}
+	void IniFileStream::SetInt(const std::string & aVariableName, int aValue)
+	{
+		if (m_BoundSection != nullptr)
+		{
+			m_BoundSection->SetInt(aVariableName, aValue);
+		}
+	}
+	void IniFileStream::SetFloat(const std::string & aVariableName, float aValue)
+	{
+		if (m_BoundSection != nullptr)
+		{
+			m_BoundSection->SetFloat(aVariableName, aValue);
+		}
+	}
+	void IniFileStream::SetString(const std::string & aVariableName, std::string aValue)
+	{
+		if (m_BoundSection != nullptr)
+		{
+			m_BoundSection->SetString(aVariableName, aValue);
+		}
+	}
+	void IniFileStream::SetVector3(const std::string & aVariableName, Vector3 aValue)
+	{
+		if (m_BoundSection != nullptr)
+		{
+			m_BoundSection->SetVector3(aVariableName, aValue);
+		}
+	}
+	void IniFileStream::SetVector4(const std::string & aVariableName, Vector4 aValue)
+	{
+		if (m_BoundSection != nullptr)
+		{
+			m_BoundSection->SetVector4(aVariableName, aValue);
+		}
 	}
 
 	bool IniFileStream::RemoveVariable(const std::string & aVariableName)

@@ -92,7 +92,7 @@ namespace Engine
             ///Write header info
             MemoryHeader * header = (MemoryHeader*)(reinterpret_cast<void*>(alignedAddress - sizeof(MemoryHeader)));
             UInt8 flags = MemoryFlags::VALID | (m_ID = 0 ? MemoryFlags::STATIC : MemoryFlags::DYNAMIC) | MemoryFlags::FRAME;
-            UInt16 objectSize = aSize;
+            UInt16 objectSize = (UInt16)aSize;
             header->Write(flags, m_ID,objectSize);
             //header->bytes[MemoryHeader::ALLOCATOR_ID] = m_ID;
             //header->bytes[MemoryHeader::OFFSET] = adjustment;

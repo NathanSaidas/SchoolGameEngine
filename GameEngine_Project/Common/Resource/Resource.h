@@ -25,16 +25,7 @@ namespace Engine
 		*/
 		~Resource();
 
-		/**
-		* Saves the changes made to a resource
-		* @param The path to the directory of the resource. Save uses ../Directory/GetName for the full path.
-		*/
-		virtual void Save(const std::string & aDirectory);
-		/**
-		* Loads changes made from a resource
-		@param The path to the directory of the resource. Load uses ../Directory/GetName for the full path.
-		*/
-		virtual void Load(const std::string & aDirectory);
+		
 		/**
 		* Generates the Unique ID
 		*/
@@ -45,8 +36,21 @@ namespace Engine
 		*/
 		Guid GetID();
 
+	protected:
+		/**
+		* Saves the changes made to a resource
+		* @param The path to the directory of the resource. Save uses ../Directory/GetName for the full path.
+		*/
+		virtual void SaveMeta(IniFileStream & aDirectory);
+		/**
+		* Loads changes made from a resource
+		@param The path to the directory of the resource. Load uses ../Directory/GetName for the full path.
+		*/
+		virtual void LoadMeta(IniFileStream & aDirectory);
+
 	private:
 		Guid m_UniqueID;
+		friend class ResourceDatabase;
 	};
 
 	TYPE_DEFINE(Resource)

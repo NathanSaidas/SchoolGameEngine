@@ -1,6 +1,8 @@
 #include "TestComponent.h"
 #include <glm\gtc\matrix_transform.hpp>
 #include <stddef.h>
+#include <Windows.h>
+
 
 
 
@@ -39,7 +41,22 @@ namespace Engine
 
 		m_Material->SetName("Default Diffuse");
 
+		
 
+		//Directory dir = Directory::GetCurrent();
+		//dir.Back(2);
+		//if (dir.Change("Resources\\"))
+		//{
+		//	DEBUG_LOG("Resource Directory: %s", dir.GetPath().c_str());
+		//}
+		//else
+		//{
+		//	DEBUG_LOG("Failed to set resource directory.\nCurrent Directory: %s", dir.GetPath().c_str());
+		//}
+
+		m_TestTexture = ResourceDatabase::LoadTexture("Wall3.png");
+
+		
 	}
 	
 	void TestComponent::OnInitialize()
@@ -59,7 +76,16 @@ namespace Engine
 		formatter.Deserialize(result, stream);
     
         
-
+		ResourceDatabase::UnloadResource("Wall3");
+		bool isAlive = m_TestTexture.IsAlive();
+		if (isAlive)
+		{
+			DEBUG_LOG("Test Texture is alive");
+		}
+		else
+		{
+			DEBUG_LOG("Test Texture is dead");
+		}
 	}
 	void TestComponent::OnLateInitialize()
 	{

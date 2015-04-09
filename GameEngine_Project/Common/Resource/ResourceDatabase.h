@@ -3,6 +3,7 @@
 
 #pragma region CHANGE LOG
 /// --	April	8, 2015 - Nathan Hanlan - Implemented methods for resource database. Load methods still require file io and actual loading implementation.
+/// --  April   9, 2015 - Nathan Hanlan - Implemented Unload resource method and LoadTexture method.
 #pragma endregion
 
 #include <map>
@@ -13,7 +14,8 @@
 #include "../Graphics/Shader.h"
 #include "../Graphics/Material.h"
 #include "../Memory/Memory.h"
-
+#include "../Utilities/Utilities.h"
+#include "Resource.h"
 
 
 namespace Engine
@@ -130,6 +132,10 @@ namespace Engine
 		Type m_MeshType;
 		Type m_ShaderType;
 		Type m_MaterialType;
+
+		Directory m_WorkingDirectory;
+
+		static std::string FilenameToResourceName(const std::string & aFilename);
 		
 	};
 

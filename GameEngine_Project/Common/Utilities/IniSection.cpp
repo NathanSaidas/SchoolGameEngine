@@ -206,6 +206,91 @@ namespace Engine
 		return IniVector4(INI_BAD_VARIABLE_NAME);
 	}
 
+	void IniSection::SetBool(const std::string & aVariableName, bool aValue)
+	{
+		for (std::vector<Object*>::iterator it = m_Variables.begin(); it != m_Variables.end(); it++)
+		{
+			if ((*it)->GetName() == INI_BOOL)
+			{
+				IniBool * variable = dynamic_cast<IniBool*>(*it);
+				if (variable != nullptr && variable->GetVariableName() == aVariableName)
+				{
+					variable->SetValue(aValue);
+				}
+			}
+		}
+	}
+	void IniSection::SetInt(const std::string & aVariableName, int aValue)
+	{
+		for (std::vector<Object*>::iterator it = m_Variables.begin(); it != m_Variables.end(); it++)
+		{
+			if ((*it)->GetName() == INI_INT)
+			{
+				IniInt * variable = dynamic_cast<IniInt*>(*it);
+				if (variable != nullptr && variable->GetVariableName() == aVariableName)
+				{
+					variable->SetValue(aValue);
+				}
+			}
+		}
+	}
+	void IniSection::SetFloat(const std::string & aVariableName, float aValue)
+	{
+		for (std::vector<Object*>::iterator it = m_Variables.begin(); it != m_Variables.end(); it++)
+		{
+			if ((*it)->GetName() == INI_FLOAT)
+			{
+				IniInt * variable = dynamic_cast<IniInt*>(*it);
+				if (variable != nullptr && variable->GetVariableName() == aVariableName)
+				{
+					variable->SetValue(aValue);
+				}
+			}
+		}
+	}
+	void IniSection::SetString(const std::string & aVariableName, std::string aValue)
+	{
+		for (std::vector<Object*>::iterator it = m_Variables.begin(); it != m_Variables.end(); it++)
+		{
+			if ((*it)->GetName() == INI_STRING)
+			{
+				IniString * variable = dynamic_cast<IniString*>(*it);
+				if (variable != nullptr && variable->GetVariableName() == aVariableName)
+				{
+					variable->SetValue(aValue);
+				}
+			}
+		}
+	}
+	void IniSection::SetVector3(const std::string & aVariableName, Vector3 aValue)
+	{
+		for (std::vector<Object*>::iterator it = m_Variables.begin(); it != m_Variables.end(); it++)
+		{
+			if ((*it)->GetName() == INI_VECTOR_3)
+			{
+				IniVector3 * variable = dynamic_cast<IniVector3*>(*it);
+				if (variable != nullptr && variable->GetVariableName() == aVariableName)
+				{
+					variable->SetValue(aValue);
+				}
+			}
+		}
+	}
+	void IniSection::SetVector4(const std::string & aVariableName, Vector4 aValue)
+	{
+		for (std::vector<Object*>::iterator it = m_Variables.begin(); it != m_Variables.end(); it++)
+		{
+			if ((*it)->GetName() == INI_VECTOR_4)
+			{
+				IniVector4 * variable = dynamic_cast<IniVector4*>(*it);
+				if (variable != nullptr && variable->GetVariableName() == aVariableName)
+				{
+					variable->SetValue(aValue);
+				}
+			}
+		}
+	}
+
 	// -- Removes a variable by name
 	bool IniSection::RemoveVariable(const std::string & aVariableName)
 	{
