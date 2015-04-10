@@ -112,6 +112,16 @@ std::string Meta-ID = 2535d4db-432a-459c-b15e-2392bded7c46
 std::string Meta-ID = 4f966712-c4c9-4335-8eb8-d1b90a92d2d7
 std::string Meta-ID = 7e108489-7ba9-43ca-a115-bb4306ae13c0
 std::string Meta-ID = ccf57396-7d3e-432f-a228-c43afa8615f3
+std::string Meta-ID = f198222e-d73b-452f-80ac-7041e66e9b8a
+std::string Meta-ID = a1318c4a-df11-47cb-9e5e-fa68cde68279
+std::string Meta-ID = 54d10a98-92de-4d8c-a8b0-9c3b504d0239
+std::string Meta-ID = 7c6f2cb4-e86b-410c-b84d-a8ba6ce12f87
+std::string Meta-ID = 8f95e6dd-107a-4ad9-b763-49aed52b2ffa
+std::string Meta-ID = 929404ee-ee80-4e89-9798-99bda4d7f860
+std::string Meta-ID = ae413334-5892-40cd-aea0-f7a45ae0e5af
+std::string Meta-ID = b9d9193c-a8f7-494a-9772-278ae8f9c1fb
+std::string Meta-ID = 854fe2db-896d-41f8-ac40-a05ab6ea12f0
+std::string Meta-ID = 592da262-ba10-464d-b490-b9e393342d40
 [ImageTexture]
 int FilterMode = 9729
 int WrapMode = 10497

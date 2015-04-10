@@ -301,13 +301,11 @@ namespace Engine
 		if (m_Parent != nullptr)
 		{
 			matrix = m_Parent->GetLocalToWorldMatrix();
-			matrix.Scale(m_Scale); // Matrix4x4::TRS(m_Position, m_Rotation, m_Scale);
-			matrix.Translate(m_Position);
+			matrix = Matrix4x4::TRS(m_Position, m_Rotation, m_Scale);
 		}
 		else
 		{
-			matrix.Scale(m_Scale); // = Matrix4x4::TRS(m_Position, m_Rotation, m_Scale);
-			matrix.Translate(m_Position);
+			matrix = Matrix4x4::TRS(m_Position, m_Rotation, m_Scale);
 		}
 		return matrix;
 	}

@@ -126,8 +126,8 @@ namespace Engine
 		m_LightTarget = CreateCube(Vector3(3.0f, 1.0f, 0.0f), m_Material, 2.0f);
 		m_Light =  CreateCube(Vector3(-2.0f, 3.0f, 5.0f), m_Material, 1.0f);
 	
-		//m_Ground = CreatePlane(Vector3::Zero(), m_Material, 2.0f);
-		//m_Wall = CreatePlane(Vector3::Zero(),)
+
+        CreateCube(Vector3(4.0f, 1.0f, 0.0f), m_Material, 3.0f);
 	}
 	
 	void TestComponent::OnDestroy()
