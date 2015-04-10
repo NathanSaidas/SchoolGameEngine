@@ -123,7 +123,10 @@ namespace Engine
     {
         return Matrix4x4(glm::toMat4(Raw()));
     }
-
+	Vector3 Quaternion::GetDirection() const
+	{
+		return (*this) * Vector3::Forward();
+	}
     glm::quat Quaternion::Raw() const
     {
         return glm::quat(w, x, y, z);

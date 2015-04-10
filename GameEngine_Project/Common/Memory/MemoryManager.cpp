@@ -710,6 +710,8 @@ namespace Engine
                     }
                 }
             }
+
+			return nullptr;
         }
 
 		/// <summary>

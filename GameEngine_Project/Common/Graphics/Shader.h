@@ -1,6 +1,10 @@
 #ifndef GAME_ENGINE_SHADER_H
 #define GAME_ENGINE_SHADER_H
 
+#pragma region CHANGE LOG
+///	--	April	9, 2015 - Nathan Hanlan - Added IsUploaded method to check if the shader is uploaded to the GPU
+#pragma endregion
+
 #include <GL\glew.h>
 #include "../BasicTypes.h"
 #include "../Resource/Resource.h"
@@ -31,6 +35,11 @@ namespace Engine
            
         //Tells OpenGL to use this shader
         bool UseShader();
+		/**
+		* Determines if the shader is uploaded or not.
+		* @return Returns true if the shader has been uploaded returns false otherwise.
+		*/
+		bool IsUploaded();
         //Retrieve an attributes location from the shader. Call UseShader before calling this.
         GLint GetAttributeLocation(const std::string & aName);
         //Retrieve a uniforms location from the shader. Call UseShader before calling this.

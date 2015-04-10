@@ -139,6 +139,7 @@ namespace Engine
 			if (m_Count != nullptr)
 			{
 				*m_Count = -(*m_Count);
+				m_Count = nullptr;
 			}
 		}
 
@@ -258,6 +259,8 @@ namespace Engine
 				else if (*m_Count < 0)
 				{
 					(*m_Count)++;
+					m_Count = nullptr;
+					return;
 				}
 
 				//(*m_Count)--;
@@ -289,7 +292,7 @@ namespace Engine
 		{
 			Type type = m_Pointer->GetType();
 			type.GetDestructor()(m_Pointer);
-			MEM_POOL_DEALLOC(m_Pointer,type.GetSize());
+			m_Pointer = (TYPE*)MEM_POOL_DEALLOC(m_Pointer,type.GetSize());
 		}
 
 	

@@ -3,6 +3,7 @@
 
 #include "../BasicTypes.h"
 
+
 #ifndef GLM_FORCE_RADIANS
 #define GLM_FORCE_RADIANS
 #endif
@@ -34,8 +35,10 @@ namespace Engine
 
         static Quaternion RotationBetween(Vector3 aStart, Vector3 aEnd);
         
+
         Vector3 GetEulerAngles() const;
         Matrix4x4 GetRotationMatrix() const;
+		Vector3 GetDirection() const;
         
         glm::quat Raw() const;
     };

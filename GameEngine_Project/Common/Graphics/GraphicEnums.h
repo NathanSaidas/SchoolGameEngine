@@ -96,6 +96,52 @@ namespace Engine
 		Greyscale = 0x2002,	//GL_R	
 		GreyAlpha = 0x8227	//GL_RG
 	};
+
+	enum class CullMode
+	{
+		Front = 0x0404,			//GL_FRONT
+		Back = 0x0405,			//GL_BACK
+		FrontAndBack = 0x0408	//GL_FRONT_AND_BACK
+	};
+
+	enum class CullFace
+	{
+		ClockWise = 0x0900,			//GL_CW
+		CounterClockWise = 0x0901	//GL_CCW
+	};
+
+	enum class DepthFunc
+	{
+		Never =			0x0200, //GL_NEVER
+		Less =			0x0201, //GL_LESS
+		Equal =			0x0202, //GL_EQUAL
+		LessEqual =		0x0203, //GL_LEQUAL
+		Greater =		0x0204, //GL_GREATER
+		NotEqual =		0x0205, //GL_NOTEQUAL
+		GreaterEqual =	0x0206, //GL_GEQUAL
+		Always =		0x0207, //GL_ALWAYS
+	};
+
+	enum class BlendFunc
+	{
+		Zero				= 0, //GL_ZERO
+		One					= 1, //GL_ONE
+		SrcColor			= 0x0300, //GL_SRC_COLOR
+		OneMinusSrcColor	= 0x0301, //GL_ONE_MINUS_SRC_COLOR
+		SrcAlpha			= 0x0302, //GL_SRC_ALPHA
+		OneMinusSrcAlpha    = 0x0303, //GL_ONE_MINUS_SRC_ALPHA
+		DstAlpha			= 0x0304, //GL_DST_ALPHA
+		OneMinusDstAlpha    = 0x0305, //GL_ONE_MINUS_DST_ALPHA
+		DstColor			= 0x0306, //GL_DST_COLOR
+		OneMinusDstColor	= 0x0307, //GL_ONE_MINUS_DST_COLOR
+	};
+
+	enum class GraphicsState
+	{
+		CullFace,
+		Blending,
+		DepthTesting
+	};
 }
 
 #endif

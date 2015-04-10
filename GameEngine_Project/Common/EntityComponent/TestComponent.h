@@ -35,7 +35,13 @@ namespace Engine
 		Pointer<Mesh> m_Mesh;
 		Pointer<Material> m_Material;
 
-		Pointer<Mesh> m_TestMesh;
+		GameObject * m_Light;
+		GameObject * m_LightTarget;
+
+		GameObject * m_Ground;
+		GameObject * m_Wall;
+
+		float m_FieldOfView;
 
 	};
 

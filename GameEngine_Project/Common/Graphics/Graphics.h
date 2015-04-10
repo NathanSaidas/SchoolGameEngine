@@ -1,6 +1,10 @@
 #ifndef GAME_ENGINE_GRAPHICS_H
 #define GAME_ENGINE_GRAPHICS_H
 
+#pragma region CHANGE LOG
+///	--	April	9, 2015 - Nathan Hanlan - Wrapped OpenGL states within the rendering engine.
+#pragma endregion
+
 #include <GL\glew.h>
 #include "../BasicTypes.h"
 #include "../Math/Math.h"
@@ -41,7 +45,17 @@ namespace Engine
 		static void Render(Matrix4x4 & aModel, Pointer<Mesh> aMesh, Pointer<Material> aMaterial);
 		static void Render(const Matrix4x4 & aModel, const Matrix4x4 & aView, const Matrix4x4 & aProjection, Mesh * aMesh, Material * aMaterial);
 		static void RenderImmediate(const Matrix4x4 & aModel, const Matrix4x4 & aView, const Matrix4x4 & aProjection, const Pointer<Mesh> & aMesh, const Pointer<Material> & aMaterial);
+		static void RenderImmediate(
+			const Matrix4x4 & aModel,				//The model being rendererd
+			const Matrix4x4 & aView,				//The view from the camera
+			const Matrix4x4 & aProjection,			//The projection from the camera
+			const Matrix4x4 & aDepthView,			//The view from the light
+			const Matrix4x4 & aDepthProjection,		//The projection from the light
+			const Matrix4x4 & aShadowBias,			//The shadow bias matrix
+			const Pointer<Mesh> & aMesh,			//The model vbo/ibo being rendered
+			const Pointer<Material> & aMaterial);	//The material being used to render.
 
+		static void RenderDepthImmediate(const Matrix4x4 & aModel, const Matrix4x4 & aView, const Matrix4x4 & aProjection, const Pointer<Mesh> & aMesh, const Pointer<Material> & aMaterial);
         // -- Wrapper around OpenGL glUseShader
         static void UseShader(GLuint & aProgramID);
         // -- Wrapped around OpenGL glDetatchShader
@@ -71,7 +85,43 @@ namespace Engine
 
 		static void Render(Scene * aScene);
 		static bool CheckForGLErrors(const char* file = __FILE__, int line = __LINE__);
-    private:
+    
+		/**
+		* Sets the default state of the graphics pipeline.
+		*/
+		static void SetDefaultState();
+		/**
+		* Sets the faces to cull.
+		* @param aCullFace The face to cull
+		*/
+		static void SetCullFace(CullFace aCullFace);
+		/**
+		* Sets the winding order for face culling
+		* @param aCullMode The winding order for face culling.
+		*/
+		static void SetCullMode(CullMode aCullMode);
+		/**
+		* Sets the depth func for depth testing.
+		* @param aDepthFunc The function to use for depth testing
+		*/
+		static void SetDepthFunc(DepthFunc aDepthFunc);
+		/**
+		* Sets the blend equation for fragment blending
+		* @param aSource The source factor for blending
+		* @param aDestination The destination factor for blending
+		*/
+		static void SetBlendFunc(BlendFunc aSource, BlendFunc aDestination);
+		/**
+		* Enables a rendering state. (Depth Testing, Blending, Culling etc)
+		* @param aState The state to enable
+		*/
+		static void EnableState(GraphicsState aState);
+		/**
+		* Disables a rendering state. (Depth Testing, Blending, Culling etc)
+		* @param aState The state to disable.
+		*/
+		static void DisableState(GraphicsState aState);
+	private:
         // -- Instance of the Graphics singleton
         static Graphics * s_Instance;
 
@@ -79,8 +129,19 @@ namespace Engine
         ~Graphics();
         friend class Engine::Reflection::MetaObject < Graphics > ;
 
+		//These colors should move to camera.
         Color m_BackgroundColor;
         Color m_ForeGroundColor;
+		//Current States
+		bool m_Cull;
+		bool m_Blend;
+		bool m_DepthTest;
+		CullMode m_CullMode;
+		CullFace m_CullFace;
+		DepthFunc m_DepthFunc;
+		BlendFunc m_BlendSource;
+		BlendFunc m_BlendDestination;
+
 
         // -- OpenGL
         BufferTarget m_CurrentBoundTarget;
@@ -130,11 +191,15 @@ namespace Engine
 
         //0.0
         //0.0
-        Pointer<Mesh> m_Screen;
-        Pointer<Material> m_ScreenMaterial;
-        Pointer<RenderTexture> m_ScreenRenderTexture;
-
+		Pointer<Shader> m_DebugShader;
+        Pointer<Mesh> m_PostProcessMesh;
+        Pointer<Material> m_PostProcessMaterial;
+		static  Pointer<RenderTexture> GetShadowMap();
         void RenderScreen();
+
+		public:
+			static Vector3 DEBUG_POSITION;
+			static Vector3 DEBUG_DIRECTION;
     };
 
 	TYPE_DEFINE(Graphics)

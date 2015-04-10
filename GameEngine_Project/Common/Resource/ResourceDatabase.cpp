@@ -21,6 +21,13 @@ namespace Engine
 	ResourceDatabase::~ResourceDatabase()
 	{
 		//TODO(Nathan): Release resources.
+
+		//Terminate resources in reverse order
+		for (ResourceCache::reverse_iterator it = m_ResourceCache.rbegin(); it != m_ResourceCache.rend(); it++)
+		{
+			(*it).second.Terminate();
+		}
+		m_ResourceCache.clear();
 	}
 
 	/**
@@ -201,7 +208,7 @@ namespace Engine
 		}
 		else
 		{
-			DEBUG_LOG("Error creating resource ImageTexture");
+			DEBUG_LOG("Error creating resource Mesh");
 		}
 
 		return Pointer<Mesh>::Null();
@@ -246,12 +253,61 @@ namespace Engine
 	*/
 	Pointer<Shader> ResourceDatabase::LoadShader(const std::string & aName)
 	{
-		Pointer<Shader> shader = GetShader(aName);
+		if (s_Instance == nullptr)
+		{
+			return Pointer<Shader>::Null();
+		}
+		//Isolate filename.
+		std::string resourceName = FilenameToResourceName(aName);
+		Pointer<Shader> shader = GetShader(resourceName);
 		if (shader.IsAlive())
 		{
 			return shader;
 		}
-		//TODO(Nathan): With file io, parse the working directory for the shader resource and load it.
+
+		//Create the filepath and verify that it exists.
+		std::string filepath = s_Instance->m_WorkingDirectory.GetPath();
+		filepath.append(aName);
+		if (!Directory::FileExists(filepath))
+		{
+			return Pointer<Shader>::Null();
+		}
+
+		//Create the shader pointer & the resource casted pointer.
+		shader = Pointer<Shader>();
+		Pointer<Resource> resource = shader.Cast<Resource>();
+		if (shader.IsAlive() && resource.IsAlive())
+		{
+			//Read in meta data.
+			std::string metaFilename = filepath;
+			metaFilename.append(".meta");
+			IniFileStream filestream;
+			filestream.SetPath(metaFilename);
+			filestream.Read();
+			//Set the resource name
+			shader->SetName(resourceName);
+			//Load Meta Data. (If there is any)
+			resource->LoadMeta(filestream);
+			//Load Shader & Upload to GPU and free CPU resources.
+			shader->Load(filepath);
+			shader->ReleaseFile();
+			if (!shader->IsUploaded())
+			{
+				DEBUG_LOG("Failed to load resource (%s)\nFilepath: %s", resourceName.c_str(), filepath.c_str());
+			}
+			else
+			{
+				resource->SaveMeta(filestream);
+				filestream.Save();
+				s_Instance->m_ResourceCache.insert(std::pair<std::string, Pointer<Resource>>(resource->GetName(), resource));
+				return shader;
+			}
+		}
+		else
+		{
+			DEBUG_LOG("Error creating resource Shader");
+		}
+
 		return Pointer<Shader>::Null();
 	}
 

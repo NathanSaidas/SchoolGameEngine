@@ -10,6 +10,9 @@ using namespace Engine::Memory;
 namespace Engine
 {
 
+	Vector3 Graphics::DEBUG_POSITION = Vector3::Zero();
+	Vector3 Graphics::DEBUG_DIRECTION = Vector3::Forward();
+
 	//Describes the attributes of a vertex.
 	struct VertexAttribute
 	{
@@ -32,7 +35,7 @@ namespace Engine
 	Graphics * Graphics::s_Instance = nullptr;
 	Graphics::Graphics()
 	{
-
+		SetDefaultState();
 		InitializePrimitiveBuffers();
 
 #ifdef CONFIG_GRAPHICS_SHADOWMAPPING
@@ -65,33 +68,37 @@ namespace Engine
         indicies[6] = 2;
         
 
-        m_Screen->SetPositions(positions);
-        m_Screen->SetColors(colors);
-        m_Screen->SetTexCoords(texCoords);
-        m_Screen->SetNormals(normals);
-        m_Screen->SetIndices(indicies);
-        m_Screen->Upload();
+		m_PostProcessMesh->SetPositions(positions);
+		m_PostProcessMesh->SetColors(colors);
+		m_PostProcessMesh->SetTexCoords(texCoords);
+		m_PostProcessMesh->SetNormals(normals);
+		m_PostProcessMesh->SetIndices(indicies);
+		m_PostProcessMesh->Upload();
 
-        //Pointer<ImageTexture> texture;
+		OpenGLWindow * window = Application::GetDefaultWindow();
+		Directory directory = Directory::GetCurrent();
+		directory.Back(2);
+		if (!directory.Change("Resources\\Shaders\\Built-In\\"))
+		{
+			DEBUG_LOG("Failed to setup graphics directory. Missing Resources\\Shaders\\Built - In\\ folder structure.");
+		}
+		
+		//Load a Depth Shader for shadow mapping
         Pointer<Shader> shader;
+        shader->Load(std::string(directory.GetPath()).append("DepthShader.glsl"));
+		Pointer<RenderTexture> renderTexture;
+		renderTexture->SetName("Shadow Map");
+		renderTexture->SetFilterMode(FilterMode::Nearest);
+		renderTexture->SetWrapMode(WrapMode::Repeat);
+		renderTexture->Create(window->GetWidth(), window->GetHeight());
 
-        shader->Load("DefaultTextureShader.glsl");
 
-        //texture->Load("Wall3.png");
-        //texture->Upload();
+        m_PostProcessMaterial->SetShader(shader);
+		m_PostProcessMaterial->SetTexture(renderTexture.Cast<Texture>());
 
 
-        m_ScreenMaterial->SetShader(shader);
-        //m_ScreenMaterial->SetTexture(texture.Cast<Texture>());
-
-        OpenGLWindow * window = Application::GetDefaultWindow();
-
-        CheckForGLErrors(__FILE__, __LINE__);
-
-		m_ScreenRenderTexture->SetName("Shadow Map");
-		m_ScreenRenderTexture->SetFilterMode(FilterMode::Nearest);
-		m_ScreenRenderTexture->SetWrapMode(WrapMode::Clamp);
-        m_ScreenRenderTexture->Create(window->GetWidth(), window->GetHeight());
+		m_DebugShader->Load(std::string(directory.GetPath()).append("Debug.glsl"));
+		
 
         CheckForGLErrors(__FILE__, __LINE__);
 #else
@@ -208,13 +215,44 @@ namespace Engine
 		//Check for pre-existing errors
 		//CheckForGLErrors(__FILE__, __LINE__);
 
+		
 		if (!aMesh->IsUploaded() || !shader->UseShader())
 		{
 			return;
 		}
+		//Set States
+		if (aMaterial->GetState(GraphicsState::Blending))
+		{
+			EnableState(GraphicsState::Blending);
+		}
+		else
+		{
+			DisableState(GraphicsState::Blending);
+		}
+		if (aMaterial->GetState(GraphicsState::CullFace))
+		{
+			EnableState(GraphicsState::CullFace);
+		}
+		else
+		{
+			DisableState(GraphicsState::CullFace);
+		}
+		if (aMaterial->GetState(GraphicsState::DepthTesting))
+		{
+			EnableState(GraphicsState::DepthTesting);
+		}
+		else
+		{
+			DisableState(GraphicsState::DepthTesting);
+		}
+		SetCullFace(aMaterial->GetCullFace());
+		SetCullMode(aMaterial->GetCullMode());
+		SetDepthFunc(aMaterial->GetDepthFunc());
+		SetBlendFunc(aMaterial->GetBlendSource(), aMaterial->GetBlendDestination());
 
 		BindBuffer(BufferTarget::Array, aMesh->GetVBO());
 		BindBuffer(BufferTarget::ElementArray, aMesh->GetIBO());
+
 
 		GLint a_Position = shader->GetAttributeLocation("a_Position");
 		GLint a_TextureCoordinate = shader->GetAttributeLocation("a_TexCoords");
@@ -242,7 +280,7 @@ namespace Engine
 		SetFloat(u_DeltaTime, deltaTime);
         SetTexture(u_Texture, 0, texture);
 
-		glDrawElements((GLenum)PrimitiveMode::Triangles, aMesh->GetIndexCount(), GL_UNSIGNED_SHORT, 0);
+		glDrawElements((GLenum)PrimitiveMode::Triangles, aMesh->GetIndexCount(), GL_UNSIGNED_SHORT, (void*)0);
 
 		DisableVertexAttrib(a_Position);
 		DisableVertexAttrib(a_TextureCoordinate);
@@ -251,8 +289,145 @@ namespace Engine
 
 		BindBuffer(BufferTarget::Array, 0);
 		BindBuffer(BufferTarget::ElementArray, 0);
-		glUseProgram(0);
 
+	}
+
+	void Graphics::RenderImmediate(
+		const Matrix4x4 & aModel,				//The model being rendererd
+		const Matrix4x4 & aView,				//The view from the camera
+		const Matrix4x4 & aProjection,			//The projection from the camera
+		const Matrix4x4 & aDepthView,			//The view from the light
+		const Matrix4x4 & aDepthProjection,		//The projection from the light
+		const Matrix4x4 & aShadowBias,			//The shadow bias matrix
+		const Pointer<Mesh> & aMesh,			//The model vbo/ibo being rendered
+		const Pointer<Material> & aMaterial)	//The material being used to render.
+	{
+		if (!aMesh.IsAlive() || !aMaterial.IsAlive())
+		{
+			return;
+		}
+
+		Pointer<Shader> shader = aMaterial->GetShader();
+		Pointer<Texture> texture = aMaterial->GetTexture();
+		Pointer<RenderTexture> shadowMap = GetShadowMap();
+
+		if (!aMesh->IsUploaded() || !shader.IsAlive() || !shader->UseShader())
+		{
+			return;
+		}
+
+
+		BindBuffer(BufferTarget::Array, aMesh->GetVBO());
+		BindBuffer(BufferTarget::ElementArray, aMesh->GetIBO());
+
+		//Compute Matricies.
+		Matrix4x4 mvp = aProjection * aView * aModel;
+		Matrix4x4 depthMVP = aDepthProjection * aDepthView * aModel;
+		Matrix4x4 depthBiasMVP = aShadowBias * depthMVP;
+		//Get time.
+		Float32 deltaTime = Time::GetDeltaTime();
+		Float32 time = Time::GetTime();
+
+		//Set States
+		if (aMaterial->GetState(GraphicsState::Blending))
+		{
+			EnableState(GraphicsState::Blending);
+		}
+		else
+		{
+			DisableState(GraphicsState::Blending);
+		}
+		if (aMaterial->GetState(GraphicsState::CullFace))
+		{
+			EnableState(GraphicsState::CullFace);
+		}
+		else
+		{
+			DisableState(GraphicsState::CullFace);
+		}
+		if (aMaterial->GetState(GraphicsState::DepthTesting))
+		{
+			EnableState(GraphicsState::DepthTesting);
+		}
+		else
+		{
+			DisableState(GraphicsState::DepthTesting);
+		}
+		SetCullFace(aMaterial->GetCullFace());
+		SetCullMode(aMaterial->GetCullMode());
+		SetDepthFunc(aMaterial->GetDepthFunc());
+		SetBlendFunc(aMaterial->GetBlendSource(), aMaterial->GetBlendDestination());
+
+
+		GLint a_Position = shader->GetAttributeLocation("a_Position");
+		GLint a_TextureCoordinate = shader->GetAttributeLocation("a_TexCoords");
+		GLint a_Normal = shader->GetAttributeLocation("a_Normal");
+		GLint a_Color = shader->GetAttributeLocation("a_Color");
+
+		GLint u_MVP = shader->GetUniformLocation("u_MVP");
+		GLint u_Model = shader->GetUniformLocation("u_Model");
+		GLint u_View = shader->GetUniformLocation("u_View");
+		GLint u_Projection = shader->GetUniformLocation("u_Projection");
+		GLint u_ShadowBias = shader->GetUniformLocation("u_ShadowBias");
+		GLint u_Time = shader->GetUniformLocation("u_Time");
+		GLint u_DeltaTime = shader->GetUniformLocation("u_DeltaTime");
+		GLint u_ShadowMap = shader->GetUniformLocation("u_ShadowMap");
+
+		EnableVertexAttrib(a_Position, 3, VERTEX_ATTRIB(position));
+		EnableVertexAttrib(a_TextureCoordinate, 2, VERTEX_ATTRIB(texCoord));
+		EnableVertexAttrib(a_Normal, 3, VERTEX_ATTRIB(normal));
+		EnableVertexAttrib(a_Color, 4, VERTEX_ATTRIB(color));
+
+		SetMatrix(u_MVP, mvp);
+		SetMatrix(u_Model, aModel);
+		SetMatrix(u_View, aView);
+		SetMatrix(u_Projection, aProjection);
+		SetMatrix(u_ShadowBias, depthMVP);
+		SetFloat(u_Time, time);
+		SetFloat(u_DeltaTime, deltaTime);
+		SetTexture(u_ShadowMap, 0, shadowMap);
+
+		glDrawElements((GLenum)PrimitiveMode::Triangles, aMesh->GetIndexCount(), GL_UNSIGNED_SHORT, (void*)0);
+
+		DisableVertexAttrib(a_Position);
+		DisableVertexAttrib(a_TextureCoordinate);
+		DisableVertexAttrib(a_Normal);
+		DisableVertexAttrib(a_Color);
+
+		BindBuffer(BufferTarget::Array, 0);
+		BindBuffer(BufferTarget::ElementArray, 0);
+
+	}
+
+	void Graphics::RenderDepthImmediate(const Matrix4x4 & aModel, const Matrix4x4 & aView, const Matrix4x4 & aProjection, const Pointer<Mesh> & aMesh, const Pointer<Material> & aMaterial)
+	{
+		if (!aMaterial.IsAlive() || !aMesh.IsAlive())
+		{
+			return;
+		}
+		Pointer<Shader> shader = aMaterial->GetShader();
+		if (!shader.IsAlive())
+		{
+			return;
+		}
+
+		shader->UseShader();
+
+
+		Matrix4x4 depthMVP = aProjection * aView * aModel;
+
+		BindBuffer(BufferTarget::Array, aMesh->GetVBO());
+		BindBuffer(BufferTarget::ElementArray, aMesh->GetIBO());
+		
+		GLint a_Position = shader->GetAttributeLocation("a_Position");
+		GLint u_MVP = shader->GetUniformLocation("u_MVP");
+
+		EnableVertexAttrib(a_Position, 3, VERTEX_ATTRIB(position));
+		SetMatrix(u_MVP, depthMVP);
+
+		glDrawElements((GLenum)PrimitiveMode::Triangles, aMesh->GetIndexCount(), GL_UNSIGNED_SHORT, (void*)0);
+
+		DisableVertexAttrib(a_Position);
 	}
 
 	void Graphics::UseShader(GLuint & aProgramID)
@@ -513,6 +688,130 @@ namespace Engine
 		return(errorCount > 0 ? true : false);
 	}
 
+	void Graphics::SetDefaultState()
+	{
+		if (s_Instance == nullptr)
+		{
+			return;
+		}
+		s_Instance->m_Cull = true;
+		s_Instance->m_Blend = true;
+		s_Instance->m_DepthTest = true;
+		s_Instance->m_CullMode = CullMode::Back;
+		s_Instance->m_CullFace = CullFace::ClockWise;
+		s_Instance->m_DepthFunc = DepthFunc::Less;
+		s_Instance->m_BlendSource = BlendFunc::SrcAlpha;
+		s_Instance->m_BlendSource = BlendFunc::OneMinusSrcAlpha;
+
+		glEnable(GL_CULL_FACE);
+		glEnable(GL_BLEND);
+		glEnable(GL_DEPTH_TEST);
+		glCullFace((GLenum)s_Instance->m_CullMode);
+		glFrontFace((GLenum)s_Instance->m_CullFace);
+		glDepthFunc((GLenum)s_Instance->m_DepthFunc);
+		glBlendFunc((GLenum)s_Instance->m_BlendSource, (GLenum)s_Instance->m_BlendDestination);
+	}
+	void Graphics::SetCullFace(CullFace aCullFace)
+	{
+		if (s_Instance != nullptr && s_Instance->m_CullFace != aCullFace)
+		{
+			s_Instance->m_CullFace = aCullFace;
+			glCullFace((GLenum)aCullFace);
+		}
+	}
+	void Graphics::SetCullMode(CullMode aCullMode)
+	{
+		if (s_Instance != nullptr && s_Instance->m_CullMode != aCullMode)
+		{
+			s_Instance->m_CullMode = aCullMode;
+			glFrontFace((GLenum)aCullMode);
+		}
+	}
+	void Graphics::SetDepthFunc(DepthFunc aDepthFunc)
+	{
+		if (s_Instance != nullptr && s_Instance->m_DepthFunc != aDepthFunc)
+		{
+			s_Instance->m_DepthFunc = aDepthFunc;
+			glDepthFunc((GLenum)aDepthFunc);
+		}
+	}
+	void Graphics::SetBlendFunc(BlendFunc aSource, BlendFunc aDestination)
+	{
+		if (s_Instance != nullptr && (s_Instance->m_BlendSource != aSource || s_Instance->m_BlendDestination != aDestination))
+		{
+			s_Instance->m_BlendSource = aSource;
+			s_Instance->m_BlendDestination = aDestination;
+			glBlendFunc((GLenum)aSource, (GLenum)aDestination);
+		}
+	}
+	void Graphics::EnableState(GraphicsState aState)
+	{
+		if (s_Instance == nullptr)
+		{
+			return;
+		}
+		switch (aState)
+		{
+		case GraphicsState::CullFace:
+			if (s_Instance->m_Cull == false)
+			{
+				s_Instance->m_Cull = true;
+				glEnable(GL_CULL_FACE);
+			}
+			break;
+		case GraphicsState::Blending:
+			if (s_Instance->m_Blend == false)
+			{
+				s_Instance->m_Blend = true;
+				glEnable(GL_BLEND);
+			}
+			break;
+		case GraphicsState::DepthTesting:
+			if (s_Instance->m_DepthTest == false)
+			{
+				s_Instance->m_DepthTest = true;
+				glEnable(GL_DEPTH_TEST);
+			}
+			break;
+		default:
+			DEBUG_LOG("Invalid state enabled %u", (unsigned int)aState);
+			break;
+		}
+	}
+	void Graphics::DisableState(GraphicsState aState)
+	{
+		if (s_Instance == nullptr)
+		{
+			return;
+		}
+		switch (aState)
+		{
+		case GraphicsState::CullFace:
+			if (s_Instance->m_Cull == true)
+			{
+				s_Instance->m_Cull = false;
+				glDisable(GL_CULL_FACE);
+			}
+			break;
+		case GraphicsState::Blending:
+			if (s_Instance->m_Blend == true)
+			{
+				s_Instance->m_Blend = false;
+				glDisable(GL_BLEND);
+			}
+			break;
+		case GraphicsState::DepthTesting:
+			if (s_Instance->m_DepthTest == true)
+			{
+				s_Instance->m_DepthTest = false;
+				glDisable(GL_DEPTH_TEST);
+			}
+			break;
+		default:
+			DEBUG_LOG("Invalid state enabled %u", (unsigned int)aState);
+			break;
+		}
+	}
 
 	void Graphics::RegisterCamera(Camera * aCamera)
 	{
@@ -538,33 +837,30 @@ namespace Engine
 		}
 		//Gather Geometry / Drawcalls
 
-        glDepthFunc(GL_LESS);
-        glEnable(GL_DEPTH_TEST);
+        //glDepthFunc(GL_LESS);
+        //glEnable(GL_DEPTH_TEST);
 
-#ifdef CONFIG_GRAPHICS_SHADOWMAPPING
-        glBindFramebuffer(GL_FRAMEBUFFER, m_ScreenRenderTexture->GetFBOHandle());
-#endif
-        Clear();
+
+        //Clear();
 
 		aScene->PreRender();
 		for (std::vector<Camera*>::iterator it = m_RenderCameras.begin(); it != m_RenderCameras.end(); it++)
 		{
 			RenderCamera(aScene, *it);
 		}
-#ifdef CONFIG_GRAPHICS_SHADOWMAPPING
-        glBindFramebuffer(GL_FRAMEBUFFER, 0); 
-#endif
+
        
 
 		aScene->Render();
-		m_RenderCameras.clear();
-		m_DrawCalls.clear();
+		
 		
 #ifdef CONFIG_GRAPHICS_SHADOWMAPPING
-        Clear();
+        //Clear();
         RenderScreen();
 #endif
-        
+		m_RenderCameras.clear();
+		m_DrawCalls.clear();
+
         aScene->PostRender();
 
 
@@ -576,15 +872,70 @@ namespace Engine
 		Matrix4x4 projectionMatrix = aCamera->GetProjectionMatrix();
 
 		Float32 x, y, w, h;
-
 		aCamera->GetViewport(x, y, w, h);
-
 		glViewport((GLint)x, (GLint)y, (GLint)w, (GLint)h);
 
-		for (std::vector<DrawCall>::iterator it = m_DrawCalls.begin(); it != m_DrawCalls.end(); it++)
+#ifdef CONFIG_GRAPHICS_SHADOWMAPPING
+		Pointer<RenderTexture> renderTexture = GetShadowMap();
+		if (renderTexture.IsAlive())
 		{
-			DrawCall & drawCall = *it;
-			RenderImmediate(drawCall.model, viewMatrix, projectionMatrix, drawCall.mesh, drawCall.material);
+			glBindFramebuffer(GL_FRAMEBUFFER, renderTexture->GetFBOHandle());
+			//Render Depth Vector3(0.5f, 2.0f, 2.0f)
+			float shadowDistance = 100.0f;
+			
+			Vector3 offset = DEBUG_POSITION;
+			//offset = aCamera->GetGameObject()->GetPosition() + offset;
+			glm::ortho<float>(-10, 10, -10, 10, -10, 20);
+			Matrix4x4 depthProjectionMatrix = Matrix4x4::Perspective(aCamera->GetFieldOfView() * 3.14 / 180.0f, w / h, 0.1f, shadowDistance);  //projectionMatrix; // Matrix4x4::Ortho(-10.0f, 10.0f, -10.0f, 1.0f, -10.0f, 20.0f);
+			Matrix4x4 depthViewMatrix = Matrix4x4::LookAt(offset, DEBUG_DIRECTION);
+			//Matrix4x4 shadowBias = Matrix4x4::Identity();
+			//shadowBias.Scale(Vector3(0.5f, 0.5, 0.5f));
+			//shadowBias[0][3] = 0.5f;
+			//shadowBias[1][3] = 0.5f;
+			//shadowBias[2][3] = 0.5f;
+
+			Pointer<Shader> depthShader = m_PostProcessMaterial->GetShader();
+			if (depthShader.IsAlive())
+			{
+				EnableState(GraphicsState::DepthTesting);
+				SetDepthFunc(DepthFunc::Less);
+				EnableState(GraphicsState::CullFace);
+				SetCullFace(CullFace::ClockWise);
+				SetCullMode(CullMode::Back);
+
+				Clear();
+
+				for (std::vector<DrawCall>::iterator it = m_DrawCalls.begin(); it != m_DrawCalls.end(); it++)
+				{
+					DrawCall & drawCall = *it;
+					Matrix4x4 mvp = projectionMatrix * viewMatrix * drawCall.model;
+					
+					Vector4 position = Vector4(0.0f, 0.0f, 0.0f, 0.0f);
+					position = mvp * position;
+
+					//depthViewMatrix = Matrix4x4::LookAt(Vector3(position.x,position.y,position.z) + (-DEBUG_DIRECTION) * 5.0f, DEBUG_DIRECTION);
+					RenderDepthImmediate(drawCall.model, depthViewMatrix, depthProjectionMatrix, drawCall.mesh, m_PostProcessMaterial);
+				}
+			}
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+			Clear();
+
+			for (std::vector<DrawCall>::iterator it = m_DrawCalls.begin(); it != m_DrawCalls.end(); it++)
+			{
+				DrawCall & drawCall = *it;
+				RenderImmediate(drawCall.model, viewMatrix, projectionMatrix, depthViewMatrix, depthProjectionMatrix, Matrix4x4::Identity(), drawCall.mesh, drawCall.material);
+			}
+		}
+		else
+#endif
+		{
+			Clear();
+			for (std::vector<DrawCall>::iterator it = m_DrawCalls.begin(); it != m_DrawCalls.end(); it++)
+			{
+				DrawCall & drawCall = *it;
+				RenderImmediate(drawCall.model, viewMatrix, projectionMatrix, drawCall.mesh, drawCall.material);
+			}
 		}
 
 
@@ -605,7 +956,6 @@ namespace Engine
 			glDisableVertexAttribArray(aLocation);
 		}
 	}
-
 	void Graphics::SetMatrix(GLint aLocation, const Matrix4x4 & aMatrix)
 	{
 		if (aLocation != -1)
@@ -632,7 +982,6 @@ namespace Engine
             }
 		}
 	}
-
     void Graphics::SetTexture(GLint aLocation, GLenum aUnit, Pointer<RenderTexture> aTexture)
     {
         if (aLocation != -1)
@@ -645,66 +994,72 @@ namespace Engine
             }
         }
     }
-
+	Pointer<RenderTexture> Graphics::GetShadowMap()
+	{
+		Pointer<Texture> texture = s_Instance->m_PostProcessMaterial->GetTexture();
+		if (texture.IsAlive())
+		{
+			return texture.Cast<RenderTexture>();
+		}
+		return Pointer<RenderTexture>::Null();
+	}
     void Graphics::RenderScreen()
     {
+		OpenGLWindow * window = Application::GetDefaultWindow();
+		GLsizei width = (GLsizei)((Float32)window->GetWidth() * 0.35f);
+		GLsizei height = (GLsizei)((Float32)window->GetHeight() * 0.35f);
+		glViewport(0, window->GetHeight() - height, width,height );
+		Pointer<Mesh> mesh = m_PostProcessMesh;
+
         Matrix4x4 identity = Matrix4x4::Identity();
 
-        BindBuffer(BufferTarget::Array, m_Screen->GetVBO());
-        BindBuffer(BufferTarget::ElementArray, m_Screen->GetIBO());
+		DisableState(GraphicsState::CullFace);
+		DisableState(GraphicsState::DepthTesting);
+		DisableState(GraphicsState::Blending);
 
-        Pointer<Shader> shader = m_ScreenMaterial->GetShader();
-        Pointer<Texture> texture = m_ScreenMaterial->GetTexture();
+		Pointer<Shader> shader = m_DebugShader;
+		Pointer<Texture> texture = m_PostProcessMaterial->GetTexture();
+		Pointer<RenderTexture> renderTexture = Pointer<RenderTexture>::Null();
+		if (texture.IsAlive())
+		{
+			renderTexture = texture.Cast<RenderTexture>();
+		}
 
-        if (!shader.IsAlive())
+        if (!shader.IsAlive() || !mesh.IsAlive() || !mesh->IsUploaded())
         {
             return;
         }
 
-        if (!m_Screen->IsUploaded() || !shader->UseShader())
+		if (!shader->UseShader())
         {
             return;
         }
+
+		BindBuffer(BufferTarget::Array, mesh->GetVBO());
+		BindBuffer(BufferTarget::ElementArray, mesh->GetIBO());
 
         GLint a_Position = shader->GetAttributeLocation("a_Position");
         GLint a_TextureCoordinate = shader->GetAttributeLocation("a_TexCoords");
-        GLint a_Normal = shader->GetAttributeLocation("a_Normal");
-        GLint a_Color = shader->GetAttributeLocation("a_Color");
 
         GLint u_MVP = shader->GetUniformLocation("u_MVP");
-        GLint u_Model = shader->GetUniformLocation("u_Model");
-        GLint u_View = shader->GetUniformLocation("u_View");
-        GLint u_Projection = shader->GetUniformLocation("u_Projection");
-        GLint u_Time = shader->GetUniformLocation("u_Time");
-        GLint u_DeltaTime = shader->GetUniformLocation("u_DeltaTime");
         GLint u_Texture = shader->GetUniformLocation("u_Texture");
 
         EnableVertexAttrib(a_Position, 3, VERTEX_ATTRIB(position));
         EnableVertexAttrib(a_TextureCoordinate, 2, VERTEX_ATTRIB(texCoord));
-        EnableVertexAttrib(a_Normal, 3, VERTEX_ATTRIB(normal));
-        EnableVertexAttrib(a_Color, 4, VERTEX_ATTRIB(color));
 
         SetMatrix(u_MVP, identity);
-        SetMatrix(u_Model, identity);
-        SetMatrix(u_View, identity);
-        SetMatrix(u_Projection, identity);
-        SetFloat(u_Time, Time::GetTime());
-        SetFloat(u_DeltaTime, Time::GetDeltaTime());
-        SetTexture(u_Texture, 0, m_ScreenRenderTexture);
+        SetTexture(u_Texture, 0, renderTexture);
         //SetTexture(u_Texture,0, texture);
 
-        //glDrawElements((GLenum)PrimitiveMode::TriangleFans, m_Screen->GetIndexCount(), GL_UNSIGNED_SHORT, 0);
+        //glDrawElements((GLenum)PrimitiveMode::TriangleFans, mesh->GetIndexCount(), GL_UNSIGNED_SHORT, 0);
 
         glDrawArrays((GLenum)PrimitiveMode::TriangleFans, 0, 4);
 
         DisableVertexAttrib(a_Position);
         DisableVertexAttrib(a_TextureCoordinate);
-        DisableVertexAttrib(a_Normal);
-        DisableVertexAttrib(a_Color);
 
         BindBuffer(BufferTarget::Array, 0);
         BindBuffer(BufferTarget::ElementArray, 0);
-        glUseProgram(0);
 
     }
 }

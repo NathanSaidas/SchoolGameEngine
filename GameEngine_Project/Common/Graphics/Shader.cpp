@@ -236,7 +236,14 @@ namespace Engine
         }
         return false;
     }
-
+	/**
+	* Determines if the shader is uploaded or not.
+	* @return Returns true if the shader has been uploaded returns false otherwise.
+	*/
+	bool Shader::IsUploaded()
+	{
+		return m_ShaderHandleLoaded;
+	}
     GLint Shader::GetAttributeLocation(const std::string & aName)
     {
         return glGetAttribLocation(m_ShaderHandle, aName.c_str());

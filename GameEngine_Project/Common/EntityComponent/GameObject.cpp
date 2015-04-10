@@ -301,23 +301,26 @@ namespace Engine
 		if (m_Parent != nullptr)
 		{
 			matrix = m_Parent->GetLocalToWorldMatrix();
-			matrix *= Matrix4x4::TRS(m_Position, m_Rotation, m_Scale);
+			matrix.Scale(m_Scale); // Matrix4x4::TRS(m_Position, m_Rotation, m_Scale);
+			matrix.Translate(m_Position);
 		}
 		else
 		{
-			matrix = Matrix4x4::TRS(m_Position, m_Rotation, m_Scale);
+			matrix.Scale(m_Scale); // = Matrix4x4::TRS(m_Position, m_Rotation, m_Scale);
+			matrix.Translate(m_Position);
 		}
 		return matrix;
 	}
 	void GameObject::LookAt(Vector3 aPosition)
 	{
         Vector3 direction = aPosition - GetPosition();
-        Matrix4x4 mat = Matrix4x4::LookAt(GetPosition(), direction.Normalized());
-        Quaternion inverse = Quaternion::Inverse(mat.GetRotation());
-        m_Rotation.w = inverse.y;
-        m_Rotation.x = inverse.z;
-        m_Rotation.y = -inverse.w;
-        m_Rotation.z = -inverse.x;
+        Matrix4x4 mat = Matrix4x4::LookAt(GetPosition(), -(direction.Normalized()));
+		m_Rotation = mat.GetRotation();
+		//Quaternion inverse = Quaternion::Inverse(mat.GetRotation());
+        //m_Rotation.w = inverse.y;
+        //m_Rotation.x = inverse.z;
+        //m_Rotation.y = -inverse.w;
+        //m_Rotation.z = -inverse.x;
 	}
 
 	

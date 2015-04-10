@@ -40,7 +40,13 @@ namespace Engine
     }
     Matrix4x4 Matrix4x4::Translate(const Matrix4x4 & aMatrix, const Vector3 & aTranslation)                                             
     {
-        return Matrix4x4(glm::translate(aMatrix.Raw(), aTranslation.Raw()));
+		Vector4 position = aMatrix[3];
+		position.x += aTranslation.x;
+		position.y += aTranslation.y;
+		position.z += aTranslation.z;
+		Matrix4x4 mat = aMatrix;
+		mat[3] = position;
+		return mat;
     }
     Matrix4x4 Matrix4x4::Rotate(const Matrix4x4 & aMatrix, const Float32 & aRotation, const Vector3 & aAxis)                            
     {
@@ -158,7 +164,11 @@ namespace Engine
     }
     void Matrix4x4::Translate(const Vector3 & aTranslation)                      
     {
-        *this = Matrix4x4(glm::translate(Raw(),aTranslation.Raw()));
+		Vector4 position = (*this)[3];
+		position.x += aTranslation.x;
+		position.y += aTranslation.y;
+		position.z += aTranslation.z;
+		(*this)[3] = position;
     }
     void Matrix4x4::Rotate(const Float32 & aRotation,const Float32 & aAngle, const Vector3 & aAxis)     
     {

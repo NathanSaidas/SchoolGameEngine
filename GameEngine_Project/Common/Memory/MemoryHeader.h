@@ -15,7 +15,7 @@ namespace Engine
         /// <summary>
         /// A data structure for the 4 byte Memory Header on custom allocated objects.
         ///
-        /// Use the Clear, Read, and Write methods for as opposed to accessing the bytes directly.
+        /// Use the Clear, Read, and Write methods for accessing members as opposed to accessing the bytes directly.
         /// </summary>
         struct MemoryHeader
         {

@@ -146,6 +146,7 @@ namespace Engine
         {
             return m_PositiveKeys[aKey];
         }
+		return AxisCode::NONE;
     }
     AxisCode InputAxis::NegativeKey(int aKey)
     {
@@ -153,6 +154,7 @@ namespace Engine
         {
             return m_NegativeKeys[aKey];
         }
+		return AxisCode::NONE;
     }
     float InputAxis::AxisValue()
     {

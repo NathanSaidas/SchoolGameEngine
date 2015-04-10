@@ -16,90 +16,66 @@ namespace Engine
 	}
 	TestComponent::~TestComponent()
 	{
-		ResourceDatabase::UnloadResource("TestMesh");
+
 	}
 
 	void TestComponent::OnRegister()
 	{
-		DEBUG_LOG("\n\n");
 		DEBUG_LOG("Registered %s", GetType().GetName().c_str());
-	
-		Pointer<Shader> shader = m_Material->GetShader();
-		shader->SetName("Default Shader");
-		shader->Load("DefaultShader.glsl");
 
-		Pointer<ImageTexture> texture;
-		texture->SetName("Wall");
-		texture->Load("Wall.png");
-		texture->Upload();
-
-		m_Material->SetTexture(texture.Cast<Texture>());
-
-		//m_Mesh.MakeUnique(Geometry::CreateCube(2.0f, 2.0f, 2.0f, Color::Crimson(), Memory::AllocatorType::Pool));
-		m_Mesh.MakeUnique(Geometry::CreatePlane(1.0f, 1.0f, Color::Crimson(), Memory::AllocatorType::Pool));
-
-
-		m_Material->SetName("Default Diffuse");
-
-		
-
-		//Directory dir = Directory::GetCurrent();
-		//dir.Back(2);
-		//if (dir.Change("Resources\\"))
-		//{
-		//	DEBUG_LOG("Resource Directory: %s", dir.GetPath().c_str());
-		//}
-		//else
-		//{
-		//	DEBUG_LOG("Failed to set resource directory.\nCurrent Directory: %s", dir.GetPath().c_str());
-		//}
-
-		//m_TestTexture = ResourceDatabase::LoadTexture("Wall3.png");
-		m_TestMesh = ResourceDatabase::LoadMesh("TestMesh.obj");
-		
 	}
 	
 	void TestComponent::OnInitialize()
 	{
 		DEBUG_LOG("Initialized %s", GetType().GetName().c_str());
+		//Create Input Axis
 		Input * input = Input::Instance();
 		input->CreateAxis("Vertical", AxisCode::W, AxisCode::S);
-		input->CreateAxis("Horizontal", AxisCode::D, AxisCode::A);
+		input->CreateAxis("Horizontal", AxisCode::A, AxisCode::D);
 
-		Stream stream;
-		BinaryFormatter formatter;
+		input->CreateAxis("Light V", AxisCode::T, AxisCode::G);
+		input->CreateAxis("Light H", AxisCode::F, AxisCode::H);
+		input->CreateAxis("Light Y", AxisCode::Y, AxisCode::R);
 
-		std::string value = "hello world. This is a crazy sentence";
-		std::string result = "";
-
-		formatter.Serialize(value, stream);
-		formatter.Deserialize(result, stream);
-    
-        
-		
-		bool isAlive = m_TestMesh.IsAlive();
-		if (isAlive)
-		{
-			DEBUG_LOG("Test Mesh is alive");
-		}
-		else
-		{
-			DEBUG_LOG("Test Mesh is dead");
-		}
-	}
-	void TestComponent::OnLateInitialize()
-	{
-		DEBUG_LOG("Late Initialization %s", GetType().GetName().c_str());
+		input->CreateAxis("Target V", AxisCode::Up, AxisCode::Down);
+		input->CreateAxis("Target H", AxisCode::Left, AxisCode::Right);
 
 		m_Camera = GetComponentInChildren<Camera>();
 		m_Renderer = GetComponentInChildren<Renderer>();
-		
+
+		//m_Mesh.MakeUnique(Geometry::CreateCube(2.0f, 2.0f, 2.0f, Color::Crimson(), Memory::AllocatorType::Pool));
+		m_Mesh.MakeUnique(Geometry::CreatePlane(25.0f, 25.0f, Color::Crimson(), Memory::AllocatorType::Pool));
+
+		Pointer<ImageTexture> texture = ResourceDatabase::LoadTexture("Wall3.png");
+		Pointer<Shader> shader = ResourceDatabase::LoadShader("Shaders\\Built-In\\DefaultShader.glsl");
+
+		if (!texture.IsAlive())
+		{
+			DEBUG_LOG("Missing Wall3.png");
+		}
+		else
+		{
+			m_Material->SetTexture(texture.Cast<Texture>());
+		}
+		if (!shader.IsAlive())
+		{
+			DEBUG_LOG("Missing Built-in DefaultShader.glsl");
+		}
+		else
+		{
+			m_Material->SetShader(shader);
+		}
+
+
+
+
 		if (m_Camera != nullptr)
 		{
-			m_Camera->SetFieldOfView(45.0f);
+			m_FieldOfView = 60.0f;
+			m_Camera->SetFieldOfView(m_FieldOfView);
 			GameObject * gameObject = m_Camera->GetGameObject();
-			gameObject->SetPosition(Vector3(0.0f, 1.0f, -3.0f));
-			gameObject->LookAt(Vector3::Zero());
+			gameObject->SetPosition(Vector3(0.0f, 3.0f, -3.0f));
+			gameObject->LookAt(Vector3(0.0f,3.5f,0.0f));
 		}
 
 		if (m_Renderer != nullptr)
@@ -107,11 +83,51 @@ namespace Engine
 			m_Renderer->SetMaterial(m_Material);
 			m_Renderer->SetMesh(m_Mesh);
 			GameObject * gameObject = m_Renderer->GetGameObject();
-			float scale = 1.0f / 10.0f;
-			gameObject->SetScale(Vector3(scale, scale, scale));
 		}
-        
 
+	}
+
+	GameObject * CreateCube(Vector3 aPosition, Pointer<Material> & aMaterial, float aSize)
+	{
+		Pointer<Mesh> mesh;
+		mesh.MakeUnique(Geometry::CreateCube(
+			aSize, aSize, aSize,
+			Color::CornflowerBlue(),
+			Memory::AllocatorType::Pool));
+		GameObject * cube = NEW_POOL(GameObject)("Cube");
+		Renderer * renderer = cube->AddComponent<Renderer>();
+		renderer->SetMaterial(aMaterial);
+		renderer->SetMesh(mesh);
+		cube->SetPosition(aPosition);
+
+		return cube;
+	}
+		
+	GameObject * CreatePlane(Vector3 aPosition, Pointer<Material> & aMaterial, float aSize)
+	{
+		Pointer<Mesh> mesh;
+		mesh.MakeUnique(Geometry::CreatePlane(
+			aSize, aSize,
+			Color::CornflowerBlue(),
+			Memory::AllocatorType::Pool));
+		GameObject * cube = NEW_POOL(GameObject)("Plane");
+		Renderer * renderer = cube->AddComponent<Renderer>();
+		renderer->SetMaterial(aMaterial);
+		renderer->SetMesh(mesh);
+		cube->SetPosition(aPosition);
+
+		return cube;
+	}
+
+	void TestComponent::OnLateInitialize()
+	{
+		DEBUG_LOG("Late Initialization %s", GetType().GetName().c_str());
+		
+		m_LightTarget = CreateCube(Vector3(3.0f, 1.0f, 0.0f), m_Material, 2.0f);
+		m_Light =  CreateCube(Vector3(-2.0f, 3.0f, 5.0f), m_Material, 1.0f);
+	
+		//m_Ground = CreatePlane(Vector3::Zero(), m_Material, 2.0f);
+		//m_Wall = CreatePlane(Vector3::Zero(),)
 	}
 	
 	void TestComponent::OnDestroy()
@@ -125,26 +141,89 @@ namespace Engine
 	
 	void TestComponent::Update()
 	{
+		float speed = 3.0f;
+		float fovSpeed = 5.0f;
 		Input * input = Input::Instance();
 		
 		float v = input->GetAxis("Vertical");
 		float h = input->GetAxis("Horizontal");
+		float lightV = input->GetAxis("Light V");
+		float lightH = input->GetAxis("Light H");
+		float lightY = input->GetAxis("Light Y");
+		float targetV = input->GetAxis("Target V");
+		float targetH = input->GetAxis("Target H");
 
-		if (m_Renderer != nullptr)
+		
+
+		if (m_Renderer != nullptr && m_Camera != nullptr)
 		{
-			GameObject * renderer = m_Renderer->GetGameObject();
-			Vector3 rendererPosition = renderer->GetPosition();
+			GameObject * gameObject = m_Camera->GetGameObject();
+			Vector3 position = gameObject->GetPosition();
 
-			rendererPosition.x += h * Time::GetDeltaTime();
-			rendererPosition.z += v * Time::GetDeltaTime();
+			position.x += h * Time::GetDeltaTime() * speed;
+			position.z += v * Time::GetDeltaTime() * speed;
 
-			renderer->SetPosition(rendererPosition);
+			gameObject->SetPosition(position);
+
+			if (input->GetKey(KeyCode::Alpha0))
+			{
+				m_FieldOfView = Math::Clamp(m_FieldOfView + Time::GetDeltaTime() * fovSpeed, 10.0f, 90.0f);
+			}
+			else if (input->GetKey(KeyCode::Alpha9))
+			{
+				m_FieldOfView = Math::Clamp(m_FieldOfView - Time::GetDeltaTime() * fovSpeed, 10.0f, 90.0f);
+			}
+			if (input->GetKeyDown(KeyCode::GraveAccent))
+			{
+				DEBUG_LOG("FOV: %f", m_FieldOfView);
+				DEBUG_LOG("Pos: %f %f %f", Graphics::DEBUG_POSITION.x, Graphics::DEBUG_POSITION.y, Graphics::DEBUG_POSITION.z);
+				DEBUG_LOG("Dir: %f %f %f", Graphics::DEBUG_DIRECTION.x, Graphics::DEBUG_DIRECTION.y, Graphics::DEBUG_DIRECTION.z);
+			}
+
+			m_Camera->SetFieldOfView(m_FieldOfView);
 
 			//Quaternion rotation = renderer->GetRotation();
 			//rotation *= Quaternion::Euler(Vector3(0.0f, 35.0f * Time::GetDeltaTime(), 0.0f));
 			//renderer->SetRotation(rotation);
 		}
 
+		if (m_Light != nullptr && m_LightTarget != nullptr)
+		{
+			Vector3 position = m_Light->GetPosition();
+			position.x += lightH * Time::GetDeltaTime() * speed;
+			position.z += lightV * Time::GetDeltaTime() * speed;
+			position.y += lightY * Time::GetDeltaTime() * speed;
+			m_Light->SetPosition(position);
+
+			position = m_LightTarget->GetPosition();
+			position.x += targetH * Time::GetDeltaTime() * speed;
+			position.z += targetV * Time::GetDeltaTime() * speed;
+			m_LightTarget->SetPosition(position);
+
+			
+
+			if (input->GetKeyDown(KeyCode::B))
+			{
+				if (m_Light->IsActive())
+				{
+					m_Light->SetActive(false);
+				}
+				else
+				{
+					m_Light->SetActive(true);
+				}
+			}
+
+			if (input->GetKeyDown(KeyCode::Alpha1))
+			{
+				m_Light->SetPosition(Vector3(20.0f, 5.0f, 20.0f));
+				m_LightTarget->SetPosition(Vector3(-5.0f, 0.0f, 0.0f));
+			}
+
+			Vector3 direction = m_LightTarget->GetPosition() - m_Light->GetPosition();
+			Graphics::DEBUG_POSITION = m_Light->GetPosition();
+			Graphics::DEBUG_DIRECTION = (direction.Normalized());
+		}
 
 
 	}

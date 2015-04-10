@@ -88,7 +88,9 @@ namespace Engine
 		}
 		else
 		{
-			matrix = Matrix4x4::Perspective(m_FieldOfView, windowWidth / windowHeight, m_Near, m_Far);
+			float fieldOfView = m_FieldOfView * 3.14f / 180.0f;
+
+			matrix = Matrix4x4::Perspective(fieldOfView, windowWidth / windowHeight, m_Near, m_Far);
 		}
 		return matrix;
 	}
