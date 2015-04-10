@@ -881,13 +881,12 @@ namespace Engine
 		{
 			glBindFramebuffer(GL_FRAMEBUFFER, renderTexture->GetFBOHandle());
 			//Render Depth Vector3(0.5f, 2.0f, 2.0f)
-            float shadowDistance = 30.0f;
+			float shadowDistance = 100.0f;
 			
-
-            Matrix4x4 depthProjectionMatrix = Matrix4x4::Ortho(-10.0f, 10.0f, -10.0f, 10.0f, shadowDistance, -20.0f);
-            //TODO
-            Matrix4x4 depthViewMatrix = Matrix4x4::LookAt(DEBUG_POSITION, DEBUG_DIRECTION);
-
+			Vector3 offset = DEBUG_POSITION;
+			//Matrix4x4 depthProjectionMatrix = Matrix4x4::Perspective(aCamera->GetFieldOfView() * 3.14 / 180.0f, w / h, 0.1f, shadowDistance);  //projectionMatrix; // Matrix4x4::Ortho(-10.0f, 10.0f, -10.0f, 1.0f, -10.0f, 20.0f);
+            Matrix4x4 depthProjectionMatrix = Matrix4x4::Ortho(-10.0f, 10.0f, -10.0f, 10.0f, shadowDistance, 1.0f);
+            Matrix4x4 depthViewMatrix = Matrix4x4::LookAt(offset, DEBUG_DIRECTION);
 
 			Pointer<Shader> depthShader = m_PostProcessMaterial->GetShader();
 			if (depthShader.IsAlive())
@@ -903,6 +902,11 @@ namespace Engine
 				for (std::vector<DrawCall>::iterator it = m_DrawCalls.begin(); it != m_DrawCalls.end(); it++)
 				{
 					DrawCall & drawCall = *it;
+					Matrix4x4 mvp = projectionMatrix * viewMatrix * drawCall.model;
+					Vector4 position = Vector4(0.0f, 0.0f, 0.0f, 0.0f);
+					position = mvp * position;
+
+					depthViewMatrix = Matrix4x4::LookAt(Vector3(position.x,position.y,position.z) + (-DEBUG_DIRECTION) * 5.0f, DEBUG_DIRECTION);
 					RenderDepthImmediate(drawCall.model, depthViewMatrix, depthProjectionMatrix, drawCall.mesh, m_PostProcessMaterial);
 				}
 			}

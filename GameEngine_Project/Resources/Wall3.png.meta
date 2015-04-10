@@ -122,6 +122,8 @@ std::string Meta-ID = ae413334-5892-40cd-aea0-f7a45ae0e5af
 std::string Meta-ID = b9d9193c-a8f7-494a-9772-278ae8f9c1fb
 std::string Meta-ID = 854fe2db-896d-41f8-ac40-a05ab6ea12f0
 std::string Meta-ID = 592da262-ba10-464d-b490-b9e393342d40
+std::string Meta-ID = e0fe805c-3472-4c2f-ac94-168cf2e9f6f7
+std::string Meta-ID = c1d38c08-ac4d-4d8f-ada8-82d46b71ab3c
 [ImageTexture]
 int FilterMode = 9729
 int WrapMode = 10497
