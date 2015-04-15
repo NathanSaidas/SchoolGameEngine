@@ -26,24 +26,24 @@ namespace Engine
         {
 
         }
-        char * MemberInfo::GetClassTypeName()
+        char * MemberInfo::GetClassTypeName() const
         {
             return m_ClassTypeName;
         }
-        char * MemberInfo::GetMemberName()
+        char * MemberInfo::GetMemberName() const
         {
             return m_MemberName;
         }
-        char * MemberInfo::GetMemberTypename()
+        char * MemberInfo::GetMemberTypename() const
         {
             return m_MemberTypename;
         }
-        size_t MemberInfo::GetOffset()
+        size_t MemberInfo::GetOffset() const
         {
             return m_Offset;
         }
 
-        bool MemberInfo::IsPublic()
+        bool MemberInfo::IsPublic() const
         {
             return m_IsPublic;
         }

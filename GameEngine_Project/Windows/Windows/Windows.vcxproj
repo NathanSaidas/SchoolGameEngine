@@ -84,9 +84,11 @@
   <ItemGroup>
     <ClCompile Include="..\..\Common\BasicTypes.cpp" />
     <ClCompile Include="..\..\Common\Engine.cpp" />
+    <ClCompile Include="..\..\Common\EntityComponent\Bounds.cpp" />
     <ClCompile Include="..\..\Common\EntityComponent\Camera.cpp" />
     <ClCompile Include="..\..\Common\EntityComponent\Component.cpp" />
     <ClCompile Include="..\..\Common\EntityComponent\GameObject.cpp" />
+    <ClCompile Include="..\..\Common\EntityComponent\GameObjectTree.cpp" />
     <ClCompile Include="..\..\Common\EntityComponent\Renderer.cpp" />
     <ClCompile Include="..\..\Common\EntityComponent\Scene.cpp" />
     <ClCompile Include="..\..\Common\EntityComponent\TestComponent.cpp" />
@@ -123,6 +125,7 @@
     <ClCompile Include="..\..\Common\Resource\ResourceDatabase.cpp" />
     <ClCompile Include="..\..\Common\SystemError.cpp" />
     <ClCompile Include="..\..\Common\Testing\MemoryTest.cpp" />
+    <ClCompile Include="..\..\Common\Type.cpp" />
     <ClCompile Include="..\..\Common\Utilities\BinaryFormatter.cpp" />
     <ClCompile Include="..\..\Common\Utilities\Directory.cpp" />
     <ClCompile Include="..\..\Common\Utilities\Guid.cpp" />
@@ -143,10 +146,12 @@
   <ItemGroup>
     <ClInclude Include="..\..\Common\BasicTypes.h" />
     <ClInclude Include="..\..\Common\Engine.h" />
+    <ClInclude Include="..\..\Common\EntityComponent\Bounds.h" />
     <ClInclude Include="..\..\Common\EntityComponent\Camera.h" />
     <ClInclude Include="..\..\Common\EntityComponent\Component.h" />
     <ClInclude Include="..\..\Common\EntityComponent\EntityComponent.h" />
     <ClInclude Include="..\..\Common\EntityComponent\GameObject.h" />
+    <ClInclude Include="..\..\Common\EntityComponent\GameObjectTree.h" />
     <ClInclude Include="..\..\Common\EntityComponent\Renderer.h" />
     <ClInclude Include="..\..\Common\EntityComponent\Scene.h" />
     <ClInclude Include="..\..\Common\EntityComponent\TestComponent.h" />

@@ -207,6 +207,15 @@
     <ClCompile Include="..\..\Common\Utilities\Directory.cpp">
       <Filter>Core\Utilities</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Common\EntityComponent\GameObjectTree.cpp">
+      <Filter>Core\EntityComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Type.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\EntityComponent\Bounds.cpp">
+      <Filter>Core\EntityComponent</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Common\Memory\AllocationInfo.h">
@@ -472,6 +481,12 @@
     </ClInclude>
     <ClInclude Include="..\..\Common\Utilities\Directory.h">
       <Filter>Core\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\EntityComponent\GameObjectTree.h">
+      <Filter>Core\EntityComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\EntityComponent\Bounds.h">
+      <Filter>Core\EntityComponent</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

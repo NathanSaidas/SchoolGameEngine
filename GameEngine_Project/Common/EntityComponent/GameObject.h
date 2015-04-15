@@ -9,6 +9,7 @@
 #include "../Utilities/Utilities.h"
 #include "../Math/Math.h"
 #include "Component.h"
+#include "Bounds.h"
 
 namespace Engine
 {
@@ -155,6 +156,9 @@ namespace Engine
 		//Remove Components
 		void RemoveComponent(Component * aComponent);
 
+        Bounds GetBounds();
+        void SetBounds(Bounds aBounds);
+
 
 		//TODO: Implement when Serialization has been designed / implemented.
         //void OnSerialize(IFormatter * aFormatter, Stream & aStream);
@@ -172,10 +176,12 @@ namespace Engine
 
 		//Transform Components
 		Vector3 m_Position;
+
         Quaternion m_Rotation;
 		Vector3 m_Scale;
 		Vector3 m_LocalPosition;
         Quaternion m_LocalRotation;
+        Bounds m_Bounds;
 
 	};
 

@@ -16,11 +16,11 @@ namespace Engine
             MemberInfo(char * aClassTypeName, char * aMemberName, char * aMemberTypename, size_t aOffset, bool aIsPublic);
             MemberInfo();
             ~MemberInfo();
-            char * GetClassTypeName();
-            char * GetMemberName();
-            char * GetMemberTypename();
-            size_t GetOffset();
-            bool IsPublic();
+            char * GetClassTypeName() const;
+            char * GetMemberName() const;
+            char * GetMemberTypename() const;
+            size_t GetOffset() const;
+            bool IsPublic() const;
 
             object * GetOffsetPointer(object * aObject);
 

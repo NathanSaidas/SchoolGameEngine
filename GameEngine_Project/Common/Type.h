@@ -79,18 +79,20 @@ namespace Engine
 			return m_IsEnum;
 		}
 
-       Array<std::string> GetInterfaces() const
-        {
-            Array<std::string> info;
-            Array<std::string>::Copy(m_Interfaces, info);
-            return info;
-        }
-        Array<Reflection::MemberInfo> GetMembers() const
-        {
-            Array<Reflection::MemberInfo> info;
-            Array<Reflection::MemberInfo>::Copy(m_Members, info);
-            return info;
-        }
+        Array<Type> GetInterfaces() const;
+        //{
+        //    Array<std::string> info;
+        //    Array<std::string>::Copy(m_Interfaces, info);
+        //    return info;
+        //}
+        Type GetInterface(const std::string & aName) const;
+        Array<Reflection::MemberInfo> GetMembers() const;
+        Reflection::MemberInfo GetMember(const std::string & aName) const;
+        //{
+        //    Array<Reflection::MemberInfo> info;
+        //    Array<Reflection::MemberInfo>::Copy(m_Members, info);
+        //    return info;
+        //}
         Func<void*, void*> GetConstructor() const
         {
             return m_Constructor;

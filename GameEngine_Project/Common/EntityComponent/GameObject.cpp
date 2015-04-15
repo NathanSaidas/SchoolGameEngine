@@ -526,5 +526,14 @@ namespace Engine
 		Utilities::Remove<Component*>(m_Components, aComponent);
 	}
 
+    Bounds GameObject::GetBounds()
+    {
+        return m_Bounds;
+    }
+    void GameObject::SetBounds(Bounds aBounds)
+    {
+        m_Bounds = aBounds;
+    }
+
 }
 	
