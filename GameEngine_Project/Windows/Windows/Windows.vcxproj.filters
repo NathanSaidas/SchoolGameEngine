@@ -1,0 +1,485 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Core">
+      <UniqueIdentifier>{ff4b18d5-f41d-4c5b-af2d-f1a6165900f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Reflection">
+      <UniqueIdentifier>{865cb29a-5d3c-4528-955d-ca7d55c557ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Memory">
+      <UniqueIdentifier>{f4dfad66-1f47-4e9f-9d06-615698fdee7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Testing">
+      <UniqueIdentifier>{6121e4f9-b915-4d5f-adcb-1110fe87d8c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Utilities">
+      <UniqueIdentifier>{11964ee5-8ec5-44e2-8238-488470e0e515}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Math">
+      <UniqueIdentifier>{c58ca7a1-a24a-4ef9-ba7f-f24bf39828e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Graphics">
+      <UniqueIdentifier>{0e334012-d5b3-4f6a-b76b-c49efff94b97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Windows">
+      <UniqueIdentifier>{186b3a12-163a-44b3-95ba-fe1aad3b4fb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\EntityComponent">
+      <UniqueIdentifier>{50b702ac-1c23-49ab-b95b-047e06d3d17d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Input">
+      <UniqueIdentifier>{ba47bea2-057b-4ece-8257-df4ea7dcefd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Resources">
+      <UniqueIdentifier>{d3f22aa1-8cd6-407f-aef2-fb185cac7abf}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Memory\Allocator.cpp">
+      <Filter>Core\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Memory\FrameAllocator.cpp">
+      <Filter>Core\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Memory\MemoryHeader.cpp">
+      <Filter>Core\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Memory\MemoryManager.cpp">
+      <Filter>Core\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Memory\PoolAllocator.cpp">
+      <Filter>Core\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Memory\StackAllocator.cpp">
+      <Filter>Core\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Reflection\MetaObjectLinker.cpp">
+      <Filter>Core\Reflection</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Reflection\Runtime.cpp">
+      <Filter>Core\Reflection</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Utilities\IniFileStream.cpp">
+      <Filter>Core\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Utilities\IniSection.cpp">
+      <Filter>Core\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Utilities\IniVariables.cpp">
+      <Filter>Core\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Utilities\Utilities.cpp">
+      <Filter>Core\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Testing\MemoryTest.cpp">
+      <Filter>Core\Testing</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\BasicTypes.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Engine.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\SystemError.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Math\Vector2.cpp">
+      <Filter>Core\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Math\Vector3.cpp">
+      <Filter>Core\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Math\Vector4.cpp">
+      <Filter>Core\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Math\Matrix4x4.cpp">
+      <Filter>Core\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Math\Quaternion.cpp">
+      <Filter>Core\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Graphics\Color.cpp">
+      <Filter>Core\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Graphics\Graphics.cpp">
+      <Filter>Core\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Graphics\PrimitiveShapeBuffer.cpp">
+      <Filter>Core\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Graphics\Mesh.cpp">
+      <Filter>Core\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Graphics\Shader.cpp">
+      <Filter>Core\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Windows\Window.cpp">
+      <Filter>Core\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Windows\Application.cpp">
+      <Filter>Core\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\EntityComponent\GameObject.cpp">
+      <Filter>Core\EntityComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\EntityComponent\Component.cpp">
+      <Filter>Core\EntityComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\EntityComponent\Scene.cpp">
+      <Filter>Core\EntityComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\EntityComponent\TestComponent.cpp">
+      <Filter>Core\EntityComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Windows\Time.cpp">
+      <Filter>Core\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Graphics\Geometry.cpp">
+      <Filter>Core\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Graphics\RenderTexture.cpp">
+      <Filter>Core\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Graphics\DrawCall.cpp">
+      <Filter>Core\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Input\Key.cpp">
+      <Filter>Core\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Input\InputAxis.cpp">
+      <Filter>Core\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Input\Input.cpp">
+      <Filter>Core\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Graphics\Texture.cpp">
+      <Filter>Core\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Graphics\Material.cpp">
+      <Filter>Core\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\EntityComponent\Camera.cpp">
+      <Filter>Core\EntityComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\EntityComponent\Renderer.cpp">
+      <Filter>Core\EntityComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Utilities\StringExtensions.cpp">
+      <Filter>Core\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Resource\Resource.cpp">
+      <Filter>Core\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Resource\ResourceDatabase.cpp">
+      <Filter>Core\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Utilities\Stream.cpp">
+      <Filter>Core\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Utilities\IFormatter.cpp">
+      <Filter>Core\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Utilities\BinaryFormatter.cpp">
+      <Filter>Core\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Reflection\MemberInfo.cpp">
+      <Filter>Core\Reflection</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Utilities\ISerializeable.cpp">
+      <Filter>Core\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Enum.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Windows\OpenGLProfile.cpp">
+      <Filter>Core\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Utilities\Guid.cpp">
+      <Filter>Core\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Graphics\ImageTexture.cpp">
+      <Filter>Core\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Common\Utilities\Directory.cpp">
+      <Filter>Core\Utilities</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Common\Memory\AllocationInfo.h">
+      <Filter>Core\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Memory\Allocator.h">
+      <Filter>Core\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Memory\AllocatorType.h">
+      <Filter>Core\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Memory\FrameAllocator.h">
+      <Filter>Core\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Memory\Memory.h">
+      <Filter>Core\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Memory\MemoryConfig.h">
+      <Filter>Core\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Memory\MemoryFlags.h">
+      <Filter>Core\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Memory\MemoryHeader.h">
+      <Filter>Core\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Memory\MemoryInfo.h">
+      <Filter>Core\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Memory\MemoryManager.h">
+      <Filter>Core\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Memory\MemoryUtils.h">
+      <Filter>Core\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Memory\PoolAllocator.h">
+      <Filter>Core\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Memory\StackAllocator.h">
+      <Filter>Core\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Reflection\Attribute.h">
+      <Filter>Core\Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Reflection\AttributeBinder.h">
+      <Filter>Core\Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Reflection\BoolAttribute.h">
+      <Filter>Core\Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Reflection\FloatAttribute.h">
+      <Filter>Core\Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Reflection\FunctionAttribute.h">
+      <Filter>Core\Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Reflection\IntAttribute.h">
+      <Filter>Core\Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Reflection\MetaObject.h">
+      <Filter>Core\Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Reflection\MetaObjectLinker.h">
+      <Filter>Core\Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Reflection\MethodInfo.h">
+      <Filter>Core\Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Reflection\Reflection.h">
+      <Filter>Core\Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Reflection\Runtime.h">
+      <Filter>Core\Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Reflection\StringAttribute.h">
+      <Filter>Core\Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Reflection\TypeTrait.h">
+      <Filter>Core\Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Utilities\Debug.h">
+      <Filter>Core\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Utilities\IniFileStream.h">
+      <Filter>Core\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Utilities\IniSection.h">
+      <Filter>Core\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Utilities\IniVariables.h">
+      <Filter>Core\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Utilities\Utilities.h">
+      <Filter>Core\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Testing\MemoryTest.h">
+      <Filter>Core\Testing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\BasicTypes.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Engine.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Func.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Method.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\SystemAssert.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\SystemError.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Type.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Math\Math.h">
+      <Filter>Core\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Math\Vector2.h">
+      <Filter>Core\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Math\Vector3.h">
+      <Filter>Core\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Math\Vector4.h">
+      <Filter>Core\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Math\Matrix4x4.h">
+      <Filter>Core\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Math\Quaternion.h">
+      <Filter>Core\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Graphics\Graphics.h">
+      <Filter>Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Graphics\Color.h">
+      <Filter>Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Graphics\PrimitiveShapeBuffer.h">
+      <Filter>Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Graphics\Mesh.h">
+      <Filter>Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Utilities\Array.h">
+      <Filter>Core\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Graphics\Shader.h">
+      <Filter>Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Graphics\GraphicEnums.h">
+      <Filter>Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Windows\Window.h">
+      <Filter>Core\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Windows\Application.h">
+      <Filter>Core\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Windows\OpenGLProfile.h">
+      <Filter>Core\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\EntityComponent\GameObject.h">
+      <Filter>Core\EntityComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\EntityComponent\Component.h">
+      <Filter>Core\EntityComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\EntityComponent\Scene.h">
+      <Filter>Core\EntityComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\EntityComponent\EntityComponent.h">
+      <Filter>Core\EntityComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\EntityComponent\TestComponent.h">
+      <Filter>Core\EntityComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Windows\Time.h">
+      <Filter>Core\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Graphics\Geometry.h">
+      <Filter>Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Graphics\RenderTexture.h">
+      <Filter>Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Graphics\DrawCall.h">
+      <Filter>Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Input\KeyDef.h">
+      <Filter>Core\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Input\Key.h">
+      <Filter>Core\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Input\InputAxis.h">
+      <Filter>Core\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Input\Input.h">
+      <Filter>Core\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Graphics\Texture.h">
+      <Filter>Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Graphics\Material.h">
+      <Filter>Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\EntityComponent\Camera.h">
+      <Filter>Core\EntityComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\EntityComponent\Renderer.h">
+      <Filter>Core\EntityComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Memory\Pointer.h">
+      <Filter>Core\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Utilities\IniVector3.h">
+      <Filter>Core\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Utilities\StringExtensions.h">
+      <Filter>Core\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Utilities\IniVector4.h">
+      <Filter>Core\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Resource\Resource.h">
+      <Filter>Core\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Resource\ResourceDatabase.h">
+      <Filter>Core\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Utilities\Stream.h">
+      <Filter>Core\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Utilities\IFormatter.h">
+      <Filter>Core\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Utilities\BinaryFormatter.h">
+      <Filter>Core\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Reflection\MemberInfo.h">
+      <Filter>Core\Reflection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Utilities\ISerializeable.h">
+      <Filter>Core\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\ValueTypes.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Enum.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Utilities\Guid.h">
+      <Filter>Core\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Graphics\ImageTexture.h">
+      <Filter>Core\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Common\Utilities\Directory.h">
+      <Filter>Core\Utilities</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\Common\Notes.txt">
+      <Filter>Core</Filter>
+    </Text>
+    <Text Include="GLM_Notes.txt">
+      <Filter>Core</Filter>
+    </Text>
+  </ItemGroup>
+</Project>

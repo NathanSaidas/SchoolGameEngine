@@ -1,0 +1,14 @@
+
+== Sizes == 
+printf("Size of vec2 { %u }\n", sizeof(glm::vec2)); //prints 8 (float)
+printf("Size of vec3 { %u }\n", sizeof(glm::vec3)); //prints 12 (float)
+printf("Size of vec4 { %u }\n", sizeof(glm::vec4)); //prints 16 (float)
+
+printf("Size of mat2 { %u }\n", sizeof(glm::mat2x2)); //prints 16 (float)
+printf("Size of mat3 { %u }\n", sizeof(glm::mat3x3)); //prints 36 (float)
+printf("Size of mat4 { %u }\n", sizeof(glm::mat4x4)); //prints 64 (float)
+
+printf("Size of quaternion { %u }\n", sizeof(glm::quat)); //prints 16 (float)
+
+
+

@@ -1,0 +1,98 @@
+﻿  Main.cpp
+  Window.cpp
+  Time.cpp
+  OpenGLProfile.cpp
+  Application.cpp
+  Utilities.cpp
+  StringExtensions.cpp
+c:\users\natha\documents\github\schoolgameengine\gameengine_project\common\utilities\stringextensions.cpp(14): warning C4018: '<': signed/unsigned mismatch
+c:\users\natha\documents\github\schoolgameengine\gameengine_project\common\utilities\stringextensions.cpp(67): warning C4244: 'initializing': conversion from 'float' to 'Engine::SInt32', possible loss of data
+  Stream.cpp
+c:\users\natha\documents\github\schoolgameengine\gameengine_project\common\utilities\stream.cpp(25): warning C4018: '<': signed/unsigned mismatch
+c:\users\natha\documents\github\schoolgameengine\gameengine_project\common\utilities\stream.cpp(34): warning C4018: '<': signed/unsigned mismatch
+c:\users\natha\documents\github\schoolgameengine\gameengine_project\common\utilities\stream.cpp(47): warning C4018: '<': signed/unsigned mismatch
+c:\users\natha\documents\github\schoolgameengine\gameengine_project\common\utilities\stream.cpp(108): warning C4474: 'printf' : too many arguments passed for format string
+  c:\users\natha\documents\github\schoolgameengine\gameengine_project\common\utilities\stream.cpp(108): note: placeholders and their parameters expect 0 variadic arguments, but 1 were provided
+  ISerializeable.cpp
+  IniVariables.cpp
+  IniSection.cpp
+c:\users\natha\documents\github\schoolgameengine\gameengine_project\common\utilities\inisection.cpp(246): warning C4244: 'argument': conversion from 'float' to 'const int', possible loss of data
+c:\users\natha\documents\github\schoolgameengine\gameengine_project\common\utilities\inivariables.h(194): warning C4244: 'argument': conversion from 'float' to 'char', possible loss of data
+  c:\users\natha\documents\github\schoolgameengine\gameengine_project\common\utilities\inivariables.h(115): note: while compiling class template member function 'Engine::string Engine::IniVariable<float>::ToString(void)'
+  c:\users\natha\documents\github\schoolgameengine\gameengine_project\common\utilities\inisection.cpp(71): note: see reference to class template instantiation 'Engine::IniVariable<float>' being compiled
+  IniFileStream.cpp
+c:\users\natha\documents\github\schoolgameengine\gameengine_project\common\utilities\inifilestream.cpp(114): warning C4477: 'printf' : format string '%s' requires an argument of type 'char *', but variadic argument 1 has type 'std::string'
+c:\users\natha\documents\github\schoolgameengine\gameengine_project\common\utilities\inivariables.h(194): warning C4244: 'argument': conversion from 'float' to 'char', possible loss of data
+  c:\users\natha\documents\github\schoolgameengine\gameengine_project\common\utilities\inivariables.h(115): note: while compiling class template member function 'Engine::string Engine::IniVariable<float>::ToString(void)'
+  c:\users\natha\documents\github\schoolgameengine\gameengine_project\common\utilities\inifilestream.cpp(299): note: see reference to class template instantiation 'Engine::IniVariable<float>' being compiled
+  IFormatter.cpp
+  Guid.cpp
+c:\users\natha\documents\github\schoolgameengine\gameengine_project\common\utilities\guid.cpp(25): warning C4018: '<': signed/unsigned mismatch
+c:\users\natha\documents\github\schoolgameengine\gameengine_project\common\utilities\guid.cpp(35): warning C4018: '<': signed/unsigned mismatch
+  Directory.cpp
+c:\users\natha\documents\github\schoolgameengine\gameengine_project\common\utilities\directory.cpp(124): warning C4800: 'BOOL': forcing value to bool 'true' or 'false' (performance warning)
+  BinaryFormatter.cpp
+c:\users\natha\documents\github\schoolgameengine\gameengine_project\common\utilities\binaryformatter.cpp(113): warning C4018: '<': signed/unsigned mismatch
+c:\users\natha\documents\github\schoolgameengine\gameengine_project\common\utilities\binaryformatter.cpp(225): warning C4800: 'Engine::UInt8': forcing value to bool 'true' or 'false' (performance warning)
+  MemoryTest.cpp
+c:\users\natha\documents\github\schoolgameengine\gameengine_project\common\testing\memorytest.cpp(416): warning C4244: 'argument': conversion from '__int64' to 'unsigned int', possible loss of data
+c:\users\natha\documents\github\schoolgameengine\gameengine_project\common\testing\memorytest.cpp(488): warning C4244: 'argument': conversion from '__int64' to 'unsigned int', possible loss of data
+c:\users\natha\documents\github\schoolgameengine\gameengine_project\common\testing\memorytest.cpp(610): warning C4244: 'argument': conversion from '__int64' to 'unsigned int', possible loss of data
+c:\users\natha\documents\github\schoolgameengine\gameengine_project\common\testing\memorytest.cpp(680): warning C4244: 'argument': conversion from '__int64' to 'unsigned int', possible loss of data
+  SystemError.cpp
+  ResourceDatabase.cpp
+  Resource.cpp
+  Generating Code...
+  Compiling...
+  Runtime.cpp
+  MetaObjectLinker.cpp
+  MemberInfo.cpp
+  StackAllocator.cpp
+c:\users\natha\documents\github\schoolgameengine\gameengine_project\common\memory\stackallocator.cpp(36): warning C4244: '=': conversion from 'const Engine::UInt16' to 'Engine::UInt8', possible loss of data
+  PoolAllocator.cpp
+  MemoryManager.cpp
+  MemoryHeader.cpp
+  FrameAllocator.cpp
+  Allocator.cpp
+  Vector4.cpp
+  Vector3.cpp
+  Vector2.cpp
+  Quaternion.cpp
+  Matrix4x4.cpp
+  Key.cpp
+  InputAxis.cpp
+  Input.cpp
+c:\users\natha\documents\github\schoolgameengine\gameengine_project\common\input\input.cpp(71): warning C4018: '<': signed/unsigned mismatch
+c:\users\natha\documents\github\schoolgameengine\gameengine_project\common\input\input.cpp(92): warning C4018: '<': signed/unsigned mismatch
+c:\users\natha\documents\github\schoolgameengine\gameengine_project\common\input\input.cpp(236): warning C4018: '<': signed/unsigned mismatch
+c:\users\natha\documents\github\schoolgameengine\gameengine_project\common\input\input.cpp(247): warning C4018: '<': signed/unsigned mismatch
+c:\users\natha\documents\github\schoolgameengine\gameengine_project\common\input\input.cpp(258): warning C4018: '<': signed/unsigned mismatch
+  Texture.cpp
+  Shader.cpp
+  RenderTexture.cpp
+  Generating Code...
+  Compiling...
+  PrimitiveShapeBuffer.cpp
+  Mesh.cpp
+  Material.cpp
+  ImageTexture.cpp
+  Graphics.cpp
+  Geometry.cpp
+  DrawCall.cpp
+  Color.cpp
+  Enum.cpp
+  TestComponent.cpp
+c:\program files (x86)\windows kits\8.1\include\shared\minwindef.h(130): warning C4005: 'APIENTRY': macro redefinition
+  c:\users\natha\documents\github\schoolgameengine\gameengine_project\common\libraries\glfw_3.1.0\include\glfw\glfw3.h(85): note: see previous definition of 'APIENTRY'
+  Scene.cpp
+  Renderer.cpp
+  GameObject.cpp
+  Component.cpp
+  Camera.cpp
+  Engine.cpp
+  BasicTypes.cpp
+  Generating Code...
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+  Windows.vcxproj -> C:\Users\natha\Documents\GitHub\SchoolGameEngine\GameEngine_Project\Windows\..\\Builds\\Windows\\Debug\Game_Engine.exe
+  Windows.vcxproj -> C:\Users\natha\Documents\GitHub\SchoolGameEngine\GameEngine_Project\Windows\..\\Builds\\Windows\\Debug\Game_Engine.pdb (Full PDB)
+  0 File(s) copied
